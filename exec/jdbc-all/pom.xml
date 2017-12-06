@@ -433,11 +433,15 @@
                <exclude>**/*.DSA</exclude>
                <exclude>javax/*</exclude>
                <exclude>javax/activation/**</exclude>
+               <exclude>javax/annotation/**</exclude>
                <exclude>javax/annotation-api/**</exclude>
+               <exclude>javax/el/**</exclude>
                <exclude>javax/inject/**</exclude>
                <exclude>javax/servlet-api/**</exclude>
                <exclude>javax/json/**</exclude>
                <exclude>javax/ws/**</exclude>
+               <exclude>javax/servlet/**</exclude>
+               <exclude>javax/xml/**</exclude>
                <exclude>rest/**</exclude>
                <exclude>*.tokens</exclude>
                <exclude>codegen/**</exclude>
@@ -543,9 +547,9 @@
   <profiles>
       <profile>
         <id>mapr</id>
-        <properties>
-          <package.namespace.prefix />
-        </properties>
+        <!--<properties>-->
+          <!--<package.namespace.prefix />-->
+        <!--</properties>-->
 
         <build>
           <plugins>
@@ -569,7 +573,7 @@
                           This is likely due to you adding new dependencies to a java-exec and not updating the excludes in this module. This is important as it minimizes the size of the dependency of Drill application users.
 
                         </message>
-                        <maxsize>29000000</maxsize>
+                        <maxsize>80000000</maxsize>
                         <minsize>15000000</minsize>
                         <files>
                           <file>${project.build.directory}/drill-jdbc-all-${project.version}.jar</file>
@@ -612,7 +616,7 @@
                     <include>*:*</include>
                   </includes>
                   <excludes>
-                    <exclude>org.slf4j:jcl-over-slf4j</exclude>
+                    <!--<exclude>org.slf4j:jcl-over-slf4j</exclude>-->
                     <exclude>com.dyuproject.protostuff:*</exclude>
                     <exclude>org.apache.calcite:calcite-core</exclude>
                     <exclude>org.apache.calcite:calcite-linq4j</exclude>
@@ -643,12 +647,12 @@
                     <exclude>org.codehaus.janino:*</exclude>
                     <exclude>org.mortbay.jetty:*</exclude>
                     <exclude>org.slf4j:jul-to-slf4j</exclude>
-                    <exclude>org.slf4j:log4j-over-slf4j</exclude>
+                    <!--<exclude>org.slf4j:log4j-over-slf4j</exclude>-->
                     <exclude>org.hamcrest:hamcrest-core</exclude>
                     <exclude>org.mockito:mockito-core</exclude>
                     <exclude>org.objenesis:objenesis</exclude>
                     <exclude>org.eclipse.jetty:*</exclude>
-                    <exclude>org.apache.hadoop:*</exclude>
+                    <!--<exclude>org.apache.hadoop:*</exclude>-->
                     <exclude>javax.xml.bind:jaxb-api</exclude>
                     <exclude>javax.xml.stream:stax-api</exclude>
                     <exclude>javax.activation:activation</exclude>
@@ -717,6 +721,7 @@
                   <relocation><pattern>org.apache.xmlcommons.</pattern><shadedPattern>oadd.org.apache.xmlcommons.</shadedPattern></relocation>
                   <relocation><pattern>org.apache.xpath.</pattern><shadedPattern>oadd.org.apache.xpath.</shadedPattern></relocation>
                   <relocation><pattern>org.apache.zookeeper.</pattern><shadedPattern>oadd.org.apache.zookeeper.</shadedPattern></relocation>
+                  <relocation><pattern>org.apache.hadoop.</pattern><shadedPattern>oadd.org.apache.hadoop.</shadedPattern></relocation>
                 </relocations>
                 <transformers>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
@@ -748,11 +753,15 @@
                       <exclude>**/*.DSA</exclude>
                       <exclude>javax/*</exclude>
                       <exclude>javax/activation/**</exclude>
+                      <exclude>javax/annotation/**</exclude>
                       <exclude>javax/annotation-api/**</exclude>
+                      <exclude>javax/el/**</exclude>
                       <exclude>javax/inject/**</exclude>
                       <exclude>javax/servlet-api/**</exclude>
                       <exclude>javax/json/**</exclude>
                       <exclude>javax/ws/**</exclude>
+                      <exclude>javax/servlet/**</exclude>
+                      <exclude>javax/xml/**</exclude>
                       <exclude>rest/**</exclude>
                       <exclude>*.tokens</exclude>
                       <exclude>codegen/**</exclude>
@@ -777,12 +786,24 @@
                       <exclude>org/apache/drill/exec/rpc/data/**</exclude>
                       <exclude>org/apache/drill/exec/rpc/control/**</exclude>
                       <exclude>org/apache/drill/exec/work/**</exclude>
-                      <exclude>org/apache/hadoop/**</exclude>
+                      <exclude>org/apache/hadoop/crypto/**</exclude>
+                      <exclude>org/apache/hadoop/ha/**</exclude>
+                      <exclude>org/apache/hadoop/http/**</exclude>
+                      <exclude>org/apache/hadoop/ipc/**</exclude>
+                      <exclude>org/apache/hadoop/jmx/**</exclude>
+                      <exclude>org/apache/hadoop/log/**</exclude>
+                      <exclude>org/apache/hadoop/metrics/**</exclude>
+                      <exclude>org/apache/hadoop/net/**</exclude>
+                      <exclude>org/apache/hadoop/record/**</exclude>
+                      <exclude>org/apache/hadoop/service/**</exclude>
+                      <exclude>org/apache/hadoop/tracing/**</exclude>
+                      <exclude>org/apache/hadoop/tools/**</exclude>
+                      <exclude>org/apache/hadoop/yarn/**</exclude>
                       <exclude>org/apache/commons/pool2/**</exclude>
                       <exclude>org/apache/http/**</exclude>
                       <exclude>org/apache/directory/**</exclude>
                       <exclude>com/jcraft/**</exclude>
-                      <exclude>**/mapr/**</exclude>
+                      <!--<exclude>**/mapr/**</exclude>-->
                       <exclude>org/yaml/**</exclude>
                       <exclude>hello/**</exclude>
                       <exclude>webapps/**</exclude>

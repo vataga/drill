@@ -60,7 +60,7 @@ public class SecurityConfiguration extends Configuration {
     final String originalClassName = get(CommonConfigurationKeys.HADOOP_SECURITY_GROUP_MAPPING);
     final String profilePrefix = System.getProperty("drill.security.namespacePrefix");
 
-    if (!Strings.isNullOrEmpty(profilePrefix)) {
+    if (!Strings.isNullOrEmpty(profilePrefix) && !originalClassName.startsWith(profilePrefix)) {
       set(CommonConfigurationKeys.HADOOP_SECURITY_GROUP_MAPPING, profilePrefix + originalClassName);
     }
   }
