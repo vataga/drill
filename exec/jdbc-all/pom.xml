@@ -547,9 +547,9 @@
   <profiles>
       <profile>
         <id>mapr</id>
-        <!--<properties>-->
-          <!--<package.namespace.prefix />-->
-        <!--</properties>-->
+        <properties>
+          <package.namespace.prefix />
+        </properties>
 
         <build>
           <plugins>
@@ -721,7 +721,7 @@
                   <relocation><pattern>org.apache.xmlcommons.</pattern><shadedPattern>oadd.org.apache.xmlcommons.</shadedPattern></relocation>
                   <relocation><pattern>org.apache.xpath.</pattern><shadedPattern>oadd.org.apache.xpath.</shadedPattern></relocation>
                   <relocation><pattern>org.apache.zookeeper.</pattern><shadedPattern>oadd.org.apache.zookeeper.</shadedPattern></relocation>
-                  <relocation><pattern>org.apache.hadoop.</pattern><shadedPattern>oadd.org.apache.hadoop.</shadedPattern></relocation>
+                  <!--<relocation><pattern>org.apache.hadoop.</pattern><shadedPattern>oadd.org.apache.hadoop.</shadedPattern></relocation>-->
                 </relocations>
                 <transformers>
                   <transformer implementation="org.apache.maven.plugins.shade.resource.AppendingTransformer">
