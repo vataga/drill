@@ -554,7 +554,7 @@ public class WorkspaceSchemaFactory {
     public CreateTableEntry createStatsTable(String tableName) {
       ensureNotStatsTable(tableName);
       final String statsTableName = getStatsTableName(tableName);
-      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.DEFAULT_NAME);
+      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.PLUGIN_NAME);
       return createOrAppendToTable(statsTableName, formatPlugin, Collections.emptyList(),
           StorageStrategy.DEFAULT);
     }
@@ -563,7 +563,7 @@ public class WorkspaceSchemaFactory {
     public CreateTableEntry appendToStatsTable(String tableName) {
       ensureNotStatsTable(tableName);
       final String statsTableName = getStatsTableName(tableName);
-      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.DEFAULT_NAME);
+      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.PLUGIN_NAME);
       return createOrAppendToTable(statsTableName, formatPlugin, Collections.emptyList(),
           StorageStrategy.DEFAULT);
     }
