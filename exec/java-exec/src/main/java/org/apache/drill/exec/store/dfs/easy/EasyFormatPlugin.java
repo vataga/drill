@@ -50,7 +50,7 @@ import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.exec.record.CloseableRecordBatch;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.server.DrillbitContext;
-import org.apache.drill.exec.server.options.OptionManager;
+import org.apache.drill.exec.server.options.OptionSet;
 import org.apache.drill.exec.store.ColumnExplorer;
 import org.apache.drill.exec.store.RecordReader;
 import org.apache.drill.exec.store.RecordWriter;
@@ -118,7 +118,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
     /**
      *  Choose whether to use the "traditional" or "enhanced" reader
      *  structure. Can also be selected at runtime by overriding
-     *  {@link #useEnhancedScan()}.
+     *  {@link #useEnhancedScan(OptionSet)}.
      */
     private final boolean useEnhancedScan;
 
@@ -502,7 +502,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
 
   protected CloseableRecordBatch getReaderBatch(FragmentContext context,
       EasySubScan scan) throws ExecutionSetupException {
-    if (useEnhancedScan()) {
+    if (useEnhancedScan(context.getOptions())) {
       return buildScan(context, scan);
     } else {
       return buildScanBatch(context, scan);
@@ -518,8 +518,8 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
    * @return true to use the enhanced scan framework, false for the
    * traditional scan-batch framework
    */
-  protected boolean useEnhancedScan() {
-    return easyConfig.useEnhancedScan();
+  protected boolean useEnhancedScan(OptionSet options) {
+    return easyConfig.useEnhancedScan;
   }
 
   /**
@@ -605,13 +605,13 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
   /**
    * Initialize the scan framework builder with standard options.
    * Call this from the plugin-specific
-   * {@link #frameworkBuilder(OptionManager, EasySubScan)} method.
+   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method.
    * The plugin can then customize/revise options as needed.
    *
    * @param builder the scan framework builder you create in the
-   * {@link #frameworkBuilder(OptionManager, EasySubScan)} method
+   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method
    * @param scan the physical scan operator definition passed to
-   * the {@link #frameworkBuilder(OptionManager, EasySubScan)} method
+   * the {@link #frameworkBuilder(OptionSet, EasySubScan)} method
    */
   protected void initScanBuilder(FileScanBuilder builder, EasySubScan scan) {
     builder.projection(scan.getColumns());
@@ -638,7 +638,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
   }
 
   public ManagedReader<? extends FileSchemaNegotiator> newBatchReader(
-      EasySubScan scan, OptionManager options) throws ExecutionSetupException {
+      EasySubScan scan, OptionSet options) throws ExecutionSetupException {
     throw new ExecutionSetupException("Must implement newBatchReader() if using the enhanced framework.");
   }
 
@@ -656,7 +656,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
    * @throws ExecutionSetupException for all setup failures
    */
   protected FileScanBuilder frameworkBuilder(
-      OptionManager options, EasySubScan scan) throws ExecutionSetupException {
+      OptionSet options, EasySubScan scan) throws ExecutionSetupException {
     throw new ExecutionSetupException("Must implement frameworkBuilder() if using the enhanced framework.");
   }
 
