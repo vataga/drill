@@ -28,7 +28,7 @@ import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.nio.file.Paths;
 
-import org.apache.drill.categories.RowSetTests;
+import org.apache.drill.categories.RowSetTest;
 import org.apache.drill.common.util.DrillFileUtils;
 import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.proto.UserBitShared;
@@ -53,7 +53,8 @@ import org.slf4j.LoggerFactory;
  * <li><tt>TestJsonReaderQuery</tt></li>
  * </ul>
  */
-@Category(RowSetTests.class)
+//TODO: Move to JSON reader package after code review
+@Category(RowSetTest.class)
 public class TestJsonReader extends BaseTestQuery {
   private static final Logger logger = LoggerFactory.getLogger(TestJsonReader.class);
 
@@ -97,6 +98,10 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test
   public void testSplitAndTransferFailure() throws Exception {
+    runBoth(() -> doTestSplitAndTransferFailure());
+  }
+
+  private void doTestSplitAndTransferFailure() throws Exception {
     final String testVal = "a string";
     testBuilder()
         .sqlQuery("select flatten(config) as flat from cp.`store/json/null_list.json`")
@@ -377,19 +382,23 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test
   public void drill_4479() throws Exception {
-    try {
-      File table_dir = dirTestWatcher.makeTestTmpSubDir(Paths.get("drill_4479"));
-      table_dir.mkdir();
-      BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(new File(table_dir, "mostlynulls.json")));
-      // Create an entire batch of null values for 3 columns
-      for (int i = 0; i < JSONRecordReader.DEFAULT_ROWS_PER_BATCH; i++) {
-        os.write("{\"a\": null, \"b\": null, \"c\": null}".getBytes());
-      }
-      // Add a row with {bigint,  float, string} values
-      os.write("{\"a\": 123456789123, \"b\": 99.999, \"c\": \"Hello World\"}".getBytes());
-      os.flush();
-      os.close();
+    File table_dir = dirTestWatcher.makeTestTmpSubDir(Paths.get("drill_4479"));
+    table_dir.mkdir();
+    BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(new File(table_dir, "mostlynulls.json")));
+    // Create an entire batch of null values for 3 columns
+    for (int i = 0; i < JSONRecordReader.DEFAULT_ROWS_PER_BATCH; i++) {
+      os.write("{\"a\": null, \"b\": null, \"c\": null}".getBytes());
+    }
+    // Add a row with {bigint,  float, string} values
+    os.write("{\"a\": 123456789123, \"b\": 99.999, \"c\": \"Hello World\"}".getBytes());
+    os.flush();
+    os.close();
 
+    runBoth(() -> doDrill_4479());
+  }
+
+  private void doDrill_4479() throws Exception {
+    try {
       testBuilder()
         .sqlQuery("select c, count(*) as cnt from dfs.tmp.drill_4479 t group by c")
         .ordered()
