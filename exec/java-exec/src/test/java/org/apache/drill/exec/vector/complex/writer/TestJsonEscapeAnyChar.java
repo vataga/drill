@@ -59,14 +59,7 @@ public class TestJsonEscapeAnyChar extends ClusterTest {
 
   @Test
   public void testwithOptionEnabled() throws Exception {
-    try {
-      enableV2Reader(false);
-      doTestWithOptionEnabled();
-      enableV2Reader(true);
-      doTestWithOptionEnabled();
-    } finally {
-      resetV2Reader();
-    }
+    runBoth(() -> doTestWithOptionEnabled());
   }
 
   private void doTestWithOptionEnabled() throws Exception {
@@ -84,15 +77,8 @@ public class TestJsonEscapeAnyChar extends ClusterTest {
     }
   }
   @Test
-  public void testWithOptionDisabled() throws Exception {
-    try {
-      enableV2Reader(false);
-      doTestWithOptionDisabled();
-      enableV2Reader(true);
-      doTestWithOptionDisabled();
-    } finally {
-      resetV2Reader();
-    }
+  public void testwithOptionDisabled() throws Exception {
+    runBoth(() -> doTestWithOptionDisabled());
   }
 
   private void doTestWithOptionDisabled() throws Exception {
