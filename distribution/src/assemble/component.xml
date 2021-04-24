@@ -90,9 +90,6 @@
       <outputDirectory>jars</outputDirectory>
       <unpack>false</unpack>
       <useProjectArtifact>false</useProjectArtifact>
-      <includes>
-        <include>org.apache.drill:drill-shaded-guava:jar</include>
-      </includes>
     </dependencySet>
 
     <dependencySet>
