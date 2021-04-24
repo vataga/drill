@@ -26,7 +26,7 @@ import org.apache.drill.exec.planner.PlannerPhase;
 import org.apache.drill.exec.planner.sql.conversion.SqlConverter;
 import org.apache.drill.exec.store.StoragePlugin;
 
-import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
+import com.google.common.collect.Lists;
 
 public class SqlHandlerConfig {
 

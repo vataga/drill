@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 import org.apache.drill.common.FunctionNames;
 import org.apache.drill.exec.store.ischema.InfoSchemaFilter.ExprNode.Type;
-import org.apache.drill.shaded.guava.com.google.common.base.Joiner;
+import com.google.common.base.Joiner;
 
 import java.util.List;
 import java.util.Map;

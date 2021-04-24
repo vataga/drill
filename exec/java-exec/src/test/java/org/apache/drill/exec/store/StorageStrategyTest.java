@@ -17,8 +17,8 @@
  */
 package org.apache.drill.exec.store;
 
-import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
-import org.apache.drill.shaded.guava.com.google.common.io.Files;
+import com.google.common.collect.Lists;
+import com.google.common.io.Files;
 import org.apache.drill.exec.ExecTest;
 import org.apache.drill.test.BaseTest;
 import org.apache.hadoop.fs.FileSystem;

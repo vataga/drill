@@ -27,7 +27,7 @@ import java.util.Map;
 import org.apache.drill.categories.UnlikelyTest;
 import org.apache.drill.common.exceptions.UserException;
 import org.apache.drill.exec.planner.physical.PlannerSettings;
-import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 import org.apache.drill.test.BaseTestQuery;
 import org.junit.Assert;
 import org.junit.BeforeClass;

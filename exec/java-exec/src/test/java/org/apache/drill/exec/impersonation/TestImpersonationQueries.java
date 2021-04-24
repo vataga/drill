@@ -19,7 +19,7 @@ package org.apache.drill.exec.impersonation;
 
 import org.apache.drill.exec.store.StoragePluginRegistry.PluginException;
 import org.apache.drill.exec.store.avro.AvroDataGenerator;
-import org.apache.drill.shaded.guava.com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
 import org.apache.drill.categories.SecurityTest;
 import org.apache.drill.common.exceptions.UserRemoteException;
 import org.apache.drill.common.util.DrillFileUtils;

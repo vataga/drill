@@ -22,7 +22,7 @@ import com.fasterxml.jackson.core.SerializableString;
 import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.drill.exec.store.SchemaFactory;
-import org.apache.drill.shaded.guava.com.google.common.base.Joiner;
+import com.google.common.base.Joiner;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.apache.calcite.schema.SchemaPlus;

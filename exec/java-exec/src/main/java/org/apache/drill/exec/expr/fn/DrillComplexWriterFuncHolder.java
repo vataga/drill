@@ -33,7 +33,7 @@ import com.sun.codemodel.JExpression;
 import com.sun.codemodel.JInvocation;
 import com.sun.codemodel.JVar;
 
-import static org.apache.drill.shaded.guava.com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkArgument;
 
 public class DrillComplexWriterFuncHolder extends DrillSimpleFuncHolder {
 

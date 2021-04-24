@@ -23,7 +23,7 @@ import org.apache.drill.exec.ops.QueryContext;
 import org.apache.drill.exec.planner.cost.PrelCostEstimates;
 import org.apache.drill.exec.record.BatchSchema.SelectionVectorMode;
 
-import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
+import com.google.common.base.Preconditions;
 
 public abstract class AbstractBase implements PhysicalOperator {
   static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(AbstractBase.class);

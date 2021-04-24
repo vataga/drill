@@ -23,7 +23,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.drill.common.config.DrillConfig;
 import org.apache.drill.exec.memory.BufferAllocator;
 import org.apache.drill.exec.vector.ValueVector;
-import org.apache.drill.shaded.guava.com.google.common.io.Files;
+import com.google.common.io.Files;
 
 import io.netty.buffer.DrillBuf;
 

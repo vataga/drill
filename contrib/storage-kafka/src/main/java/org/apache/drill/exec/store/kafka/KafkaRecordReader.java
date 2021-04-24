@@ -37,8 +37,8 @@ import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import org.apache.drill.shaded.guava.com.google.common.base.Stopwatch;
-import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
+import com.google.common.base.Stopwatch;
+import com.google.common.collect.Lists;
 
 public class KafkaRecordReader extends AbstractRecordReader {
   private static final Logger logger = LoggerFactory.getLogger(KafkaRecordReader.class);

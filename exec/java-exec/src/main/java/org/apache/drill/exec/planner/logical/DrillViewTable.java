@@ -20,7 +20,7 @@ package org.apache.drill.exec.planner.logical;
 import java.util.List;
 
 import org.apache.calcite.schema.SchemaPlus;
-import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
+import com.google.common.collect.ImmutableList;
 import org.apache.calcite.config.CalciteConnectionConfig;
 import org.apache.calcite.schema.Schema.TableType;
 import org.apache.calcite.schema.Statistic;
