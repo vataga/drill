@@ -25,7 +25,9 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.calcite.plan.RelOptCluster;
 import org.apache.calcite.plan.RelTraitSet;
 import org.apache.calcite.rel.core.Values;
@@ -34,7 +36,6 @@ import org.apache.calcite.rex.RexLiteral;
 import org.apache.calcite.util.NlsString;
 import org.apache.drill.common.JSONOptions;
 import org.apache.drill.common.exceptions.DrillRuntimeException;
-import org.apache.drill.common.util.GuavaUtils;
 import org.apache.drill.exec.vector.complex.fn.ExtendedJsonOutput;
 import org.apache.drill.exec.vector.complex.fn.JsonOutput;
 import org.joda.time.DateTime;
@@ -68,7 +69,11 @@ public abstract class DrillValuesRelBase extends Values implements DrillRelNode 
                             List<? extends List<RexLiteral>> tuples,
                             RelTraitSet traits,
                             JSONOptions content) {
-    super(cluster, rowType, GuavaUtils.convertToNestedUnshadedImmutableList(tuples), traits);
+    super(cluster, rowType, ImmutableList.copyOf(
+            tuples.stream()
+                    .map(ImmutableList::copyOf)
+                    .collect(Collectors.toList())
+            ), traits);
     this.content = content;
   }
 

@@ -17,7 +17,6 @@
  */
 package org.apache.drill.exec.planner.logical;
 
-import org.apache.drill.common.util.GuavaUtils;
 import com.google.common.collect.ImmutableList;
 import org.apache.calcite.rel.RelNode;
 import org.apache.calcite.rel.type.RelDataType;
@@ -57,7 +56,7 @@ public class DrillOptiqTest extends BaseTest {
       ImmutableList<RexFieldCollation> e = ImmutableList.copyOf(new RexFieldCollation[0]);
 
       // create a dummy RexOver object.
-      RexNode window = rex.makeOver(anyType, SqlStdOperatorTable.AVG, emptyList, emptyList, GuavaUtils.convertToUnshadedImmutableList(e),
+      RexNode window = rex.makeOver(anyType, SqlStdOperatorTable.AVG, emptyList, emptyList, ImmutableList.copyOf(e),
           null, null, true, false, false, false);
       DrillOptiq.toDrill(null, (RelNode) null, window);
     } catch (UserException e) {
