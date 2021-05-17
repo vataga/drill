@@ -17,7 +17,7 @@
  */
 package org.apache.drill.exec.store;
 
-import static com.google.common.base.Preconditions.checkNotNull;
+import static org.apache.drill.shaded.guava.com.google.common.base.Preconditions.checkNotNull;
 
 import java.util.Iterator;
 import java.util.Map;

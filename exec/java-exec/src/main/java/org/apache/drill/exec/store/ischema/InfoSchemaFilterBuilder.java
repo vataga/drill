@@ -30,7 +30,7 @@ import org.apache.drill.exec.store.ischema.InfoSchemaFilter.ConstantExprNode;
 import org.apache.drill.exec.store.ischema.InfoSchemaFilter.ExprNode;
 import org.apache.drill.exec.store.ischema.InfoSchemaFilter.FieldExprNode;
 import org.apache.drill.exec.store.ischema.InfoSchemaFilter.FunctionExprNode;
-import com.google.common.collect.ImmutableList;
+import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
 
 import java.util.ArrayList;
 import java.util.List;

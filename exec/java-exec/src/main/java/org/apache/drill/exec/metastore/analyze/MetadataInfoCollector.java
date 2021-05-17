@@ -19,7 +19,7 @@ package org.apache.drill.exec.metastore.analyze;
 
 import org.apache.calcite.rel.core.TableScan;
 import org.apache.drill.metastore.metadata.MetadataInfo;
-import com.google.common.collect.Multimap;
+import org.apache.drill.shaded.guava.com.google.common.collect.Multimap;
 
 import java.util.List;
 

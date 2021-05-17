@@ -27,7 +27,7 @@ import org.apache.drill.exec.physical.config.MetadataHashAggPOP;
 import org.apache.drill.exec.planner.common.DrillRelNode;
 import org.apache.drill.exec.planner.physical.visitor.PrelVisitor;
 import org.apache.drill.exec.record.BatchSchema;
-import com.google.common.base.Preconditions;
+import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
 
 import java.io.IOException;
 import java.util.Iterator;

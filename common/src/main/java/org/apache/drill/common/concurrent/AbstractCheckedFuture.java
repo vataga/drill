@@ -17,8 +17,8 @@
  */
 package org.apache.drill.common.concurrent;
 
-import com.google.common.util.concurrent.ForwardingListenableFuture;
-import com.google.common.util.concurrent.ListenableFuture;
+import org.apache.drill.shaded.guava.com.google.common.util.concurrent.ForwardingListenableFuture;
+import org.apache.drill.shaded.guava.com.google.common.util.concurrent.ListenableFuture;
 
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;

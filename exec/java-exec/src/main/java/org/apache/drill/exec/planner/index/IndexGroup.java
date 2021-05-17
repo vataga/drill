@@ -17,7 +17,7 @@
  */
 package org.apache.drill.exec.planner.index;
 
-import com.google.common.collect.Lists;
+import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
 
 import java.util.List;
 

@@ -38,8 +38,8 @@ import org.apache.drill.exec.store.base.filter.ExprNode;
 import org.apache.drill.exec.util.Utilities;
 import org.apache.drill.exec.vector.ValueVector;
 import org.apache.drill.exec.vector.accessor.ScalarWriter;
-import com.google.common.base.Stopwatch;
-import com.google.common.base.Strings;
+import org.apache.drill.shaded.guava.com.google.common.base.Stopwatch;
+import org.apache.drill.shaded.guava.com.google.common.base.Strings;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

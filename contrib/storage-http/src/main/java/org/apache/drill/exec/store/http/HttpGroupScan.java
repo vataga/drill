@@ -36,7 +36,7 @@ import org.apache.drill.exec.physical.base.SubScan;
 import org.apache.drill.exec.planner.logical.DrillScanRel;
 import org.apache.drill.exec.proto.CoordinationProtos.DrillbitEndpoint;
 import org.apache.drill.exec.util.Utilities;
-import com.google.common.base.Preconditions;
+import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
 
 
 @JsonTypeName("http-scan")

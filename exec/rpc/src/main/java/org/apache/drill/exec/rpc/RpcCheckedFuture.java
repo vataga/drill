@@ -20,7 +20,7 @@ package org.apache.drill.exec.rpc;
 import io.netty.buffer.ByteBuf;
 
 import org.apache.drill.common.concurrent.AbstractCheckedFuture;
-import com.google.common.util.concurrent.ListenableFuture;
+import org.apache.drill.shaded.guava.com.google.common.util.concurrent.ListenableFuture;
 
 public class RpcCheckedFuture<T> extends AbstractCheckedFuture<T, RpcException> implements DrillRpcFuture<T> {
 

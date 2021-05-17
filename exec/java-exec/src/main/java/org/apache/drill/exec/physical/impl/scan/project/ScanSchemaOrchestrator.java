@@ -36,7 +36,7 @@ import org.apache.drill.exec.physical.resultSet.impl.ResultVectorCacheImpl;
 import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.record.metadata.TupleMetadata;
 import org.apache.drill.exec.vector.ValueVector;
-import com.google.common.annotations.VisibleForTesting;
+import org.apache.drill.shaded.guava.com.google.common.annotations.VisibleForTesting;
 
 /**
  * Performs projection of a record reader, along with a set of static

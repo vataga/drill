@@ -25,7 +25,7 @@ import org.apache.drill.categories.SqlFunctionTest;
 import org.apache.drill.exec.util.Text;
 import org.junit.Test;
 
-import com.google.common.collect.ImmutableList;
+import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
 import org.junit.experimental.categories.Category;
 
 import java.io.BufferedWriter;

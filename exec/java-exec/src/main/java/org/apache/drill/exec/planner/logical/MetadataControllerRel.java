@@ -32,7 +32,7 @@ import org.apache.drill.common.logical.data.MetadataController;
 import org.apache.drill.exec.metastore.analyze.MetastoreAnalyzeConstants;
 import org.apache.drill.exec.planner.cost.DrillCostBase;
 import org.apache.drill.exec.metastore.analyze.MetadataControllerContext;
-import com.google.common.base.Preconditions;
+import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
 
 import java.util.List;
 

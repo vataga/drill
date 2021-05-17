@@ -19,7 +19,7 @@ package org.apache.drill.exec;
 
 import org.apache.drill.PlanTestBase;
 import org.apache.drill.exec.record.BatchSchemaBuilder;
-import com.google.common.collect.Lists;
+import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.test.BaseTestQuery;

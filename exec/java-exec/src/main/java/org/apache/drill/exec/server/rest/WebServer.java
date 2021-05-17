@@ -394,7 +394,7 @@ public class WebServer implements AutoCloseable {
    */
   public File getOrCreateTmpJavaScriptDir() {
     if (tmpJavaScriptDir == null && this.drillbit.getContext() != null) {
-      tmpJavaScriptDir = com.google.common.io.Files.createTempDir();
+      tmpJavaScriptDir = org.apache.drill.shaded.guava.com.google.common.io.Files.createTempDir();
       // Perform All auto generated files at this point
       try {
         generateOptionsDescriptionJSFile();
