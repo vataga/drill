@@ -28,6 +28,7 @@ import java.util.Map;
 
 import org.apache.calcite.plan.RelOptTable;
 import org.apache.commons.lang3.tuple.Pair;
+import org.apache.drill.common.util.GuavaUtils;
 import com.google.common.base.Charsets;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.ImmutableList;
@@ -250,7 +251,7 @@ public class FileSystemPartitionDescriptor extends AbstractPartitionDescriptor {
       DrillTranslatableTable newTable = new DrillTranslatableTable(dynamicDrillTable);
 
       RelOptTableImpl newOptTableImpl = RelOptTableImpl.create(relOptTable.getRelOptSchema(), relOptTable.getRowType(),
-          newTable, ImmutableList.of());
+          newTable, GuavaUtils.convertToUnshadedImmutableList(ImmutableList.of()));
 
       // return an EnumerableTableScan with fileSelection being part of digest of TableScan node.
       return DirPrunedEnumerableTableScan.create(scanRel.getCluster(), newOptTableImpl, newFileSelection.toString());
