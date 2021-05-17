@@ -1,8 +1,22 @@
+# How to upgrade Guava in Drill
+
+To avoid conflicts with the version of Guava used by Drill and versions used by other dependencies, Guava was shaded.
+
+## Update shaded version of guava
+
+* Set the new version of Guava to `guava.version` property and to the version of the artifact in 
+`drill-shaded/drill-shaded-guava/pom.xml` file.
+* Set the same new version of Guava to `shaded.guava.version` property in the root `pom.xml` file.
+* Build `drill-shaded-guava` module.
+* Try to build Drill and resolve compile errors if required.
+* When all errors are resolved and all tests are passed, push shaded artifacts to the Apache repository.
+* After artifacts became available, changes may be merged.
+
 # How to publish artifacts to the Apache repository
 
 ## Prerequisites
 
-Only PMC members have access for pushing artifacts to the Apache repository.
+Only PMC members have an access for pushing artifacts to the Apache repository.
 
 Setup your development env according to [this instruction](http://www.apache.org/dev/publishing-maven-artifacts.html#dev-env).
 
