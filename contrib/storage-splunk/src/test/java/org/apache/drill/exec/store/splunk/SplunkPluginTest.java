@@ -166,6 +166,7 @@ public class SplunkPluginTest extends SplunkBaseTest {
   }
 
   @Test
+  @Ignore("the result is not consistent on system table")
   public void testExplicitFieldsWithSourceType() throws Exception {
     String sql = "SELECT action, _sourcetype, _subsecond, _time FROM splunk._audit WHERE sourcetype='audittrail' LIMIT 5";
     client.testBuilder()
