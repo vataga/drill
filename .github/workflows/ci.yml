@@ -57,7 +57,7 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Build and test
-        run: mvn install -V -ntp -DdirectMemoryMb=2700 -DmemoryMb=1300 # Note: the total GitHub Actions memory is 7000Mb
+        run: mvn install -V -ntp -DdirectMemoryMb=2700 -DmemoryMb=2300 # Note: the total GitHub Actions memory is 7000Mb
 
   checkstyle_protobuf:
     name: Run checkstyle and generate protobufs
