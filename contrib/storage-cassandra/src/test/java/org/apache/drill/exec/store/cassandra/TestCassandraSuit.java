@@ -26,6 +26,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.testcontainers.containers.CassandraContainer;
 
+import java.time.Duration;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Category(SlowTest.class)
@@ -65,7 +66,8 @@ public class TestCassandraSuit extends BaseTest {
 
   private static void startCassandra() {
     cassandra = new CassandraContainer<>("cassandra")
-        .withInitScript("queries.cql");
+        .withInitScript("queries.cql")
+        .withStartupTimeout(Duration.ofSeconds(120)); // to avoid CI failures
     cassandra.start();
   }
 }
