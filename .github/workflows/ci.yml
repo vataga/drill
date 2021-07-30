@@ -38,6 +38,12 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Clean up some tools
+        run: |
+          sudo rm -rf /usr/share/dotnet \
+          sudo rm -rf /opt/ghc \
+          sudo rm -rf "/usr/local/share/boost" \
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
       # Caches maven cache and uses hashes of pom.xml files to find the required cache
       - name: Cache Maven Repository
         uses: actions/cache@v2
@@ -48,7 +54,7 @@ jobs:
               ${{ runner.os }}-maven-
       # Caches MySQL directory used for JDBC storage plugin tests
       - name: Cache MySQL
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.embedmysql
           key: ${{ runner.os }}-mysql
@@ -58,9 +64,9 @@ jobs:
           distribution: 'adopt'
           java-version: ${{ matrix.java }}
       - name: Build and test
-        run: mvn install -V -ntp -DdirectMemoryMb=2500 -DmemoryMb=1500 # Note: the total GitHub Actions memory is 7000Mb
-        # But GitHub CI requires some memory to perform tests. In case the rest memory is low, CI cancels the build.
-        # Experimentally we detected the 3000Mb is fine as a rest memory for GitHub CI
+        run: mvn install -V -ntp -DdirectMemoryMb=2500 -DmemoryMb=1400 # Note: the total GitHub Actions memory is 7000Mb
+        # But GitHub CI requires some memory for the container to perform tests. In case the rest memory is low,
+        # CI cancels the build. Experimentally we detected the 3100Mb is fine as a rest memory for GitHub CI
 
   checkstyle_protobuf:
     name: Run checkstyle and generate protobufs
@@ -68,8 +74,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: Clean up some tools
+        run: |
+          sudo rm -rf /usr/share/dotnet \
+          sudo rm -rf /opt/ghc \
+          sudo rm -rf "/usr/local/share/boost" \
+          sudo rm -rf "$AGENT_TOOLSDIRECTORY"
       - name: Cache Maven Repository
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
@@ -77,7 +89,7 @@ jobs:
             ${{ runner.os }}-maven-
       # Caches built protobuf library
       - name: Cache protobufs
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ~/protobuf
           key: ${{ runner.os }}-protobuf
