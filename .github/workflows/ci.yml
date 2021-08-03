@@ -66,7 +66,7 @@ jobs:
       - name: Build and test
         run: mvn install -V -ntp -DdirectMemoryMb=2500 -DmemoryMb=1700 # Note: the total GitHub Actions memory is 7000Mb
         # But GitHub CI requires some memory for the container to perform tests. In case the rest memory is low,
-        # CI cancels the build. Experimentally we detected the 2800Mb is fine as a rest memory for GitHub CI.
+        # CI cancels the build. Experimentally we detected the 2800Mb is fine as a rest memory for GitHub CI
 
   checkstyle_protobuf:
     name: Run checkstyle and generate protobufs
