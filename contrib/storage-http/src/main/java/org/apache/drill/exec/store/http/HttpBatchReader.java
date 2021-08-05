@@ -141,6 +141,7 @@ public class HttpBatchReader implements ManagedReader<SchemaNegotiator> {
       addFilters(urlBuilder, apiConfig.params(), subScan.filters());
     }
     return urlBuilder.build();
+//    https://api.opencagedata.com/geocode/v1/json?key=42c966046a034d8998f65c62a55a22c1
   }
 
   /**
