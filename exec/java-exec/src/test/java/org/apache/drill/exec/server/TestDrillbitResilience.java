@@ -111,6 +111,7 @@ public class TestDrillbitResilience extends DrillTest {
    * The number of times test (that are repeated) should be repeated.
    */
   private static final int NUM_RUNS = 3;
+  private static final int TIMEOUT = 300000; // 300000ms = 5min
 
   /**
    * Note: Counting sys.memory executes a fragment on every drillbit. This is a better check in comparison to
@@ -341,7 +342,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals("Exception sites should match.", desc, cause.getMessage());
   }
 
-  @Test
+  @Test(timeout = TIMEOUT) 
+  @Repeat(count = NUM_RUNS)
   public void settingNoOpInjectionsAndQuery() {
     final long before = countAllocatedMemory();
 
@@ -371,7 +373,7 @@ public class TestDrillbitResilience extends DrillTest {
     assertFailsWithException(controls, ForemanException.class, desc);
   }
 
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Repeat(count = NUM_RUNS)
   public void foreman_runTryBeginning() {
     final long before = countAllocatedMemory();
@@ -382,9 +384,9 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test
-  @Ignore // TODO(DRILL-3163, DRILL-3167)
-  //@Repeat(count = NUM_RUNS)
+  @Test(timeout = TIMEOUT) 
+//  @Ignore // TODO(DRILL-3163, DRILL-3167)
+  @Repeat(count = NUM_RUNS)
   public void foreman_runTryEnd() {
     final long before = countAllocatedMemory();
 
@@ -556,7 +558,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertCancelledWithoutException(controls, listener, TEST_QUERY);
   }
 
-  @Test // To test pause and resume. Test hangs and times out if resume did not happen.
+  @Test(timeout = TIMEOUT)  // To test pause and resume. Test hangs and times out if resume did not happen.
+  @Repeat(count = NUM_RUNS)
   public void passThrough() {
     final long before = countAllocatedMemory();
 
@@ -586,7 +589,7 @@ public class TestDrillbitResilience extends DrillTest {
   // DRILL-3052: Since root fragment is waiting on data and leaf fragments are cancelled before they send any
   // data to root, root will never run. This test will timeout if the root did not send the final state to Foreman.
   // DRILL-2383: Cancellation TC 1: cancel before any result set is returned.
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Ignore // TODO(DRILL-3192)
   //@Repeat(count = NUM_RUNS)
   public void cancelWhenQueryIdArrives() {
@@ -610,9 +613,9 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-2383: Cancellation TC 2: cancel in the middle of fetching result set
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Cancellation TC 2: cancel in the middle of fetching result set
   @Repeat(count = NUM_RUNS)
-  @Ignore("DRILL-6228")
+//  @Ignore("DRILL-6228")
   public void cancelInMiddleOfFetchingResults() {
     final long before = countAllocatedMemory();
 
@@ -641,9 +644,9 @@ public class TestDrillbitResilience extends DrillTest {
   }
 
 
-  @Test // DRILL-2383: Cancellation TC 3: cancel after all result set are produced but not all are fetched
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Cancellation TC 3: cancel after all result set are produced but not all are fetched
   @Repeat(count = NUM_RUNS)
-  @Ignore("DRILL-6228")
+//  @Ignore("DRILL-6228")
   public void cancelAfterAllResultsProduced() {
     final long before = countAllocatedMemory();
 
@@ -669,7 +672,7 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-2383: Cancellation TC 4: cancel after everything is completed and fetched
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Cancellation TC 4: cancel after everything is completed and fetched
   @Repeat(count = NUM_RUNS)
   @Ignore("DRILL-3967")
   public void cancelAfterEverythingIsCompleted() {
@@ -697,7 +700,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-2383: Completion TC 1: success
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Completion TC 1: success
+  @Repeat(count = NUM_RUNS)
   public void successfullyCompletes() {
     final long before = countAllocatedMemory();
 
@@ -729,7 +733,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertFailsWithException(controls, exceptionClass, exceptionDesc, TEST_QUERY);
   }
 
-  @Test // DRILL-2383: Completion TC 2: failed query - before query is executed - while sql parsing
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Completion TC 2: failed query - before query is executed - while sql parsing
+  @Repeat(count = NUM_RUNS)
   public void failsWhenParsing() {
     final long before = countAllocatedMemory();
 
@@ -746,8 +751,9 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-2383: Completion TC 3: failed query - before query is executed - while sending fragments to other
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Completion TC 3: failed query - before query is executed - while sending fragments to other
   // drillbits
+  @Repeat(count = NUM_RUNS)
   public void failsWhenSendingFragments() {
     final long before = countAllocatedMemory();
 
@@ -762,7 +768,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-2383: Completion TC 4: failed query - during query execution
+  @Test(timeout = TIMEOUT)  // DRILL-2383: Completion TC 4: failed query - during query execution
+  @Repeat(count = NUM_RUNS)
   public void failsDuringExecution() {
     final long before = countAllocatedMemory();
 
@@ -781,7 +788,7 @@ public class TestDrillbitResilience extends DrillTest {
    * Test canceling query interrupts currently blocked FragmentExecutor threads waiting for some event to happen.
    * Specifically tests canceling fragment which has {@link MergingRecordBatch} blocked waiting for data.
    */
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Repeat(count = NUM_RUNS)
   public void interruptingBlockedMergingRecordBatch() {
     final long before = countAllocatedMemory();
@@ -799,7 +806,7 @@ public class TestDrillbitResilience extends DrillTest {
    * Test canceling query interrupts currently blocked FragmentExecutor threads waiting for some event to happen.
    * Specifically tests canceling fragment which has {@link UnorderedReceiverBatch} blocked waiting for data.
    */
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Repeat(count = NUM_RUNS)
   public void interruptingBlockedUnorderedReceiverBatch() {
     final long before = countAllocatedMemory();
@@ -831,7 +838,7 @@ public class TestDrillbitResilience extends DrillTest {
    * {@link PartitionSenderRootExec} spawns threads for partitioner. Interrupting fragment thread should also interrupt
    * the partitioner threads.
    */
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Repeat(count = NUM_RUNS)
   public void interruptingPartitionerThreadFragment() {
     try {
@@ -858,9 +865,9 @@ public class TestDrillbitResilience extends DrillTest {
     }
   }
 
-  @Test
-  @Ignore // TODO(DRILL-3193)
-  //@Repeat(count = NUM_RUNS)
+  @Test(timeout = TIMEOUT) 
+//  @Ignore // TODO(DRILL-3193)
+  @Repeat(count = NUM_RUNS)
   public void interruptingWhileFragmentIsBlockedInAcquiringSendingTicket() {
     final long before = countAllocatedMemory();
 
@@ -873,7 +880,7 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test
+  @Test(timeout = TIMEOUT) 
   @Repeat(count = NUM_RUNS)
   public void memoryLeaksWhenCancelled() {
     setSessionOption(SLICE_TARGET, "10");
@@ -915,9 +922,9 @@ public class TestDrillbitResilience extends DrillTest {
     }
   }
 
-  @Test
-  @Ignore // TODO(DRILL-3194)
-  //@Repeat(count = NUM_RUNS)
+  @Test(timeout = TIMEOUT) 
+//  @Ignore // TODO(DRILL-3194)
+  @Repeat(count = NUM_RUNS)
   public void memoryLeaksWhenFailed() {
     setSessionOption(SLICE_TARGET, "10");
 
@@ -948,7 +955,8 @@ public class TestDrillbitResilience extends DrillTest {
     }
   }
 
-  @Test // DRILL-3065
+  @Test(timeout = TIMEOUT)  // DRILL-3065
+  @Repeat(count = NUM_RUNS)
   public void failsAfterMSorterSorting() {
 
     // Note: must use an input table that returns more than one
@@ -969,7 +977,8 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test // DRILL-3085
+  @Test(timeout = TIMEOUT)  // DRILL-3085
+  @Repeat(count = NUM_RUNS)
   public void failsAfterMSorterSetup() {
 
     // Note: must use an input table that returns more than one
