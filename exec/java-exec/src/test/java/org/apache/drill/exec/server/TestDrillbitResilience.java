@@ -300,6 +300,7 @@ public class TestDrillbitResilience extends DrillTest {
 
     final List<DrillPBError> errorList = listener.getErrorList();
     assertTrue("There should not be any errors when checking if Drillbits are OK.", errorList.isEmpty());
+    System.out.println("exit from assertDrillbitsOk");
   }
 
   @After
@@ -358,7 +359,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void settingNoOpInjectionsAndQuery() {
-    System.out.println("settingNoOpInjectionsAndQuery");
+    System.out.println("@Test settingNoOpInjectionsAndQuery");
     final long before = countAllocatedMemory();
 
     final String controls = Controls.newBuilder()
@@ -391,7 +392,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void foreman_runTryBeginning() {
-    System.out.println("foreman_runTryBeginning");
+    System.out.println("@Test foreman_runTryBeginning");
     final long before = countAllocatedMemory();
 
     testForeman("run-try-beginning");
@@ -404,7 +405,7 @@ public class TestDrillbitResilience extends DrillTest {
 //  @Ignore // TODO(DRILL-3163, DRILL-3167)
   @Repeat(count = NUM_RUNS)
   public void foreman_runTryEnd() {
-    System.out.println("foreman_runTryEnd");
+    System.out.println("@Test foreman_runTryEnd");
     final long before = countAllocatedMemory();
 
     testForeman("run-try-end");
@@ -593,7 +594,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // To test pause and resume. Test hangs and times out if resume did not happen.
   @Repeat(count = NUM_RUNS)
   public void passThrough() {
-    System.out.println("passThrough");
+    System.out.println("@Test passThrough");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener() {
@@ -626,7 +627,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Ignore // TODO(DRILL-3192)
   //@Repeat(count = NUM_RUNS)
   public void cancelWhenQueryIdArrives() {
-    System.out.println("cancelWhenQueryIdArrives");
+    System.out.println("@Test cancelWhenQueryIdArrives");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener() {
@@ -651,7 +652,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Repeat(count = NUM_RUNS)
   @Ignore("DRILL-6228")
   public void cancelInMiddleOfFetchingResults() {
-    System.out.println("cancelInMiddleOfFetchingResults");
+    System.out.println("@Test cancelInMiddleOfFetchingResults");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener() {
@@ -683,7 +684,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Repeat(count = NUM_RUNS)
 //  @Ignore("DRILL-6228")
   public void cancelAfterAllResultsProduced() {
-    System.out.println("cancelAfterAllResultsProduced");
+    System.out.println("@Test cancelAfterAllResultsProduced");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener() {
@@ -712,7 +713,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Repeat(count = NUM_RUNS)
   @Ignore("DRILL-3967")
   public void cancelAfterEverythingIsCompleted() {
-    System.out.println("cancelAfterEverythingIsCompleted");
+    System.out.println("@Test cancelAfterEverythingIsCompleted");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener() {
@@ -740,7 +741,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // DRILL-2383: Completion TC 1: success
   @Repeat(count = NUM_RUNS)
   public void successfullyCompletes() {
-    System.out.println("successfullyCompletes");
+    System.out.println("@Test successfullyCompletes");
     final long before = countAllocatedMemory();
 
     final WaitUntilCompleteListener listener = new WaitUntilCompleteListener();
@@ -776,7 +777,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // DRILL-2383: Completion TC 2: failed query - before query is executed - while sql parsing
   @Repeat(count = NUM_RUNS)
   public void failsWhenParsing() {
-    System.out.println("failsWhenParsing");
+    System.out.println("@Test failsWhenParsing");
     final long before = countAllocatedMemory();
 
     final String exceptionDesc = "sql-parsing";
@@ -796,7 +797,7 @@ public class TestDrillbitResilience extends DrillTest {
   // drillbits
   @Repeat(count = NUM_RUNS)
   public void failsWhenSendingFragments() {
-    System.out.println("failsWhenSendingFragments");
+    System.out.println("@Test failsWhenSendingFragments");
     final long before = countAllocatedMemory();
 
     final String exceptionDesc = "send-fragments";
@@ -813,7 +814,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // DRILL-2383: Completion TC 4: failed query - during query execution
   @Repeat(count = NUM_RUNS)
   public void failsDuringExecution() {
-    System.out.println("failsDuringExecution");
+    System.out.println("@Test failsDuringExecution");
     final long before = countAllocatedMemory();
 
     final String exceptionDesc = "fragment-execution";
@@ -834,7 +835,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void interruptingBlockedMergingRecordBatch() {
-    System.out.println("interruptingBlockedMergingRecordBatch");
+    System.out.println("@Test interruptingBlockedMergingRecordBatch");
     final long before = countAllocatedMemory();
 
     final String control = Controls.newBuilder()
@@ -853,7 +854,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void interruptingBlockedUnorderedReceiverBatch() {
-    System.out.println("interruptingBlockedUnorderedReceiverBatch");
+    System.out.println("@Test interruptingBlockedUnorderedReceiverBatch");
     final long before = countAllocatedMemory();
 
     final String control = Controls.newBuilder()
@@ -887,7 +888,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void interruptingPartitionerThreadFragment() {
-    System.out.println("interruptingPartitionerThreadFragment");
+    System.out.println("@Test interruptingPartitionerThreadFragment");
     try {
       setSessionOption(SLICE_TARGET, "1");
       setSessionOption(HASHAGG.getOptionName(), "true");
@@ -916,7 +917,7 @@ public class TestDrillbitResilience extends DrillTest {
 //  @Ignore // TODO(DRILL-3193)
   @Repeat(count = NUM_RUNS)
   public void interruptingWhileFragmentIsBlockedInAcquiringSendingTicket() {
-    System.out.println("interruptingWhileFragmentIsBlockedInAcquiringSendingTicket");
+    System.out.println("@Test interruptingWhileFragmentIsBlockedInAcquiringSendingTicket");
     final long before = countAllocatedMemory();
 
     final String control = Controls.newBuilder()
@@ -931,7 +932,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT)
   @Repeat(count = NUM_RUNS)
   public void memoryLeaksWhenCancelled() {
-    System.out.println("memoryLeaksWhenCancelled");
+    System.out.println("@Test memoryLeaksWhenCancelled");
     setSessionOption(SLICE_TARGET, "10");
 
     final long before = countAllocatedMemory();
@@ -975,7 +976,7 @@ public class TestDrillbitResilience extends DrillTest {
 //  @Ignore // TODO(DRILL-3194)
   @Repeat(count = NUM_RUNS)
   public void memoryLeaksWhenFailed() {
-    System.out.println("memoryLeaksWhenFailed");
+    System.out.println("@Test memoryLeaksWhenFailed");
     setSessionOption(SLICE_TARGET, "10");
 
     final long before = countAllocatedMemory();
@@ -1008,7 +1009,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // DRILL-3065
   @Repeat(count = NUM_RUNS)
   public void failsAfterMSorterSorting() {
-    System.out.println("failsAfterMSorterSorting");
+    System.out.println("@Test failsAfterMSorterSorting");
 
     // Note: must use an input table that returns more than one
     // batch. The sort uses an optimization for single-batch inputs
@@ -1031,7 +1032,7 @@ public class TestDrillbitResilience extends DrillTest {
   @Test(timeout = TIMEOUT) // DRILL-3085
   @Repeat(count = NUM_RUNS)
   public void failsAfterMSorterSetup() {
-    System.out.println("failsAfterMSorterSetup");
+    System.out.println("@Test failsAfterMSorterSetup");
 
     // Note: must use an input table that returns more than one
     // batch. The sort uses an optimization for single-batch inputs
