@@ -647,9 +647,9 @@ public class TestDrillbitResilience extends DrillTest {
     assertEquals(String.format("We are leaking %d bytes", after - before), before, after);
   }
 
-  @Test(timeout = TIMEOUT) // DRILL-2383: Cancellation TC 2: cancel in the middle of fetching result set
+//  @Test(timeout = TIMEOUT) // DRILL-2383: Cancellation TC 2: cancel in the middle of fetching result set
   @Repeat(count = NUM_RUNS)
-//  @Ignore("DRILL-6228")
+  @Ignore("DRILL-6228")
   public void cancelInMiddleOfFetchingResults() {
     System.out.println("cancelInMiddleOfFetchingResults");
     final long before = countAllocatedMemory();
