@@ -18,8 +18,12 @@
 package org.apache.drill.categories;
 
 /**
- * A category for tests that take a long time to run.
+ * A category for tests that take a long time to run. <br>
+ * Junit category marker
  */
 public interface SlowTest {
-  // Junit category marker
+    /**
+     * tag for JUnit5
+     */
+    String tag = "slow test";
 }
