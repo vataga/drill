@@ -85,11 +85,11 @@ import org.apache.drill.exec.work.fragment.FragmentExecutor;
 import org.apache.drill.test.DrillTest;
 import org.apache.drill.categories.SlowTest;
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.slf4j.Logger;
 
 import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
@@ -185,7 +185,7 @@ public class TestDrillbitResilience extends DrillTest {
     return drillbit.getContext().getEndpoint();
   }
 
-  @BeforeClass
+  @BeforeAll
   public static void startSomeDrillbits() throws Exception {
     System.out.println("startSomeDrillbits");
     // turn off the HTTP server to avoid port conflicts between the drill bits
@@ -211,7 +211,7 @@ public class TestDrillbitResilience extends DrillTest {
     clearAllInjections();
   }
 
-  @AfterClass
+  @AfterAll
   public static void shutdownAllDrillbits() {
     System.out.println("shutdownAllDrillbits");
     if (drillClient != null) {
