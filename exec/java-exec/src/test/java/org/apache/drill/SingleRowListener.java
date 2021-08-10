@@ -68,7 +68,7 @@ public abstract class SingleRowListener implements UserResultsListener {
   }
 
   @Override
-  public void dataArrived(final QueryDataBatch result, final ConnectionThrottle throttle) {
+  public void dataArrived(QueryDataBatch result, ConnectionThrottle throttle) {
     final QueryData queryData = result.getHeader();
     if (result.hasData()) {
       final int nRows = this.nRows.addAndGet(queryData.getRowCount());
@@ -80,6 +80,7 @@ public abstract class SingleRowListener implements UserResultsListener {
     }
 
     result.release();
+    System.out.println("result.release()");
   }
 
   /**
@@ -119,10 +120,12 @@ public abstract class SingleRowListener implements UserResultsListener {
    * @throws Exception if there was any kind of problem
    */
   public void waitForCompletion() throws Exception {
+    System.out.println("latch.await()");
     latch.await();
     if (exception != null) {
       throw new RuntimeException("Query submission failed", exception);
     }
+    System.out.println("exit waitForCompletion");
   }
 
   /**

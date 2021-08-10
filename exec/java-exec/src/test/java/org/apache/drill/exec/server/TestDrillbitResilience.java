@@ -252,57 +252,61 @@ public class TestDrillbitResilience extends DrillTest {
    */
   private static void assertDrillbitsOk() {
     System.out.println("assertDrillbitsOk");
-      final SingleRowListener listener = new SingleRowListener() {
-          private final BufferAllocator bufferAllocator = RootAllocatorFactory.newRoot(zkHelper.getConfig());
-          private final RecordBatchLoader loader = new RecordBatchLoader(bufferAllocator);
+    SingleRowListener listener = new SingleRowListener() {
+      private final BufferAllocator bufferAllocator = RootAllocatorFactory.newRoot(zkHelper.getConfig());
+      private final RecordBatchLoader loader = new RecordBatchLoader(bufferAllocator);
 
-          @Override
-          public void rowArrived(final QueryDataBatch queryResultBatch) {
-            // load the single record
-            final QueryData queryData = queryResultBatch.getHeader();
-            // TODO:  Clean:  DRILL-2933:  That load(...) no longer throws
-            // SchemaChangeException.
-            loader.load(queryData.getDef(), queryResultBatch.getData());
-            assertEquals(1, loader.getRecordCount());
+      @Override
+      public void rowArrived(QueryDataBatch queryResultBatch) {
+        // load the single record
+        final QueryData queryData = queryResultBatch.getHeader();
+        // TODO:  Clean:  DRILL-2933:  That load(...) no longer throws
+        // SchemaChangeException.
+        loader.load(queryData.getDef(), queryResultBatch.getData());
+        assertEquals(1, loader.getRecordCount());
 
-            // there should only be one column
-            final BatchSchema batchSchema = loader.getSchema();
-            assertEquals(1, batchSchema.getFieldCount());
+        // there should only be one column
+        final BatchSchema batchSchema = loader.getSchema();
+        assertEquals(1, batchSchema.getFieldCount());
 
-            // the column should be an integer
-            final MaterializedField countField = batchSchema.getColumn(0);
-            final MinorType fieldType = countField.getType().getMinorType();
-            assertEquals(MinorType.BIGINT, fieldType);
+        // the column should be an integer
+        final MaterializedField countField = batchSchema.getColumn(0);
+        final MinorType fieldType = countField.getType().getMinorType();
+        assertEquals(MinorType.BIGINT, fieldType);
 
-            // get the column value
-            final VectorWrapper<?> vw = loader.iterator().next();
-            final Object obj = vw.getValueVector().getAccessor().getObject(0);
-            assertTrue(obj instanceof Long);
-            final Long countValue = (Long) obj;
+        // get the column value
+        final VectorWrapper<?> vw = loader.iterator().next();
+        final Object obj = vw.getValueVector().getAccessor().getObject(0);
+        assertTrue(obj instanceof Long);
+        final Long countValue = (Long) obj;
 
-            // assume this means all the drillbits are still ok
-            assertEquals(drillbits.size(), countValue.intValue());
+        // assume this means all the drillbits are still ok
+        assertEquals(drillbits.size(), countValue.intValue());
 
-            loader.clear();
-          }
+        loader.clear();
+      }
 
-          @Override
-          public void cleanup() {
-            DrillAutoCloseables.closeNoChecked(bufferAllocator);
-          }
-        };
+      @Override
+      public void cleanup() {
+        loader.clear();
+        DrillAutoCloseables.closeNoChecked(bufferAllocator);
+      }
+    };
 
     try {
       QueryTestUtil.testWithListener(drillClient, QueryType.SQL, "select count(*) from sys.memory", listener);
       listener.waitForCompletion();
-      final QueryState state = listener.getQueryState();
+      QueryState state = listener.getQueryState();
       assertSame(state, QueryState.COMPLETED, () -> String.format("QueryState should be COMPLETED (and not %s).", state));
+      assertTrue(listener.getErrorList().isEmpty(), "There should not be any errors when checking if Drillbits are OK");
+      System.out.println("QueryState: " + state);
     } catch (final Exception e) {
       throw new RuntimeException("Couldn't query active drillbits", e);
+    } finally {
+      listener.cleanup();
+      listener = null;
+      System.out.println("listener.cleanup()");
     }
-
-    final List<DrillPBError> errorList = listener.getErrorList();
-    assertTrue(errorList.isEmpty(), "There should not be any errors when checking if Drillbits are OK.");
     System.out.println("exit from assertDrillbitsOk");
   }
 
@@ -405,7 +409,7 @@ public class TestDrillbitResilience extends DrillTest {
   }
 
   @Timeout(value = TIMEOUT, unit = TimeUnit.MINUTES)
-//  @Disabled // TODO(DRILL-3163, DRILL-3167)
+  @Disabled // TODO(DRILL-3163, DRILL-3167)
   @RepeatedTest(NUM_RUNS)
   public void foreman_runTryEnd() {
     System.out.println("@Test foreman_runTryEnd");
@@ -514,7 +518,7 @@ public class TestDrillbitResilience extends DrillTest {
 
     @Override
     public void run() {
-      System.out.println("run");
+      System.out.println("CancellingThread run");
       final DrillRpcFuture<Ack> cancelAck = drillClient.cancelQuery(queryId);
       try {
         cancelAck.checkedGet();
@@ -523,6 +527,7 @@ public class TestDrillbitResilience extends DrillTest {
       }
       if (latch != null) {
         latch.countDown();
+        System.out.println("query cancelled");
       }
     }
   }
@@ -545,7 +550,7 @@ public class TestDrillbitResilience extends DrillTest {
 
     @Override
     public void run() {
-      System.out.println("run");
+      System.out.println("ResumingThread run");
       latch.awaitUninterruptibly();
       final DrillRpcFuture<Ack> resumeAck = drillClient.resumeQuery(queryId);
       try {
@@ -553,6 +558,7 @@ public class TestDrillbitResilience extends DrillTest {
       } catch (final RpcException ex) {
         this.ex.value = ex;
       }
+      System.out.println("query resumed");
     }
   }
 
