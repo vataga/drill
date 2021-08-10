@@ -41,6 +41,7 @@ public class ExtendedLatch extends CountDownLatch {
    * @return Whether the countdown reached zero or not.
    */
   public boolean awaitUninterruptibly(long waitMillis) {
+    System.out.println("enter awaitUninterruptibly(long waitMillis)");
     final long targetMillis = System.currentTimeMillis() + waitMillis;
     while (System.currentTimeMillis() < targetMillis) {
       final long wait = targetMillis - System.currentTimeMillis();
@@ -49,9 +50,12 @@ public class ExtendedLatch extends CountDownLatch {
       }
 
       try {
+        System.out.println("exit awaitUninterruptibly(long waitMillis)");
         return await(wait, TimeUnit.MILLISECONDS);
       } catch (final InterruptedException e) {
         // if we weren't ready, the while loop will continue to wait
+        logger.warn("Interrupted while waiting for event latch.", e);
+        System.out.println("warn awaitUninterruptibly(long waitMillis)");
       }
     }
     return false;
@@ -61,13 +65,16 @@ public class ExtendedLatch extends CountDownLatch {
    * Await without interruption. In the case of interruption, log a warning and continue to wait.
    */
   public void awaitUninterruptibly() {
+    System.out.println("enter awaitUninterruptibly");
     while (true) {
       try {
         await();
+        System.out.println("exit awaitUninterruptibly");
         return;
       } catch (final InterruptedException e) {
         // if we're still not ready, the while loop will cause us to wait again
         logger.warn("Interrupted while waiting for event latch.", e);
+        System.out.println("warn awaitUninterruptibly");
       }
     }
   }
