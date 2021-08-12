@@ -148,7 +148,7 @@ public class TestHttpPlugin extends ClusterTest {
     configs.put("mockxml", mockXmlConfig);
 
     HttpStoragePluginConfig mockStorageConfigWithWorkspace =
-        new HttpStoragePluginConfig(false, configs, 2, "", 80, "", "", "", PlainCredentialsProvider.EMPTY_CREDENTIALS_PROVIDER);
+        new HttpStoragePluginConfig(false, configs, 1, "", 80, "", "", "", PlainCredentialsProvider.EMPTY_CREDENTIALS_PROVIDER);
     mockStorageConfigWithWorkspace.setEnabled(true);
     cluster.defineStoragePlugin("local", mockStorageConfigWithWorkspace);
   }
@@ -585,7 +585,7 @@ public class TestHttpPlugin extends ClusterTest {
       server.enqueue(
         new MockResponse().setResponseCode(200)
           .setBody(TEST_JSON_RESPONSE)
-          .throttleBody(64, 6, TimeUnit.SECONDS)
+          .throttleBody(64, 2, TimeUnit.SECONDS)
       );
 
       String sql = "SELECT sunrise AS sunrise, sunset AS sunset FROM local.sunrise.`?lat=36.7201600&lng=-4.4203400&date=2019-10-02` AS t1";

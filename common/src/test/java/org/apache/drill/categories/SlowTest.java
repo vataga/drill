@@ -25,5 +25,5 @@ public interface SlowTest {
     /**
      * tag for JUnit5
      */
-    String tag = "slow test";
+    String tag = "slow-test";
 }
