@@ -308,9 +308,12 @@ public class Drillbit implements AutoCloseable {
       coord.unregister(registrationHandle);
     }
     try {
+      System.out.println("start sleep");
       Thread.sleep(context.getConfig().getInt(ExecConstants.ZK_REFRESH) * 2);
+      System.out.println("end sleep");
     } catch (final InterruptedException e) {
       logger.warn("Interrupted while sleeping during coordination deregistration.");
+      System.out.println("Interrupted while sleeping during coordination deregistration.");
 
       // Preserve evidence that the interruption occurred so that code higher up on the call stack can learn of the
       // interruption and respond to it if it wants to.
@@ -318,6 +321,7 @@ public class Drillbit implements AutoCloseable {
     }
 
     try {
+      System.out.println("start closing all");
       AutoCloseables.close(
           webServer,
           engine,
@@ -337,9 +341,11 @@ public class Drillbit implements AutoCloseable {
 
     logger.info("Shutdown completed ({} ms).", w.elapsed(TimeUnit.MILLISECONDS) );
     stateManager.setState(DrillbitState.SHUTDOWN);
+    System.out.println("shutdown");
     // Interrupt GracefulShutdownThread since Drillbit close is not called from it.
     if (interruptPollShutdown) {
       gracefulShutdownThread.interrupt();
+      System.out.println("gracefulShutdownThread.interrupt();");
     }
   }
 
