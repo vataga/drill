@@ -445,6 +445,7 @@ public class TestDrillbitResilience extends DrillTest {
      */
     protected final void cancelAndResume() {
       System.out.println("cancelAndResume");
+      System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
       Preconditions.checkNotNull(queryId);
       final ExtendedLatch trigger = new ExtendedLatch(1);
       (new CancellingThread(queryId, ex, trigger)).start();
@@ -463,6 +464,7 @@ public class TestDrillbitResilience extends DrillTest {
       this.ex.value = ex;
       state = QueryState.FAILED;
       latch.countDown();
+      System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
     }
 
     @Override
@@ -470,6 +472,7 @@ public class TestDrillbitResilience extends DrillTest {
       System.out.println("queryCompleted");
       this.state = state;
       latch.countDown();
+      System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
     }
 
     @Override
@@ -480,6 +483,7 @@ public class TestDrillbitResilience extends DrillTest {
 
     public final Pair<QueryState, Exception> waitForCompletion() {
       System.out.println("waitForCompletion");
+      System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
       latch.awaitUninterruptibly();
       return new Pair<>(state, ex.value);
     }

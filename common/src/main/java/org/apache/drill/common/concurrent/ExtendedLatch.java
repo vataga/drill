@@ -28,10 +28,12 @@ public class ExtendedLatch extends CountDownLatch {
 
   public ExtendedLatch() {
     super(1);
+    System.out.println("ExtendedLatch()");
   }
 
   public ExtendedLatch(final int count) {
     super(count);
+    System.out.println("ExtendedLatch(1)");
   }
 
   /**
@@ -41,11 +43,15 @@ public class ExtendedLatch extends CountDownLatch {
    * @return Whether the countdown reached zero or not.
    */
   public boolean awaitUninterruptibly(long waitMillis) {
-    System.out.println("enter awaitUninterruptibly(long waitMillis)");
+    System.out.println("enter awaitUninterruptibly(long waitMillis:" + waitMillis + ")");
+    System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
     final long targetMillis = System.currentTimeMillis() + waitMillis;
+    System.out.println("targetMillis: " + targetMillis);
     while (System.currentTimeMillis() < targetMillis) {
       final long wait = targetMillis - System.currentTimeMillis();
+      System.out.println("wait:" + wait);
       if (wait < 1) {
+        System.out.println("wait < 1");
         return false;
       }
 
@@ -58,6 +64,7 @@ public class ExtendedLatch extends CountDownLatch {
         System.out.println("warn awaitUninterruptibly(long waitMillis)");
       }
     }
+    System.out.println("System.currentTimeMillis() > targetMillis. " + System.currentTimeMillis() + " > " + targetMillis);
     return false;
   }
 
@@ -66,6 +73,7 @@ public class ExtendedLatch extends CountDownLatch {
    */
   public void awaitUninterruptibly() {
     System.out.println("enter awaitUninterruptibly");
+    System.out.println("Thread.currentThread().getName()" + Thread.currentThread().getName());
     while (true) {
       try {
         await();

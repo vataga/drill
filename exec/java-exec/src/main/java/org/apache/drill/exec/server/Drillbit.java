@@ -251,8 +251,11 @@ public class Drillbit implements AutoCloseable {
    * Wait uninterruptibly
    */
   private void waitForGracePeriod() {
+    System.out.println("waitForGracePeriod");
     ExtendedLatch exitLatch = new ExtendedLatch();
     exitLatch.awaitUninterruptibly(gracePeriod);
+    System.out.println("gracePeriod: " + gracePeriod);
+    System.out.println("Thread.currentThread().getName(): " + Thread.currentThread().getName());
   }
 
   private void updateState(State state) {
@@ -291,6 +294,7 @@ public class Drillbit implements AutoCloseable {
     updateState(State.QUIESCENT);
     stateManager.setState(DrillbitState.GRACE);
     waitForGracePeriod();
+    System.out.println("Graceperiod ended");
     stateManager.setState(DrillbitState.DRAINING);
     // wait for all the in-flight queries to finish
     manager.waitToExit(forcefulShutdown);

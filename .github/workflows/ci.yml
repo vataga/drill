@@ -59,7 +59,7 @@ jobs:
           java-version: ${{ matrix.java }}
       - name: Build and test
         # The total GitHub Actions memory is 7000Mb. But GitHub CI requires some memory for the container to perform tests
-        run: mvn install -V -ntp -DdirectMemoryMb=2500 -DmemoryMb=1600
+        run: mvn install -V -ntp -X -DdirectMemoryMb=2500 -DmemoryMb=1600
 
   checkstyle_protobuf:
     name: Run checkstyle and generate protobufs
