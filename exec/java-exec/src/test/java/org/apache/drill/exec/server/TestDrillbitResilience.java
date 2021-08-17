@@ -100,6 +100,7 @@ import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
  * Test how resilient drillbits are to throwing exceptions during various phases of query
  * execution by injecting exceptions at various points, and to cancellations in various phases.
  */
+@net.jcip.annotations.NotThreadSafe
 @Tag(SlowTest.tag)
 public class TestDrillbitResilience extends DrillTest {
   private static final Logger logger = org.slf4j.LoggerFactory.getLogger(TestDrillbitResilience.class);
