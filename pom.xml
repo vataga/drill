@@ -878,6 +878,8 @@
             </argLine>
             <forkCount>${forkCount}</forkCount>
             <reuseForks>true</reuseForks>
+            <workingDirectory>FORK_DIRECTORY_${surefire.forkNumber}</workingDirectory>
+            <reportsDirectory>target/surefire-reports-${surefire.forkNumber}</reportsDirectory>
             <additionalClasspathElements>
               <additionalClasspathElement>./exec/jdbc/src/test/resources/storage-plugins.json</additionalClasspathElement>
             </additionalClasspathElements>
