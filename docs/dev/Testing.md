@@ -144,8 +144,7 @@ Drill uses the [Maven Surefire plugin](http://maven.apache.org/components/surefi
               -Ddrill.catastrophic_to_standard_out=true
               -XX:MaxPermSize=512M -XX:MaxDirectMemorySize=3072M
               -Djava.net.preferIPv4Stack=true
-              -Djava.awt.headless=true
-              -XX:+CMSClassUnloadingEnabled -ea</argLine>
+              -Djava.awt.headless=true</argLine>
             <forkCount>${forkCount}</forkCount>
             <reuseForks>true</reuseForks>
             <additionalClasspathElements>
@@ -207,7 +206,7 @@ Running/debugging Drillbit is also possible:
     -XX:ReservedCodeCacheSize=1G
     -Ddrill.exec.enable-epoll=false
     -XX:MaxPermSize=512M
-    -XX:+CMSClassUnloadingEnabled
+    // -XX:+CMSClassUnloadingEnabled removed: https://newbedev.com/what-does-jvm-flag-cmsclassunloadingenabled-actually-do
     -XX:+UseG1GC
     -Dlog.path=/opt/drill/log/drillbit.log
     -Dlog.query.path=/opt/drill/log/drillbit_queries.json

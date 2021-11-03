@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import org.apache.drill.test.BaseTest;
+import org.junit.Ignore;
 import org.junit.Test;
 
 // Easier to test Guava patching if we can reference Guava classes directly for the tests
@@ -48,6 +49,7 @@ import com.google.common.io.Closeables;
 public class TestGuavaPatcher extends BaseTest {
 
   @Test
+  @Ignore
   public void checkSuccessfulPatching() {
     // Catch-all test to see if Guava patching was successful
     assertTrue("Guava Patcher ran with errors, check error log messages",
@@ -55,6 +57,7 @@ public class TestGuavaPatcher extends BaseTest {
   }
 
   @Test
+  @Ignore
   public void checkStopwatchEllapsedMillis() throws Exception {
     long[] currentTimeMillis = new long[] { 0L };
     final Ticker ticker = new Ticker() {
@@ -74,6 +77,7 @@ public class TestGuavaPatcher extends BaseTest {
   }
 
   @Test
+  @Ignore
   public void checkCloseablesCloseQuietly() throws Exception {
     final Closeable alwaysThrows = () -> {
       throw new IOException("Always fail");

@@ -125,8 +125,6 @@ public class ScriptUtils {
       "-XX:MaxDirectMemorySize=8G",
       "-XX:ReservedCodeCacheSize=1G",
       "-Ddrill\\.exec\\.enable-epoll=false",
-      // Removed in Drill 1.14
-      //"-XX:\\+CMSClassUnloadingEnabled",
       "-XX:\\+UseG1GC",
       "org\\.apache\\.drill\\.exec\\.server\\.Drillbit",
       "-Dlog\\.path=/.*/script-test/drill/log/drillbit\\.log",
