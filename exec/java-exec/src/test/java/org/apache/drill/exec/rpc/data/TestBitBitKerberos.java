@@ -81,7 +81,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-@Ignore("See DRILL-5387")
+@Ignore("Rewrite with ClusterTest")
 @Category(SecurityTest.class)
 public class TestBitBitKerberos extends BaseTestQuery {
   private static KerberosHelper krbHelper;

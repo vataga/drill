@@ -33,7 +33,6 @@ import org.apache.hadoop.security.authentication.util.KerberosName;
 import org.apache.hadoop.security.authentication.util.KerberosUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -46,7 +45,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test for validating {@link SpnegoConfig}
  */
-@Ignore("See DRILL-5387")
 @Category(SecurityTest.class)
 public class TestSpnegoConfig extends BaseTest {
   //private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(TestSpnegoConfig.class);

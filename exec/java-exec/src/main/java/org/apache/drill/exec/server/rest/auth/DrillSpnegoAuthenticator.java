@@ -24,9 +24,9 @@ import org.eclipse.jetty.http.HttpHeader;
 import org.eclipse.jetty.http.HttpVersion;
 import org.eclipse.jetty.security.ServerAuthException;
 import org.eclipse.jetty.security.UserAuthentication;
+import org.eclipse.jetty.security.authentication.ConfigurableSpnegoAuthenticator;
 import org.eclipse.jetty.security.authentication.DeferredAuthentication;
 import org.eclipse.jetty.security.authentication.SessionAuthentication;
-import org.eclipse.jetty.security.authentication.SpnegoAuthenticator;
 import org.eclipse.jetty.server.Authentication;
 import org.eclipse.jetty.server.Request;
 import org.eclipse.jetty.server.UserIdentity;
@@ -41,7 +41,7 @@ import java.io.IOException;
 /**
  * Custom SpnegoAuthenticator for Drill
  */
-public class DrillSpnegoAuthenticator extends SpnegoAuthenticator {
+public class DrillSpnegoAuthenticator extends ConfigurableSpnegoAuthenticator {
 
   private static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(DrillSpnegoAuthenticator.class);
 
@@ -51,7 +51,7 @@ public class DrillSpnegoAuthenticator extends SpnegoAuthenticator {
 
   /**
    * Updated logic as compared to default implementation in
-   * {@link SpnegoAuthenticator#validateRequest(ServletRequest, ServletResponse, boolean)} to handle below cases:
+   * {@link ConfigurableSpnegoAuthenticator#validateRequest(ServletRequest, ServletResponse, boolean)} to handle below cases:
    * 1) Perform SPNEGO authentication only when spnegoLogin resource is requested. This helps to avoid authentication
    *    for each and every resource which the JETTY provided authenticator does.
    * 2) Helps to redirect to the target URL after authentication is done successfully.

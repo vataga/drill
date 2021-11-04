@@ -113,21 +113,21 @@ public class TestCustomUserAuthenticator extends ClusterTest {
   }
 
   private static void runTest(String user, String password, ClusterFixture cluster) throws Exception {
-    ClientFixture client = cluster.clientBuilder()
-        .property(DrillProperties.USER, user)
-        .property(DrillProperties.PASSWORD, password)
-        .build();
-
-    // Run few queries using the new client
-    List<String> queries = Arrays.asList(
+    try(ClientFixture client = cluster.clientBuilder()
+            .property(DrillProperties.USER, user)
+            .property(DrillProperties.PASSWORD, password)
+            .build()) {
+      // Run few queries using the new client
+      List<String> queries = Arrays.asList(
         "SHOW SCHEMAS",
         "USE INFORMATION_SCHEMA",
         "SHOW TABLES",
         "SELECT * FROM INFORMATION_SCHEMA.`TABLES` WHERE TABLE_NAME LIKE 'COLUMNS'",
         "SELECT * FROM cp.`region.json` LIMIT 5");
 
-    for (String query : queries) {
-      client.queryBuilder().sql(query).run();
+      for (String query : queries) {
+        client.queryBuilder().sql(query).run();
+      }
     }
   }
 }

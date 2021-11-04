@@ -120,12 +120,10 @@ public class TestHtpasswdFileUserAuthenticator extends ClusterTest {
   }
 
   private static void tryCredentials(String user, String password, ClusterFixture cluster, boolean shouldSucceed) throws Exception {
-    try {
-      ClientFixture client = cluster.clientBuilder()
-        .property(DrillProperties.USER, user)
-        .property(DrillProperties.PASSWORD, password)
-        .build();
-
+    try(ClientFixture client = cluster.clientBuilder()
+            .property(DrillProperties.USER, user)
+            .property(DrillProperties.PASSWORD, password)
+            .build()) {
       // Run few queries using the new client
       List<String> queries = Arrays.asList(
         "SHOW SCHEMAS",

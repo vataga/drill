@@ -36,7 +36,6 @@ import org.apache.hadoop.security.authentication.util.KerberosUtil;
 import org.apache.kerby.kerberos.kerb.client.JaasKrbUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -48,7 +47,6 @@ import java.util.Properties;
 import static junit.framework.TestCase.assertTrue;
 import static junit.framework.TestCase.fail;
 
-@Ignore("See DRILL-5387")
 @Category(SecurityTest.class)
 public class TestUserBitKerberosEncryption extends BaseTestQuery {
   private static final org.slf4j.Logger logger =

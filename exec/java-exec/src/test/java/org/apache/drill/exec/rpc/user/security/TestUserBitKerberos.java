@@ -34,7 +34,6 @@ import org.apache.hadoop.security.authentication.util.KerberosUtil;
 import org.apache.kerby.kerberos.kerb.client.JaasKrbUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
@@ -43,9 +42,9 @@ import java.lang.reflect.Field;
 import java.security.PrivilegedExceptionAction;
 import java.util.Properties;
 
+import static junit.framework.TestCase.assertEquals;
 import static junit.framework.TestCase.assertTrue;
 
-@Ignore("See DRILL-5387")
 @Category(SecurityTest.class)
 public class TestUserBitKerberos extends BaseTestQuery {
   //private static final org.slf4j.Logger logger =org.slf4j.LoggerFactory.getLogger(TestUserBitKerberos.class);
@@ -151,12 +150,9 @@ public class TestUserBitKerberos extends BaseTestQuery {
     final Subject clientSubject = JaasKrbUtil.loginUsingKeytab(krbHelper.CLIENT_PRINCIPAL,
         krbHelper.clientKeytab.getAbsoluteFile());
 
-    Subject.doAs(clientSubject, new PrivilegedExceptionAction<Void>() {
-      @Override
-      public Void run() throws Exception {
-        updateClient(connectionProps);
-        return null;
-      }
+    Subject.doAs(clientSubject, (PrivilegedExceptionAction<Void>) () -> {
+      updateClient(connectionProps);
+      return null;
     });
 
     // Run few queries using the new client
@@ -168,14 +164,14 @@ public class TestUserBitKerberos extends BaseTestQuery {
         .go();
 
     // Check encrypted counters value
-    assertTrue(0 == UserRpcMetrics.getInstance().getEncryptedConnectionCount());
-    assertTrue(0 == ControlRpcMetrics.getInstance().getEncryptedConnectionCount());
-    assertTrue(0 == DataRpcMetrics.getInstance().getEncryptedConnectionCount());
+    assertEquals(0, UserRpcMetrics.getInstance().getEncryptedConnectionCount());
+    assertEquals(0, ControlRpcMetrics.getInstance().getEncryptedConnectionCount());
+    assertEquals(0, DataRpcMetrics.getInstance().getEncryptedConnectionCount());
 
     // Check unencrypted counters value
-    assertTrue(1 == UserRpcMetrics.getInstance().getUnEncryptedConnectionCount());
-    assertTrue(0 == ControlRpcMetrics.getInstance().getUnEncryptedConnectionCount());
-    assertTrue(0 == DataRpcMetrics.getInstance().getUnEncryptedConnectionCount());
+    assertEquals(1, UserRpcMetrics.getInstance().getUnEncryptedConnectionCount());
+    assertEquals(0, ControlRpcMetrics.getInstance().getUnEncryptedConnectionCount());
+    assertEquals(0, DataRpcMetrics.getInstance().getUnEncryptedConnectionCount());
   }
 
   @Test

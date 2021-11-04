@@ -26,7 +26,6 @@ import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.test.BaseTestQuery;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -198,7 +197,7 @@ public class TestUserBitSSL extends BaseTestQuery {
     test("SELECT * FROM cp.`region.json`");
   }
 
-  @Ignore("This test fails in some cases where the host name may be set up inconsistently.")
+  //@Ignore("This test fails in some cases where the host name may be set up inconsistently.")
   @Test
   public void testClientConfigHostnameVerification() {
     String password = "test_password";

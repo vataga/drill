@@ -46,13 +46,13 @@ import org.ietf.jgss.GSSName;
 import org.ietf.jgss.Oid;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.mockito.Mockito;
 import sun.security.jgss.GSSUtil;
 
 import javax.security.auth.Subject;
+import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Field;
 import java.security.PrivilegedExceptionAction;
 
@@ -64,7 +64,6 @@ import static org.junit.Assert.assertTrue;
 /**
  * Test for validating {@link DrillSpnegoLoginService}
  */
-@Ignore("See DRILL-5387")
 @Category(SecurityTest.class)
 public class TestSpnegoAuthentication extends BaseTest {
 
@@ -302,7 +301,8 @@ public class TestSpnegoAuthentication extends BaseTest {
     final DrillSpnegoLoginService loginService = new DrillSpnegoLoginService(drillbitContext);
 
     // Authenticate the client using its SPNEGO token
-    final UserIdentity user = loginService.login(null, token, null);
+    final HttpServletRequest request = Mockito.mock(HttpServletRequest.class);
+    final UserIdentity user = loginService.login(null, token, request);
 
     // Validate the UserIdentity of authenticated client
     assertNotNull(user);
