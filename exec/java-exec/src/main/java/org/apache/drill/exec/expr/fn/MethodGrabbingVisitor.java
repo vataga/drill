@@ -48,9 +48,9 @@ public class MethodGrabbingVisitor {
    * @param clazz           type of the class to handle
    * @return a map with all method names and their modified bodies.
    */
-  public static Map<String, String> getMethods(Java.CompilationUnit compilationUnit, Class<?> clazz) {
+  public static Map<String, String> getMethods(Java.AbstractCompilationUnit compilationUnit, Class<?> clazz) {
     MethodGrabbingVisitor visitor = new MethodGrabbingVisitor(clazz);
-    visitor.classFinder.visitTypeDeclaration(compilationUnit.getPackageMemberTypeDeclarations()[0]);
+    visitor.classFinder.visitTypeDeclaration(((Java.CompilationUnit) compilationUnit).getPackageMemberTypeDeclarations()[0]);
     return visitor.methods;
   }
 
@@ -106,7 +106,7 @@ public class MethodGrabbingVisitor {
         try {
           // replaces return statements and stores the result into methodBodyBlock
           methodBodyBlock.addStatements(
-              returnStatementReplacer.copyBlockStatements(methodDeclarator.optionalStatements));
+              returnStatementReplacer.copyBlockStatements(methodDeclarator.statements));
         } catch (CompileException e) {
           throw new RuntimeException(e);
         }

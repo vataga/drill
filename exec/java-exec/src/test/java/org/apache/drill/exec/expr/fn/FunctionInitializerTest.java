@@ -22,7 +22,7 @@ import org.apache.drill.categories.SqlFunctionTest;
 import org.apache.drill.exec.udf.dynamic.JarBuilder;
 import org.apache.drill.exec.util.JarUtil;
 import org.apache.drill.test.BaseTest;
-import org.codehaus.janino.Java.CompilationUnit;
+import org.codehaus.janino.Java;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -38,7 +38,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -100,7 +99,7 @@ public class FunctionInitializerTest extends BaseTest {
     final AtomicInteger counter = new AtomicInteger();
     final FunctionInitializer functionInitializer = new FunctionInitializer(CLASS_NAME, classLoader) {
       @Override
-      CompilationUnit convertToCompilationUnit(Class<?> clazz) throws IOException {
+      Java.AbstractCompilationUnit convertToCompilationUnit(Class<?> clazz) throws IOException {
         counter.incrementAndGet();
         return super.convertToCompilationUnit(clazz);
       }
@@ -111,7 +110,7 @@ public class FunctionInitializerTest extends BaseTest {
 
     try {
       List<Future<String>> results = executor.invokeAll(Collections.nCopies(threadsNumber,
-        (Callable<String>) () -> functionInitializer.getMethod("eval")));
+        () -> functionInitializer.getMethod("eval")));
 
       final Set<String> uniqueResults = new HashSet<>();
       for (Future<String> result : results) {

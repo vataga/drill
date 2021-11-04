@@ -71,8 +71,8 @@ class JaninoClassCompiler extends AbstractClassCompiler {
   private ClassFile[] doCompile(final String sourceCode)
       throws CompileException, IOException, ClassNotFoundException {
     StringReader reader = new StringReader(sourceCode);
-    Scanner scanner = new Scanner((String) null, reader);
-    Java.CompilationUnit compilationUnit = new Parser(scanner).parseCompilationUnit();
+    Scanner scanner = new Scanner(null, reader);
+    Java.AbstractCompilationUnit compilationUnit = new Parser(scanner).parseAbstractCompilationUnit();
     return new UnitCompiler(compilationUnit, compilationClassLoader)
                                   .compileUnit(this.debug, this.debug, this.debug);
   }

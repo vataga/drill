@@ -18,13 +18,14 @@
 package org.apache.drill.exec.expr.fn;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.codehaus.janino.Java;
-import org.codehaus.janino.Java.CompilationUnit.SingleStaticImportDeclaration;
-import org.codehaus.janino.Java.CompilationUnit.SingleTypeImportDeclaration;
-import org.codehaus.janino.Java.CompilationUnit.StaticImportOnDemandDeclaration;
-import org.codehaus.janino.Java.CompilationUnit.TypeImportOnDemandDeclaration;
+import static org.codehaus.janino.Java.CompilationUnit.SingleStaticImportDeclaration;
+import static org.codehaus.janino.Java.CompilationUnit.SingleTypeImportDeclaration;
+import static org.codehaus.janino.Java.CompilationUnit.StaticImportOnDemandDeclaration;
+import static org.codehaus.janino.Java.CompilationUnit.TypeImportOnDemandDeclaration;
 import org.codehaus.janino.util.AbstractTraverser;
 
 public class ImportGrabber {
@@ -43,9 +44,9 @@ public class ImportGrabber {
    * @param compilationUnit compilation unit
    * @return list of imports
    */
-  public static List<String> getImports(Java.CompilationUnit compilationUnit) {
+  public static List<String> getImports(Java.AbstractCompilationUnit compilationUnit) {
     ImportGrabber visitor = new ImportGrabber();
-    compilationUnit.importDeclarations.forEach(visitor.importFinder::visitImportDeclaration);
+    Arrays.stream(compilationUnit.importDeclarations).forEach(visitor.importFinder::visitImportDeclaration);
 
     return visitor.imports;
   }

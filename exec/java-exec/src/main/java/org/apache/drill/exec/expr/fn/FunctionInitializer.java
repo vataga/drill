@@ -27,7 +27,7 @@ import org.apache.drill.shaded.guava.com.google.common.annotations.VisibleForTes
 import org.apache.drill.common.exceptions.UserException;
 import org.apache.drill.common.util.DrillFileUtils;
 import org.codehaus.commons.compiler.CompileException;
-import org.codehaus.janino.Java.CompilationUnit;
+import org.codehaus.janino.Java;
 import org.codehaus.janino.Parser;
 import org.codehaus.janino.Scanner;
 import org.mortbay.util.IO;
@@ -108,7 +108,7 @@ public class FunctionInitializer {
       logger.trace("Getting function body for the {}", className);
       try {
         final Class<?> clazz = Class.forName(className, true, classLoader);
-        final CompilationUnit cu = convertToCompilationUnit(clazz);
+        final Java.AbstractCompilationUnit cu = convertToCompilationUnit(clazz);
 
         methods = MethodGrabbingVisitor.getMethods(cu, clazz);
         imports = ImportGrabber.getImports(cu);
@@ -132,7 +132,7 @@ public class FunctionInitializer {
    * @throws IOException if did not find class or could not load it
    */
   @VisibleForTesting
-  CompilationUnit convertToCompilationUnit(Class<?> clazz) throws IOException {
+  Java.AbstractCompilationUnit convertToCompilationUnit(Class<?> clazz) throws IOException {
     String path = clazz.getName();
     path = path.replaceFirst("\\$.*", "");
     path = path.replace(".", DrillFileUtils.SEPARATOR);
@@ -150,7 +150,7 @@ public class FunctionInitializer {
       // TODO: Hack to remove annotations so Janino doesn't choke. Need to reconsider this problem...
       body = body.replaceAll("@\\w+(?:\\([^\\\\]*?\\))?", "");
       try {
-        return new Parser(new Scanner(null, new StringReader(body))).parseCompilationUnit();
+        return new Parser(new Scanner(null, new StringReader(body))).parseAbstractCompilationUnit();
       } catch (CompileException e) {
           throw new IOException(String.format("Failure while loading class %s.", clazz.getName()), e);
       }
