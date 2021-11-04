@@ -97,7 +97,7 @@
     <jetty.version>9.4.41.v20210516</jetty.version>
     <jersey.version>2.34</jersey.version>
     <javax.validation.api>2.0.1.Final</javax.validation.api>
-    <asm.version>9.2</asm.version>
+    <asm.version>9.1</asm.version>
     <excludedGroups />
     <memoryMb>1800m</memoryMb>
     <directMemoryMb>3000m</directMemoryMb>

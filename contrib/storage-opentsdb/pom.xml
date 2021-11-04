@@ -75,11 +75,11 @@
             <artifactId>converter-jackson</artifactId>
             <version>${retrofit.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.madhukaraphatak</groupId>
-            <artifactId>java-sizeof_2.11</artifactId>
-            <version>0.1</version>
-        </dependency>
+      <dependency>
+        <groupId>org.openjdk.jol</groupId>
+        <artifactId>jol-core</artifactId>
+        <version>0.16</version>
+      </dependency>
     </dependencies>
 
 </project>

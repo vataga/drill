@@ -24,7 +24,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
 import org.apache.drill.shaded.guava.com.google.common.collect.Lists;
-import com.madhukaraphatak.sizeof.SizeEstimator;
 import org.apache.drill.common.exceptions.ExecutionSetupException;
 import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.exec.physical.base.AbstractGroupScan;
@@ -36,6 +35,7 @@ import org.apache.drill.exec.store.StoragePluginRegistry;
 import org.apache.drill.exec.store.openTSDB.OpenTSDBSubScan.OpenTSDBSubScanSpec;
 import org.apache.drill.exec.store.openTSDB.client.services.ServiceImpl;
 import org.apache.drill.exec.store.openTSDB.dto.MetricDTO;
+import org.openjdk.jol.info.ClassLayout;
 
 import java.io.IOException;
 import java.util.List;
@@ -109,10 +109,7 @@ public class OpenTSDBGroupScan extends AbstractGroupScan {
     float approxDiskCost = 0;
     if (numMetrics != 0) {
       MetricDTO metricDTO  = allMetrics.iterator().next();
-      // This method estimates the sizes of Java objects (number of bytes of memory they occupy).
-      // more detailed information about how this estimation method work you can find in this article
-      // http://www.javaworld.com/javaworld/javaqa/2003-12/02-qa-1226-sizeof.html
-      approxDiskCost = SizeEstimator.estimate(metricDTO) * numMetrics;
+      approxDiskCost = ClassLayout.parseInstance(metricDTO).instanceSize() * numMetrics;
     }
     return new ScanStats(ScanStats.GroupScanProperty.EXACT_ROW_COUNT, numMetrics, 1, approxDiskCost);
   }
