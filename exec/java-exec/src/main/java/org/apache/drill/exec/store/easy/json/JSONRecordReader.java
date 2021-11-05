@@ -34,7 +34,6 @@ import org.apache.drill.exec.server.options.OptionManager;
 import org.apache.drill.exec.server.options.OptionValue.OptionScope;
 import org.apache.drill.exec.store.AbstractRecordReader;
 import org.apache.drill.exec.store.dfs.DrillFileSystem;
-import org.apache.drill.exec.store.easy.json.JSONFormatPlugin.JSONFormatConfig;
 import org.apache.drill.exec.store.easy.json.JsonProcessor.ReadState;
 import org.apache.drill.exec.store.easy.json.reader.CountingJsonReader;
 import org.apache.drill.exec.vector.BaseValueVector;
@@ -261,7 +260,7 @@ public class JSONRecordReader extends AbstractRecordReader {
             .build();
       }
       setupParser();
-    } catch (Exception e){
+    } catch (Exception e) {
       handleAndRaise("Failure reading JSON file", e);
     }
   }
