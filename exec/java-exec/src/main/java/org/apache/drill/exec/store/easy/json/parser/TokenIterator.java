@@ -81,6 +81,7 @@ public class TokenIterator {
   }
 
   private JsonToken getNextToken() throws IOException {
+    // System.out.println(getParser().getText());
     JsonToken jsonToken = getParser().nextToken();
     if (jsonToken == null) {
       parserManager.nextParser();
@@ -239,6 +240,11 @@ public class TokenIterator {
           throw new DrillRuntimeException(e);
         }
         currentParser = parserFunction.apply(parsersIterator.next());
+//        try {
+//          System.out.println((String) JacksonHelper.getValueFromFieldType(currentParser, TypeProtos.MinorType.VARCHAR));
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
       } else {
         currentParser = null;
       }

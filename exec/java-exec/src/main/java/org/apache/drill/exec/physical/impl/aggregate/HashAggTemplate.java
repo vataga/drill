@@ -560,7 +560,7 @@ public abstract class HashAggTemplate implements HashAggregator {
     estOutgoingAllocSize = estValuesBatchSize; // initially assume same size
 
     logger.trace("{} phase. Estimated internal row width: {} Values row width: {} batch size: {}  memory limit: {}  max column width: {}",
-      phase.getName(),estRowWidth,estValuesRowWidth,estMaxBatchSize,allocator.getLimit(),maxColumnWidth);
+      phase.getName(), estRowWidth, estValuesRowWidth, estMaxBatchSize, allocator.getLimit(), maxColumnWidth);
 
     if (estMaxBatchSize > allocator.getLimit()) {
       logger.warn("HashAggregate: Estimated max batch size {} is larger than the memory limit {}",estMaxBatchSize,allocator.getLimit());
@@ -651,16 +651,18 @@ public abstract class HashAggTemplate implements HashAggregator {
       }
       // Handle various results from getting the next batch
       switch (outcome) {
+        case OK_NEW_SCHEMA:
+          logger.warn("Hash aggregate does not support schema change. Try to process without schemachange awareness");
         case NOT_YET:
           return AggOutcome.RETURN_OUTCOME;
 
-        case OK_NEW_SCHEMA:
-          if (EXTRA_DEBUG_1) {
-            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
-          }
-          cleanup();
-          // TODO: new schema case needs to be handled appropriately
-          return AggOutcome.UPDATE_AGGREGATOR;
+//        case OK_NEW_SCHEMA:
+//          if (EXTRA_DEBUG_1) {
+//            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
+//          }
+//          cleanup();
+//          // TODO: new schema case needs to be handled appropriately
+//          return AggOutcome.UPDATE_AGGREGATOR;
 
         case EMIT:
           handleEmit = true;
@@ -1185,9 +1187,8 @@ public abstract class HashAggTemplate implements HashAggregator {
     outcome = IterOutcome.OK;
 
     if (EXTRA_DEBUG_SPILL && phase.is2nd()) {
-      logger.debug("So far returned {} + SpilledReturned {}  total {} (spilled {})",rowsNotSpilled,rowsSpilledReturned,
-        rowsNotSpilled+rowsSpilledReturned,
-        rowsSpilled);
+      logger.debug("So far returned {} + SpilledReturned {}  total {} (spilled {})", rowsNotSpilled, rowsSpilledReturned,
+        rowsNotSpilled + rowsSpilledReturned, rowsSpilled);
     }
 
     lastBatchOutputCount = numOutputRecords;

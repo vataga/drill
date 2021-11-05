@@ -194,7 +194,7 @@ public class ClusterFixture extends BaseFixture implements AutoCloseable {
     }
   }
 
-  private void createConfig() throws Exception {
+  private void createConfig() {
 
     // Create a config
     // Because of the way DrillConfig works, we can set the ZK
@@ -276,7 +276,7 @@ public class ClusterFixture extends BaseFixture implements AutoCloseable {
     pluginRegistry.put(MockStorageEngineConfig.NAME, config);
   }
 
-  private void applyOptions() throws Exception {
+  private void applyOptions() {
 
     // Apply system options
     if (builder.systemOptions != null) {
