@@ -26,7 +26,7 @@ import org.apache.drill.exec.physical.impl.scan.file.FileScanFramework.FileReade
 import org.apache.drill.exec.physical.impl.scan.file.FileScanFramework.FileSchemaNegotiator;
 import org.apache.drill.exec.physical.impl.scan.framework.ManagedReader;
 import org.apache.drill.exec.server.DrillbitContext;
-import org.apache.drill.exec.server.options.OptionManager;
+import org.apache.drill.exec.server.options.OptionSet;
 import org.apache.drill.exec.store.dfs.easy.EasyFormatPlugin;
 import org.apache.drill.exec.store.dfs.easy.EasySubScan;
 import org.apache.drill.exec.store.dfs.easy.EasyFormatPlugin.ScanFrameworkVersion;
@@ -83,12 +83,12 @@ public class HttpdLogFormatPlugin extends EasyFormatPlugin<HttpdLogFormatConfig>
 
   @Override
   public ManagedReader<? extends FileSchemaNegotiator> newBatchReader(
-    EasySubScan scan, OptionManager options) {
+    EasySubScan scan, OptionSet options) {
     return new HttpdLogBatchReader(formatConfig, scan.getMaxRecords(), scan);
   }
 
   @Override
-  protected FileScanFramework.FileScanBuilder frameworkBuilder(OptionManager options, EasySubScan scan) {
+  protected FileScanFramework.FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) {
     FileScanFramework.FileScanBuilder builder = new FileScanFramework.FileScanBuilder();
     builder.setReaderFactory(new HttpLogReaderFactory(formatConfig, scan.getMaxRecords(), scan));
 
