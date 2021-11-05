@@ -65,7 +65,6 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 
-
 /**
  * Base class for file readers.
  * <p>
@@ -131,7 +130,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
     /**
      *  Choose whether to use the "traditional" or "enhanced" reader
      *  structure. Can also be selected at runtime by overriding
-     *  {@link #useEnhancedScan(OptionSet)}.
+     *  {@link #useEnhancedScan()}.
      */
     private final ScanFrameworkVersion scanVersion;
 
@@ -546,15 +545,15 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
   /**
    * Initialize the scan framework builder with standard options.
    * Call this from the plugin-specific
-   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method.
+   * {@link #frameworkBuilder(EasySubScan, OptionSet)} method.
    * The plugin can then customize/revise options as needed.
    * <p>
    * For EVF V1, to be removed.
    *
    * @param builder the scan framework builder you create in the
-   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method
+   * {@link #frameworkBuilder(EasySubScan, OptionSet)} method
    * @param scan the physical scan operator definition passed to
-   * the {@link #frameworkBuilder(OptionSet, EasySubScan)} method
+   * the {@link #frameworkBuilder(EasySubScan, OptionSet)} method
    */
   protected void initScanBuilder(FileScanBuilder builder, EasySubScan scan) {
     EvfV1ScanBuilder.initScanBuilder(this, builder, scan);
@@ -583,8 +582,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
    * potentially many files
    * @throws ExecutionSetupException for all setup failures
    */
-  protected FileScanBuilder frameworkBuilder(
-      OptionSet options, EasySubScan scan) throws ExecutionSetupException {
+  protected FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) throws ExecutionSetupException {
     throw new ExecutionSetupException("Must implement frameworkBuilder() if using the enhanced framework.");
   }
 
