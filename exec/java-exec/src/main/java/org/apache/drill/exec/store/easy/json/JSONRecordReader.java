@@ -176,7 +176,7 @@ public class JSONRecordReader extends AbstractRecordReader {
             .build();
       }
       setupParser();
-    } catch (Exception e){
+    } catch (Exception e) {
       handleAndRaise("Failure reading JSON file", e);
     }
   }

@@ -355,11 +355,11 @@ public class TestTypeFns extends ClusterTest {
 
   @Test
   public void testUnionType() throws Exception {
-    String sql ="SELECT typeof(a) AS t, modeof(a) AS m, drilltypeof(a) AS dt\n" +
-                "FROM cp.`jsoninput/union/c.json`";
+    String sql ="SELECT typeof(a) AS t, modeof(a) AS m, drilltypeof(a) AS dt FROM cp.`jsoninput/union/c.json`";
     try {
       testBuilder()
         .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+        .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
         .sqlQuery(sql)
         .ordered()
         .baselineColumns("t",       "m",        "dt")
@@ -371,9 +371,9 @@ public class TestTypeFns extends ClusterTest {
         .baselineValues( "LIST",    "NULLABLE", "UNION")
         .baselineValues( "NULL",    "NULLABLE", "UNION")
         .go();
-    }
-    finally {
+    } finally {
       client.resetSession(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      client.resetSession(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 

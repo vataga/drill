@@ -301,8 +301,7 @@ public class ScanSchemaOrchestrator {
 
     @VisibleForTesting
     public ScanOperatorExec buildScan() {
-      return new ScanOperatorExec(buildEvents(),
-          ! disableEmptyResults);
+      return new ScanOperatorExec(buildEvents(), !disableEmptyResults);
     }
 
     public OperatorRecordBatch buildScanOperator(FragmentContext fragContext, PhysicalOperator pop) {

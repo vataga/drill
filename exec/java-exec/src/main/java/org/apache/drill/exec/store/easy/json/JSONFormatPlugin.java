@@ -22,12 +22,9 @@ import java.io.OutputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
-import org.apache.drill.common.PlanStringBuilder;
 import org.apache.drill.common.exceptions.ExecutionSetupException;
 import org.apache.drill.common.expression.SchemaPath;
-import org.apache.drill.common.logical.FormatPluginConfig;
 import org.apache.drill.common.logical.StoragePluginConfig;
 import org.apache.drill.common.types.TypeProtos.MinorType;
 import org.apache.drill.common.types.Types;
@@ -51,8 +48,6 @@ import org.apache.drill.exec.store.dfs.easy.EasyFormatPlugin;
 import org.apache.drill.exec.store.dfs.easy.EasySubScan;
 import org.apache.drill.exec.store.dfs.easy.EasyWriter;
 import org.apache.drill.exec.store.dfs.easy.FileWork;
-import org.apache.drill.exec.store.easy.json.JSONFormatPlugin.JSONFormatConfig;
-import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FSDataOutputStream;
 import org.apache.hadoop.fs.FileSystem;
@@ -60,22 +55,19 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static org.apache.drill.exec.store.easy.json.JSONFormatConfig.PLUGIN_NAME;
+
 public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
 
   private static final Logger logger = LoggerFactory.getLogger(JSONFormatPlugin.class);
-  public static final String PLUGIN_NAME = "json";
-  private static final String DEFAULT_EXTN = "json";
   private static final boolean IS_COMPRESSIBLE = true;
 
-  public static final String OPERATOR_TYPE = "JSON_SUB_SCAN";
+  public static final String READER_OPERATOR_TYPE = "JSON_SUB_SCAN";
+  public static final String WRITER_OPERATOR_TYPE = "JSON_WRITER";
 
   public JSONFormatPlugin(String name, DrillbitContext context,
       Configuration fsConf, StoragePluginConfig storageConfig) {
@@ -88,21 +80,21 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
   }
 
   private static EasyFormatConfig easyConfig(Configuration fsConf, JSONFormatConfig pluginConfig) {
-    EasyFormatConfig config = new EasyFormatConfig();
-    config.readable = true;
-    config.writable = true;
-    config.blockSplittable = false;
-    config.compressible = IS_COMPRESSIBLE;
-    config.supportsProjectPushdown = true;
-    config.extensions = pluginConfig.getExtensions();
-    config.fsConf = fsConf;
-    config.defaultName = PLUGIN_NAME;
-    config.readerOperatorType = CoreOperatorType.JSON_SUB_SCAN_VALUE;
-    config.writerOperatorType = CoreOperatorType.JSON_WRITER_VALUE;
-    // Temporary until V2 is the default.
-    // config.useEnhancedScan = true;
-    config.supportsStatistics = true;
-    return config;
+    return EasyFormatConfig.builder()
+      .readable(true)
+      .writable(true)
+      .blockSplittable(false)
+      .compressible(IS_COMPRESSIBLE)
+      .supportsProjectPushdown(true)
+      .extensions(pluginConfig.getExtensions())
+      .fsConf(fsConf)
+      .defaultName(PLUGIN_NAME)
+      .readerOperatorType(READER_OPERATOR_TYPE)
+      .writerOperatorType(WRITER_OPERATOR_TYPE)
+      .useEnhancedScan(false)
+      .supportsLimitPushdown(true)
+      .supportsStatistics(true)
+      .build();
   }
 
   @Override
@@ -120,8 +112,7 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
   }
 
   @Override
-  public StatisticsRecordWriter getStatisticsRecordWriter(FragmentContext context, EasyWriter writer)
-      throws IOException {
+  public StatisticsRecordWriter getStatisticsRecordWriter(FragmentContext context, EasyWriter writer) {
     StatisticsRecordWriter recordWriter;
 
     // ANALYZE statement requires the special statistics writer
@@ -161,11 +152,6 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
       options.put("queryid", context.getQueryIdString());
     }
     return options;
-  }
-
-  @Override
-  public boolean supportsStatistics() {
-    return true;
   }
 
   @Override
@@ -211,8 +197,7 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
   }
 
   @Override
-  protected FileScanBuilder frameworkBuilder(
-      OptionSet options, EasySubScan scan) throws ExecutionSetupException {
+  protected FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) throws ExecutionSetupException {
     FileScanBuilder builder = new FileScanBuilder();
     initScanBuilder(builder, scan);
     builder.setReaderFactory(new FileReaderFactory() {
@@ -230,57 +215,14 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
     return builder;
   }
 
-  @JsonTypeName(PLUGIN_NAME)
-  public static class JSONFormatConfig implements FormatPluginConfig {
-    private static final List<String> DEFAULT_EXTS = ImmutableList.of(DEFAULT_EXTN);
-
-    private final List<String> extensions;
-
-    @JsonCreator
-    public JSONFormatConfig(
-        @JsonProperty("extensions") List<String> extensions) {
-      this.extensions = extensions == null ?
-          DEFAULT_EXTS : ImmutableList.copyOf(extensions);
-    }
-
-    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-    public List<String> getExtensions() {
-      return extensions;
-    }
-
-    @Override
-    public int hashCode() {
-      return Objects.hash(extensions);
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-      if (this == obj) {
-        return true;
-      }
-      if (obj == null || getClass() != obj.getClass()) {
-        return false;
-      }
-      JSONFormatConfig other = (JSONFormatConfig) obj;
-      return Objects.equals(extensions, other.extensions);
-    }
-
-    @Override
-    public String toString() {
-      return new PlanStringBuilder(this)
-          .field("extensions", extensions)
-          .toString();
-    }
-  }
-
   @Override
   public String getReaderOperatorType() {
-    return OPERATOR_TYPE;
+    return READER_OPERATOR_TYPE;
   }
 
   @Override
   public String getWriterOperatorType() {
-     return "JSON_WRITER";
+     return WRITER_OPERATOR_TYPE;
   }
 
   @Override
