@@ -63,11 +63,11 @@ public class TestJsonReader extends BaseTestQuery {
     dirTestWatcher.copyResourceToRoot(Paths.get("vector","complex", "writer"));
   }
 
-  private void enableV2Reader(boolean enable) throws Exception {
+  private void enableV2Reader(boolean enable) {
     alterSession(ExecConstants.ENABLE_V2_JSON_READER_KEY, enable);
   }
 
-  private void resetV2Reader() throws Exception {
+  private void resetV2Reader() {
     resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
   }
 
@@ -88,7 +88,7 @@ public class TestJsonReader extends BaseTestQuery {
 
    @Test
   public void schemaChange() throws Exception {
-    runBoth(() -> doSchemaChange());
+    runBoth(this::doSchemaChange);
   }
 
   private void doSchemaChange() throws Exception {
@@ -97,10 +97,6 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test
   public void testSplitAndTransferFailure() throws Exception {
-    runBoth(() -> doTestSplitAndTransferFailure());
-  }
-
-  private void doTestSplitAndTransferFailure() throws Exception {
     final String testVal = "a string";
     testBuilder()
         .sqlQuery("select flatten(config) as flat from cp.`store/json/null_list.json`")
@@ -360,7 +356,7 @@ public class TestJsonReader extends BaseTestQuery {
     }
   }
 
-  // V1 version of the test. See TsetJsonReaderQueries for the V2 version.
+  // V1 version of the test. See TestJsonReaderQueries for the V2 version.
 
   @Test
   public void drill_4032() throws Exception {
@@ -381,23 +377,19 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test
   public void drill_4479() throws Exception {
-    File table_dir = dirTestWatcher.makeTestTmpSubDir(Paths.get("drill_4479"));
-    table_dir.mkdir();
-    BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(new File(table_dir, "mostlynulls.json")));
-    // Create an entire batch of null values for 3 columns
-    for (int i = 0; i < JSONRecordReader.DEFAULT_ROWS_PER_BATCH; i++) {
-      os.write("{\"a\": null, \"b\": null, \"c\": null}".getBytes());
-    }
-    // Add a row with {bigint,  float, string} values
-    os.write("{\"a\": 123456789123, \"b\": 99.999, \"c\": \"Hello World\"}".getBytes());
-    os.flush();
-    os.close();
-
-    runBoth(() -> doDrill_4479());
-  }
-
-  private void doDrill_4479() throws Exception {
     try {
+      File table_dir = dirTestWatcher.makeTestTmpSubDir(Paths.get("drill_4479"));
+      table_dir.mkdir();
+      BufferedOutputStream os = new BufferedOutputStream(new FileOutputStream(new File(table_dir, "mostlynulls.json")));
+      // Create an entire batch of null values for 3 columns
+      for (int i = 0; i < JSONRecordReader.DEFAULT_ROWS_PER_BATCH; i++) {
+        os.write("{\"a\": null, \"b\": null, \"c\": null}".getBytes());
+      }
+      // Add a row with {bigint,  float, string} values
+      os.write("{\"a\": 123456789123, \"b\": 99.999, \"c\": \"Hello World\"}".getBytes());
+      os.flush();
+      os.close();
+
       testBuilder()
         .sqlQuery("select c, count(*) as cnt from dfs.tmp.drill_4479 t group by c")
         .ordered()

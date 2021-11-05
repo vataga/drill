@@ -84,7 +84,7 @@ public class TestJsonEscapeAnyChar extends ClusterTest {
     }
   }
   @Test
-  public void testwithOptionDisabled() throws Exception {
+  public void testWithOptionDisabled() throws Exception {
     try {
       enableV2Reader(false);
       doTestWithOptionDisabled();
@@ -112,11 +112,11 @@ public class TestJsonEscapeAnyChar extends ClusterTest {
     client.alterSession(ExecConstants.JSON_READER_ESCAPE_ANY_CHAR, false);
   }
 
-  private void enableV2Reader(boolean enable) throws Exception {
+  private void enableV2Reader(boolean enable) {
     client.alterSession(ExecConstants.ENABLE_V2_JSON_READER_KEY, enable);
   }
 
-  private void resetV2Reader() throws Exception {
+  private void resetV2Reader() {
     client.resetSession(ExecConstants.ENABLE_V2_JSON_READER_KEY);
   }
 

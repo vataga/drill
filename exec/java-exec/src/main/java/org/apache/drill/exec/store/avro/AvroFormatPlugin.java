@@ -59,7 +59,7 @@ public class AvroFormatPlugin extends EasyFormatPlugin<AvroFormatConfig> {
   }
 
   @Override
-  protected FileScanFramework.FileScanBuilder frameworkBuilder(OptionSet options, EasySubScan scan) {
+  protected FileScanFramework.FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) {
     FileScanFramework.FileScanBuilder builder = new FileScanFramework.FileScanBuilder();
     builder.setReaderFactory(new AvroReaderFactory(scan.getMaxRecords()));
     initScanBuilder(builder, scan);
