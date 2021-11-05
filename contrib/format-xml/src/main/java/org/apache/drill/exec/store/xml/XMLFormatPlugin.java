@@ -25,7 +25,7 @@ import org.apache.drill.exec.physical.impl.scan.file.FileScanFramework;
 import org.apache.drill.exec.physical.impl.scan.file.FileScanFramework.FileScanBuilder;
 import org.apache.drill.exec.physical.impl.scan.framework.ManagedReader;
 import org.apache.drill.exec.server.DrillbitContext;
-import org.apache.drill.exec.server.options.OptionManager;
+import org.apache.drill.exec.server.options.OptionSet;
 import org.apache.drill.exec.store.dfs.easy.EasyFormatPlugin;
 import org.apache.drill.exec.store.dfs.easy.EasySubScan;
 import org.apache.hadoop.conf.Configuration;
@@ -74,12 +74,12 @@ public class XMLFormatPlugin extends EasyFormatPlugin<XMLFormatConfig> {
 
   @Override
   public ManagedReader<? extends FileScanFramework.FileSchemaNegotiator> newBatchReader(
-    EasySubScan scan, OptionManager options) {
+    EasySubScan scan, OptionSet options) {
     return new XMLBatchReader(formatConfig.getReaderConfig(this), scan);
   }
 
   @Override
-  protected FileScanFramework.FileScanBuilder frameworkBuilder(OptionManager options, EasySubScan scan) {
+  protected FileScanFramework.FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) {
     FileScanBuilder builder = new FileScanBuilder();
     builder.setReaderFactory(new XMLReaderFactory(new XMLBatchReader.XMLReaderConfig(this), scan));
     initScanBuilder(builder, scan);

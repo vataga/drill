@@ -73,7 +73,6 @@ import org.apache.hadoop.fs.Path;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
  * Base class for file readers.
  * <p>
@@ -118,7 +117,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
     /**
      *  Choose whether to use the "traditional" or "enhanced" reader
      *  structure. Can also be selected at runtime by overriding
-     *  {@link #useEnhancedScan(OptionSet)}.
+     *  {@link #useEnhancedScan()}.
      */
     private final boolean useEnhancedScan;
 
@@ -500,8 +499,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
     throw new ExecutionSetupException("Must implement getRecordReader() if using the legacy scanner.");
   }
 
-  protected CloseableRecordBatch getReaderBatch(FragmentContext context,
-      EasySubScan scan) throws ExecutionSetupException {
+  protected CloseableRecordBatch getReaderBatch(FragmentContext context, EasySubScan scan) throws ExecutionSetupException {
     if (useEnhancedScan(context.getOptions())) {
       return buildScan(context, scan);
     } else {
@@ -519,7 +517,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
    * traditional scan-batch framework
    */
   protected boolean useEnhancedScan(OptionSet options) {
-    return easyConfig.useEnhancedScan;
+    return easyConfig.useEnhancedScan();
   }
 
   /**
@@ -585,7 +583,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
   private CloseableRecordBatch buildScan(FragmentContext context,
       EasySubScan scan) throws ExecutionSetupException {
     try {
-      final FileScanBuilder builder = frameworkBuilder(context.getOptions(), scan);
+      final FileScanBuilder builder = frameworkBuilder(scan, context.getOptions());
 
       // Add batch reader, if none specified
 
@@ -605,13 +603,13 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
   /**
    * Initialize the scan framework builder with standard options.
    * Call this from the plugin-specific
-   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method.
+   * {@link #frameworkBuilder(EasySubScan, OptionSet)} method.
    * The plugin can then customize/revise options as needed.
    *
    * @param builder the scan framework builder you create in the
-   * {@link #frameworkBuilder(OptionSet, EasySubScan)} method
+   * {@link #frameworkBuilder(EasySubScan, OptionSet)} method
    * @param scan the physical scan operator definition passed to
-   * the {@link #frameworkBuilder(OptionSet, EasySubScan)} method
+   * the {@link #frameworkBuilder(EasySubScan, OptionSet)} method
    */
   protected void initScanBuilder(FileScanBuilder builder, EasySubScan scan) {
     builder.projection(scan.getColumns());
@@ -655,8 +653,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
    * potentially many files
    * @throws ExecutionSetupException for all setup failures
    */
-  protected FileScanBuilder frameworkBuilder(
-      OptionSet options, EasySubScan scan) throws ExecutionSetupException {
+  protected FileScanBuilder frameworkBuilder(EasySubScan scan, OptionSet options) throws ExecutionSetupException {
     throw new ExecutionSetupException("Must implement frameworkBuilder() if using the enhanced framework.");
   }
 
