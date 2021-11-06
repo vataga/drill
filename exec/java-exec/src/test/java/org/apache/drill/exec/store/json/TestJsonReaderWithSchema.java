@@ -1,9 +1,18 @@
 package org.apache.drill.exec.store.json;
 
 import org.apache.drill.exec.ExecConstants;
+import org.apache.drill.test.ClusterFixture;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
+import java.nio.file.Paths;
+
 public class TestJsonReaderWithSchema extends BaseTestJsonReader {
+
+  @BeforeClass
+  public static void setup() throws Exception {
+    startCluster(ClusterFixture.builder(dirTestWatcher));
+  }
 
   @Test
   public void testSelectFromListWithCase() throws Exception {

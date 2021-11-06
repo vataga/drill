@@ -380,8 +380,7 @@ public class JsonReader extends BaseJsonReader {
    * @return
    * @throws IOException
    */
-  private boolean writeMapDataIfTyped(MapWriter writer, String fieldName)
-      throws IOException {
+  private boolean writeMapDataIfTyped(MapWriter writer, String fieldName) throws IOException {
     if (extended) {
       return mapOutput.run(writer, fieldName);
     } else {
