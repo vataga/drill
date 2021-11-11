@@ -31,13 +31,17 @@ import java.nio.file.Paths;
 import org.apache.drill.categories.RowSetTest;
 import org.apache.drill.common.util.DrillFileUtils;
 import org.apache.drill.exec.ExecConstants;
+import org.apache.drill.exec.compile.CodeCompiler;
+import org.apache.drill.exec.ops.OperatorContext;
 import org.apache.drill.exec.proto.UserBitShared;
+import org.apache.drill.exec.server.options.OptionManager;
 import org.apache.drill.exec.store.easy.json.JSONRecordReader;
 import org.apache.drill.exec.util.JsonStringHashMap;
 import org.apache.drill.exec.util.Text;
 import org.apache.drill.shaded.guava.com.google.common.base.Charsets;
 import org.apache.drill.shaded.guava.com.google.common.io.Files;
 import org.apache.drill.test.BaseTestQuery;
+import org.apache.drill.test.OperatorFixture;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -131,7 +135,7 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test // DRILL-1824
   public void schemaChangeValidate() throws Exception {
-    runBoth(() -> doSchemaChangeValidate());
+    runBoth(this::doSchemaChangeValidate);
   }
 
   private void doSchemaChangeValidate() throws Exception {
@@ -380,7 +384,7 @@ public class TestJsonReader extends BaseTestQuery {
     testNoResult("select t.col2.col3 from dfs.tmp.drill_4032 t");
   }
 
-  @Test
+  @Test // todo: place this logic to beforeClass. And divide doDrill_4479 into 3 tests
   public void drill_4479() throws Exception {
     File table_dir = dirTestWatcher.makeTestTmpSubDir(Paths.get("drill_4479"));
     table_dir.mkdir();
