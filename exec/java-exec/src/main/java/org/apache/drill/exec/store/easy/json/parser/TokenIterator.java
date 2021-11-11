@@ -23,6 +23,8 @@ import java.util.Iterator;
 import java.util.function.Function;
 
 import org.apache.drill.common.exceptions.DrillRuntimeException;
+import org.apache.drill.common.types.TypeProtos;
+import org.apache.drill.exec.schema.json.jackson.JacksonHelper;
 import org.apache.drill.exec.vector.accessor.UnsupportedConversionError;
 
 import com.fasterxml.jackson.core.JsonLocation;
@@ -81,6 +83,7 @@ public class TokenIterator {
   }
 
   private JsonToken getNextToken() throws IOException {
+    // System.out.println(getParser().getText());
     JsonToken jsonToken = getParser().nextToken();
     if (jsonToken == null) {
       parserManager.nextParser();
@@ -239,6 +242,11 @@ public class TokenIterator {
           throw new DrillRuntimeException(e);
         }
         currentParser = parserFunction.apply(parsersIterator.next());
+//        try {
+//          System.out.println((String) JacksonHelper.getValueFromFieldType(currentParser, TypeProtos.MinorType.VARCHAR));
+//        } catch (IOException e) {
+//          e.printStackTrace();
+//        }
       } else {
         currentParser = null;
       }

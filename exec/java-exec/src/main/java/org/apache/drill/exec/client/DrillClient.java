@@ -872,7 +872,7 @@ public class DrillClient implements Closeable, ConnectionThrottle {
       results.add(result);
     }
 
-    public List<QueryDataBatch> getResults() throws RpcException{
+    public List<QueryDataBatch> getResults() throws RpcException {
       try {
         return future.get();
       } catch (Throwable t) {

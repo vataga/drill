@@ -560,7 +560,7 @@ public abstract class HashAggTemplate implements HashAggregator {
     estOutgoingAllocSize = estValuesBatchSize; // initially assume same size
 
     logger.trace("{} phase. Estimated internal row width: {} Values row width: {} batch size: {}  memory limit: {}  max column width: {}",
-      phase.getName(),estRowWidth,estValuesRowWidth,estMaxBatchSize,allocator.getLimit(),maxColumnWidth);
+      phase.getName(), estRowWidth, estValuesRowWidth, estMaxBatchSize, allocator.getLimit(), maxColumnWidth);
 
     if (estMaxBatchSize > allocator.getLimit()) {
       logger.warn("HashAggregate: Estimated max batch size {} is larger than the memory limit {}",estMaxBatchSize,allocator.getLimit());

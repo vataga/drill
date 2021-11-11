@@ -425,7 +425,7 @@ public class JsonReader extends BaseJsonReader {
         workingBuffer.getBuf());
   }
 
-  private void writeData(ListWriter list) throws IOException {
+  private void writeData(ListWriter list) {
     list.startList();
     outside: while (true) {
       try {

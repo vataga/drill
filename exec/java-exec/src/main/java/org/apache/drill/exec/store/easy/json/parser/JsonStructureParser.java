@@ -254,6 +254,7 @@ public class JsonStructureParser {
     }
     while (true) {
       try {
+        // System.out.println(tokenizer.stringValue());
         return rootState.parseRoot(tokenizer);
       } catch (RecoverableJsonException e) {
         if (! recover()) {
