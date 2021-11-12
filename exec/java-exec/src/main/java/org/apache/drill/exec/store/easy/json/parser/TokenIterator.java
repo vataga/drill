@@ -23,8 +23,6 @@ import java.util.Iterator;
 import java.util.function.Function;
 
 import org.apache.drill.common.exceptions.DrillRuntimeException;
-import org.apache.drill.common.types.TypeProtos;
-import org.apache.drill.exec.schema.json.jackson.JacksonHelper;
 import org.apache.drill.exec.vector.accessor.UnsupportedConversionError;
 
 import com.fasterxml.jackson.core.JsonLocation;
