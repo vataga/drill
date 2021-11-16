@@ -170,7 +170,7 @@ public class TestRestJson extends ClusterTest {
 
   @SuppressWarnings("unused")
   @Test
-  @Ignore("Manual test")
+  //@Ignore("Manual test")
   public void testLargeQuery() throws Exception {
     String tableName = writeBigFile();
     if (false) {
