@@ -179,6 +179,7 @@ public class TestJsonReader extends BaseTestQuery {
               .sqlQuery("select * from cp.`jsoninput/union/a.json`")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("field1", "field2")
               .baselineValues(
                       1L, 1.2
@@ -221,6 +222,7 @@ public class TestJsonReader extends BaseTestQuery {
               ).go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -254,6 +256,7 @@ public class TestJsonReader extends BaseTestQuery {
                 "when is_map(field1) then t.field1.inner1 end f1 from cp.`jsoninput/union/a.json` t")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("f1")
               .baselineValues(1L)
               .baselineValues(2L)
@@ -262,6 +265,7 @@ public class TestJsonReader extends BaseTestQuery {
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -277,11 +281,13 @@ public class TestJsonReader extends BaseTestQuery {
                 "from cp.`jsoninput/union/a.json` t)")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("sum_f1")
               .baselineValues(9L)
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -294,6 +300,7 @@ public class TestJsonReader extends BaseTestQuery {
               .sqlQuery("select a + b c from cp.`jsoninput/union/b.json`")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("c")
               .baselineValues(3L)
               .baselineValues(7.0)
@@ -301,6 +308,7 @@ public class TestJsonReader extends BaseTestQuery {
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -322,11 +330,13 @@ public class TestJsonReader extends BaseTestQuery {
               .sqlQuery("select sum(cast(case when `type` = 'map' then t.data.a else data end as bigint)) `sum` from dfs.tmp.multi_batch t")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("sum")
               .baselineValues(20000L)
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -353,11 +363,13 @@ public class TestJsonReader extends BaseTestQuery {
               .sqlQuery("select sum(cast(case when `type` = 'map' then t.data.a else data end as bigint)) `sum` from dfs.tmp.multi_file t")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("sum")
               .baselineValues(20000L)
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -554,6 +566,7 @@ public class TestJsonReader extends BaseTestQuery {
         .sqlQuery("select t.rk.a as a from dfs.`%s` t", fileName)
         .ordered()
         .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type`=true")
+        .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
         .baselineColumns("a")
         .baselineValues(map)
         .baselineValues("2")
@@ -561,6 +574,7 @@ public class TestJsonReader extends BaseTestQuery {
 
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
