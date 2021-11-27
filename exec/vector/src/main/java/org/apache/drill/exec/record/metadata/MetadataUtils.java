@@ -200,8 +200,7 @@ public class MetadataUtils {
     return new DictColumnMetadata(name, DataMode.REPEATED);
   }
 
-  public static PrimitiveColumnMetadata newScalar(String name, MinorType type,
-      DataMode mode) {
+  public static PrimitiveColumnMetadata newScalar(String name, MinorType type, DataMode mode) {
     assert isScalar(type);
     return new PrimitiveColumnMetadata(name, type, mode);
   }
@@ -212,13 +211,11 @@ public class MetadataUtils {
     return new PrimitiveColumnMetadata(name, type);
   }
 
-  public static ColumnMetadata newDecimal(String name, DataMode mode,
-      int precision, int scale) {
+  public static ColumnMetadata newDecimal(String name, DataMode mode, int precision, int scale) {
     return newDecimal(name, MinorType.VARDECIMAL, mode, precision, scale);
   }
 
-  public static ColumnMetadata newDecimal(String name, MinorType type, DataMode mode,
-      int precision, int scale) {
+  public static ColumnMetadata newDecimal(String name, MinorType type, DataMode mode, int precision, int scale) {
     if (precision < 0 ) {
       throw new IllegalArgumentException("Precision cannot be negative : " +
           precision);
@@ -278,8 +275,7 @@ public class MetadataUtils {
            col.name().equals(DynamicColumn.WILDCARD);
   }
 
-  public static ColumnMetadata cloneMapWithSchema(ColumnMetadata source,
-      TupleMetadata members) {
+  public static ColumnMetadata cloneMapWithSchema(ColumnMetadata source, TupleMetadata members) {
     return newMap(source.name(), source.mode(), members);
   }
 
@@ -292,8 +288,7 @@ public class MetadataUtils {
     }
   }
 
-  public static TupleMetadata diffTuple(TupleMetadata base,
-      TupleMetadata subtend) {
+  public static TupleMetadata diffTuple(TupleMetadata base, TupleMetadata subtend) {
     TupleMetadata diff = new TupleSchema();
     for (ColumnMetadata col : base) {
       ColumnMetadata other = subtend.metadata(col.name());

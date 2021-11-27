@@ -287,9 +287,8 @@ public class ReaderSchemaOrchestrator implements VectorSource {
    */
   private void doExplicitProjection(TupleMetadata tableSchema) {
     rootTuple = newRootTuple();
-    new ExplicitSchemaProjection(scanOrchestrator.scanProj,
-            tableSchema, rootTuple,
-            scanOrchestrator.options.schemaResolvers);
+    new ExplicitSchemaProjection(scanOrchestrator.scanProj, tableSchema, rootTuple,
+      scanOrchestrator.options.schemaResolvers);
   }
 
   @Override

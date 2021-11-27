@@ -360,7 +360,7 @@ abstract class VectorOutput {
           // 1. https://docs.mongodb.com/manual/reference/mongodb-extended-json
           // 2. org.apache.drill.exec.store.easy.json.values.UtcTimestampValueListener
           Instant instant = Instant.parse(parser.getValueAsString());
-          long offset = ZoneId.systemDefault().getRules().getOffset(instant).getTotalSeconds() * 1000;
+          long offset = ZoneId.systemDefault().getRules().getOffset(instant).getTotalSeconds() * 1000L;
           ts.writeTimeStamp(instant.toEpochMilli() + offset);
           break;
         default:

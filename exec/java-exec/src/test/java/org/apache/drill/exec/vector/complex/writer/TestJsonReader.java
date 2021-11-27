@@ -237,11 +237,13 @@ public class TestJsonReader extends BaseTestQuery {
                 "from cp.`jsoninput/union/a.json`) where a is not null")
               .ordered()
               .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
+              .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
               .baselineColumns("a", "type")
               .baselineValues(13L, "BIGINT")
               .go();
     } finally {
       resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
     }
   }
 
@@ -389,7 +391,7 @@ public class TestJsonReader extends BaseTestQuery {
     os.write("{\"col1\": \"val1\",\"col2\": null}".getBytes());
     os.flush();
     os.close();
-    testNoResult("select t.col2.col3 from dfs.tmp.drill_4032 t");
+    runBoth(() -> testNoResult("select t.col2.col3 from dfs.tmp.drill_4032 t"));
   }
 
   @Test // todo: place this logic to beforeClass. And divide doDrill_4479 into 3 tests
@@ -406,7 +408,7 @@ public class TestJsonReader extends BaseTestQuery {
     os.flush();
     os.close();
 
-    runBoth(() -> doDrill_4479());
+    runBoth(this::doDrill_4479);
   }
 
   private void doDrill_4479() throws Exception {
@@ -448,7 +450,7 @@ public class TestJsonReader extends BaseTestQuery {
       writer.write("{ \"a\": { \"b\": { \"c\": [] }, \"c\": [] } }");
     }
 
-    runBoth(() -> doTestFlattenEmptyArrayWithAllTextMode());
+    runBoth(this::doTestFlattenEmptyArrayWithAllTextMode);
   }
 
   private void doTestFlattenEmptyArrayWithAllTextMode() throws Exception {
@@ -480,7 +482,7 @@ public class TestJsonReader extends BaseTestQuery {
       writer.write("{ \"a\": { \"b\": { \"c\": [] }, \"c\": [] } }");
     }
 
-    runBoth(() -> doTestFlattenEmptyArrayWithUnionType());
+    runBoth(this::doTestFlattenEmptyArrayWithUnionType);
   }
 
   private void doTestFlattenEmptyArrayWithUnionType() throws Exception {
