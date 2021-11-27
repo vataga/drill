@@ -161,7 +161,7 @@ public class TestImplicitFileColumns extends BaseTestQuery {
     }
   }
 
-  @Test
+  @Test // todo: add dir0 vector. Check V1 version
   public void testStarColumnJson() throws Exception {
     SchemaBuilder schemaBuilder = new SchemaBuilder()
         .addNullable("dir0", TypeProtos.MinorType.VARCHAR)

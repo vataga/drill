@@ -94,9 +94,6 @@ public class ProjectionChecker {
     if (colReq == null || readCol == null) {
       return true;
     }
-    if (colReq.isTuple() && !(readCol.isMap() || readCol.isDict() || readCol.isVariant())) {
-      return false;
-    }
     if (colReq.isArray()) {
       if (colReq.arrayDims() == 1) {
         return readCol.isArray() || readCol.isDict() || readCol.isVariant();
