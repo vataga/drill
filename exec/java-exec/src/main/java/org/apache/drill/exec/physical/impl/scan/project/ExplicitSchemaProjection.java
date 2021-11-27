@@ -70,13 +70,11 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
   }
 
   private void resolveColumn(ResolvedTuple outputTuple, RequestedColumn inputCol, TupleMetadata readerSchema) {
-    int tableColIndex = readerSchema != null ? readerSchema.index(inputCol.name()) : -1;
+    int tableColIndex = readerSchema.index(inputCol.name());
     if (tableColIndex == -1) {
-      resolveNullColumn(outputTuple, inputCol); // enter here?
+      resolveNullColumn(outputTuple, inputCol);
     } else {
-      resolveTableColumn(outputTuple, inputCol, readerSchema, tableColIndex);
-      System.out.println("Reader schema: " + readerSchema);
-      System.out.println("OutputTuple schema: " + readerSchema);
+      resolveTableColumn(outputTuple, inputCol, readerSchema.metadata(tableColIndex), tableColIndex);
     }
   }
 
@@ -86,13 +84,12 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     if (tableColIndex == -1) {
       resolveNullColumn(outputTuple, inputCol);
     } else {
-      resolveTableColumn(outputTuple, inputCol, readerSchema, tableColIndex);
+      resolveTableColumn(outputTuple, inputCol, readerSchema.metadata(tableColIndex), tableColIndex);
     }
   }
 
   private void resolveTableColumn(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol, TupleMetadata readerSchema, int sourceIndex) {
-      ColumnMetadata column = readerSchema.metadata(sourceIndex);
+      RequestedColumn requestedCol, ColumnMetadata column, int sourceIndex) {
     // Is the requested column implied to be a map?
     // A requested column is a map if the user requests x.y and we
     // are resolving column x. The presence of y as a member implies
@@ -145,7 +142,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     // loader only projected those columns that were needed, so the only
     // issue we have to handle is null columns.
     //
-    // In the simple case, we discard the map readerSchema just created
+    // In the simple case, we discard the map tuple just created
     // since we ended up not needing it.
 
     if (mapCol.members().isSimpleProjection()) {
@@ -153,7 +150,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
       projectTableColumn(outputTuple, requestedCol, column, sourceIndex);
     }
 
-    // The resolved readerSchema may have a subset of table columns
+    // The resolved tuple may have a subset of table columns
     // and/or null columns. Project a new map that will be created
     // to hold the projected map elements.
 

@@ -126,7 +126,7 @@ public class ProjectionChecker {
    */
   public static void validateProjection(RequestedColumn colReq, ColumnMetadata readCol,
       CustomErrorContext errorContext) {
-    if (false) {
+    if (!isConsistent(colReq, readCol)) {
       throw UserException.validationError()
         .message("Column type not compatible with projection specification")
         .addContext("Column:", readCol.name())
