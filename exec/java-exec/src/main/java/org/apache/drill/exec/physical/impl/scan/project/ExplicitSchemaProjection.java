@@ -26,6 +26,7 @@ import org.apache.drill.exec.physical.resultSet.project.RequestedColumn;
 import org.apache.drill.exec.physical.resultSet.project.RequestedTuple;
 import org.apache.drill.exec.record.MaterializedField;
 import org.apache.drill.exec.record.metadata.ColumnMetadata;
+import org.apache.drill.exec.record.metadata.MetadataUtils;
 import org.apache.drill.exec.record.metadata.TupleMetadata;
 import org.apache.drill.exec.vector.complex.DictVector;
 import org.slf4j.Logger;
@@ -58,8 +59,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     resolveRootTuple(rootTuple, readerSchema);
   }
 
-  private void resolveRootTuple(ResolvedTuple rootTuple,
-      TupleMetadata readerSchema) {
+  private void resolveRootTuple(ResolvedTuple rootTuple, TupleMetadata readerSchema) {
     for (ColumnProjection col : scanProj.columns()) {
       if (col instanceof UnresolvedColumn) {
         resolveColumn(rootTuple, ((UnresolvedColumn) col).element(), readerSchema);
@@ -69,15 +69,14 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     }
   }
 
-  private void resolveColumn(ResolvedTuple outputTuple,
-      RequestedColumn inputCol, TupleMetadata readerSchema) {
-    int tableColIndex = readerSchema.index(inputCol.name());
+  private void resolveColumn(ResolvedTuple outputTuple, RequestedColumn inputCol, TupleMetadata readerSchema) {
+    int tableColIndex = readerSchema != null ? readerSchema.index(inputCol.name()) : -1;
     if (tableColIndex == -1) {
-      resolveNullColumn(outputTuple, inputCol);
+      resolveNullColumn(outputTuple, inputCol); // enter here?
     } else {
-      resolveTableColumn(outputTuple, inputCol,
-          readerSchema.metadata(tableColIndex),
-          tableColIndex);
+      resolveTableColumn(outputTuple, inputCol, readerSchema, tableColIndex);
+      System.out.println("Reader schema: " + readerSchema);
+      System.out.println("OutputTuple schema: " + readerSchema);
     }
   }
 
@@ -87,16 +86,13 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     if (tableColIndex == -1) {
       resolveNullColumn(outputTuple, inputCol);
     } else {
-      resolveTableColumn(outputTuple, inputCol,
-          readerSchema.metadata(tableColIndex),
-          tableColIndex);
+      resolveTableColumn(outputTuple, inputCol, readerSchema, tableColIndex);
     }
   }
 
   private void resolveTableColumn(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol,
-      ColumnMetadata column, int sourceIndex) {
-
+      RequestedColumn requestedCol, TupleMetadata readerSchema, int sourceIndex) {
+      ColumnMetadata column = readerSchema.metadata(sourceIndex);
     // Is the requested column implied to be a map?
     // A requested column is a map if the user requests x.y and we
     // are resolving column x. The presence of y as a member implies
@@ -128,30 +124,19 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     }
   }
 
-  private void resolveMap(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol, ColumnMetadata column,
+  private void resolveMap(ResolvedTuple outputTuple, RequestedColumn requestedCol, ColumnMetadata column,
       int sourceIndex) {
 
-    // If the actual column isn't a map, then the request is invalid.
-
+    // If the actual column isn't a map, try to change column datatype
     if (! column.isMap()) {
-      throw UserException
-        .validationError()
-        .message("Project list implies a map column, but actual column is not a map")
-        .addContext("Projected column:", requestedCol.fullName())
-        .addContext("Table column:", column.name())
-        .addContext("Type:", column.type().name())
-        .addContext(scanProj.context())
-        .build(logger);
+      column = MetadataUtils.newMap(column.name());
     }
 
     // The requested column is implied to be a map because it lists
     // members to project. Project these.
 
-    ResolvedMapColumn mapCol = new ResolvedMapColumn(outputTuple,
-        column.schema(), sourceIndex);
-    resolveTuple(mapCol.members(), requestedCol.tuple(),
-        column.tupleSchema());
+    ResolvedMapColumn mapCol = new ResolvedMapColumn(outputTuple, column.schema(), sourceIndex);
+    resolveTuple(mapCol.members(), requestedCol.tuple(), column.tupleSchema());
 
     // If the projection is simple, then just project the map column
     // as is. A projection is simple if all map columns from the table
@@ -160,7 +145,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     // loader only projected those columns that were needed, so the only
     // issue we have to handle is null columns.
     //
-    // In the simple case, we discard the map tuple just created
+    // In the simple case, we discard the map readerSchema just created
     // since we ended up not needing it.
 
     if (mapCol.members().isSimpleProjection()) {
@@ -168,7 +153,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
       projectTableColumn(outputTuple, requestedCol, column, sourceIndex);
     }
 
-    // The resolved tuple may have a subset of table columns
+    // The resolved readerSchema may have a subset of table columns
     // and/or null columns. Project a new map that will be created
     // to hold the projected map elements.
 
@@ -177,21 +162,12 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     }
   }
 
-  private void resolveDict(ResolvedTuple outputTuple,
-                          RequestedColumn requestedCol, ColumnMetadata column,
-                          int sourceIndex) {
+  private void resolveDict(ResolvedTuple outputTuple, RequestedColumn requestedCol, ColumnMetadata column,
+      int sourceIndex) {
 
-    // If the actual column isn't a dict, then the request is invalid.
-
+    // If the actual column isn't a dict, try to change column datatype
     if (!column.isDict()) {
-      throw UserException
-          .validationError()
-          .message("Project list implies a dict column, but actual column is not a dict")
-          .addContext("Projected column:", requestedCol.fullName())
-          .addContext("Table column:", column.name())
-          .addContext("Type:", column.type().name())
-          .addContext(scanProj.context())
-          .build(logger);
+      column = MetadataUtils.newDict(column.name());
     }
 
     ResolvedDictColumn dictColumn = new ResolvedDictColumn(outputTuple, column.schema(), sourceIndex);
@@ -286,8 +262,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
    *           column as requested in the project list
    */
 
-  private void resolveNullColumn(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol) {
+  private void resolveNullColumn(ResolvedTuple outputTuple, RequestedColumn requestedCol) {
     ResolvedColumn nullCol;
     if (requestedCol.isTuple()) {
       nullCol = resolveMapMembers(outputTuple, requestedCol);

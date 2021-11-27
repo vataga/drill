@@ -79,7 +79,12 @@ public class TestJsonRecordReader extends BaseTestQuery {
 
   @Test
   public void testDateJsonInput() throws Exception {
-    test("select `date`, AGE(`date`, CAST('2019-09-30 20:47:43' as timestamp)) from cp.`jsoninput/input2.json` limit 10 ");
+    try{
+      alterSession(ExecConstants.JSON_EXTENDED_TYPES_KEY, true);
+      test("select `date`, AGE(`date`, CAST('2019-09-30 20:47:43' as timestamp)) from cp.`jsoninput/input2.json` limit 10 ");
+    } finally {
+      resetSessionOption(ExecConstants.JSON_EXTENDED_TYPES_KEY);
+    }
   }
 
   @Test
@@ -136,13 +141,16 @@ public class TestJsonRecordReader extends BaseTestQuery {
 
   @Test
   public void testEnableAllTextMode() throws Exception {
-    runBoth(() -> doTestEnableAllTextMode());
+    runBoth(this::doTestEnableAllTextMode);
   }
 
   private void doTestEnableAllTextMode() throws Exception {
-    alterSession(ExecConstants.JSON_ALL_TEXT_MODE, true);
-    test("select * from cp.`jsoninput/big_numeric.json`");
-    resetSessionOption(ExecConstants.JSON_ALL_TEXT_MODE);
+    try{
+      alterSession(ExecConstants.JSON_ALL_TEXT_MODE, true);
+      test("select * from cp.`jsoninput/big_numeric.json`");
+    } finally {
+      resetSessionOption(ExecConstants.JSON_ALL_TEXT_MODE);
+    }
   }
 
   @Test

@@ -37,6 +37,7 @@ import org.apache.drill.common.expression.SchemaPath;
 import org.apache.drill.common.parser.LogicalExpressionParser;
 import org.apache.drill.common.types.TypeProtos;
 import org.apache.drill.common.types.Types;
+import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.expr.fn.impl.DateUtility;
 import org.apache.drill.exec.proto.UserBitShared;
 import org.apache.drill.exec.proto.UserBitShared.QueryType;
@@ -217,6 +218,16 @@ public class TestBuilder {
 
   public TestBuilder optionSettingQueriesForTestQuery(String query, Object... args) throws Exception {
     testOptionSettingQueries += String.format(query, args).concat(" ; ");
+    return this;
+  }
+
+  public TestBuilder enableSessionOption(String option) {
+    testOptionSettingQueries = "ALTER SESSION SET `" + option + "` = true";
+    return this;
+  }
+
+  public TestBuilder disableSessionOption(String option) {
+    testOptionSettingQueries = "ALTER SESSION SET `" + option + "` = false";
     return this;
   }
 
