@@ -17,6 +17,9 @@
  */
 package org.apache.drill.exec.store.json;
 
+import static org.apache.drill.exec.ExecConstants.ENABLE_V2_JSON_READER_KEY;
+import static org.apache.drill.exec.ExecConstants.JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG;
+import static org.apache.drill.exec.ExecConstants.JSON_READER_SKIP_INVALID_RECORDS_FLAG;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -46,11 +49,11 @@ public class TestJsonRecordReader extends BaseTestQuery {
   }
 
   private void enableV2Reader(boolean enable) throws Exception {
-    alterSession(ExecConstants.ENABLE_V2_JSON_READER_KEY, enable);
+    alterSession(ENABLE_V2_JSON_READER_KEY, enable);
   }
 
   private void resetV2Reader() throws Exception {
-    resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
+    resetSessionOption(ENABLE_V2_JSON_READER_KEY);
   }
 
   public interface TestWrapper {
@@ -292,24 +295,20 @@ public class TestJsonRecordReader extends BaseTestQuery {
   /* Test for CountingJSONReader */
   public void testCountingQuerySkippingInvalidJSONRecords() throws Exception {
     try {
-      String set = "alter session set `"
-        + ExecConstants.JSON_READER_SKIP_INVALID_RECORDS_FLAG + "` = true";
-      String set1 = "alter session set `"
-        + ExecConstants.JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG
-        + "` = true";
       String query = "select count(*) from cp.`jsoninput/drill4653/file.json`";
 
-      testNoResult(set);
-      testNoResult(set1);
       testBuilder()
         .unOrdered()
+        .disableSessionOption(ENABLE_V2_JSON_READER_KEY)
+        .enableSessionOption(JSON_READER_SKIP_INVALID_RECORDS_FLAG)
+        .enableSessionOption(JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG)
         .sqlQuery(query)
         .sqlBaselineQuery(query)
         .go();
     } finally {
-      String set = "alter session set `"
-        + ExecConstants.JSON_READER_SKIP_INVALID_RECORDS_FLAG + "` = false";
-      testNoResult(set);
+      resetSessionOption(ENABLE_V2_JSON_READER_KEY);
+      resetSessionOption(JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG);
+      resetSessionOption(JSON_READER_SKIP_INVALID_RECORDS_FLAG);
     }
   }
 
@@ -339,24 +338,20 @@ public class TestJsonRecordReader extends BaseTestQuery {
   /* Test for JSONReader */
   public void testNotCountingQuerySkippingInvalidJSONRecords() throws Exception {
     try {
-      String set = "alter session set `"
-        + ExecConstants.JSON_READER_SKIP_INVALID_RECORDS_FLAG + "` = true";
-      String set1 = "alter session set `"
-        + ExecConstants.JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG
-        + "` = true";
       String query = "select sum(balance) from cp.`jsoninput/drill4653/file.json`";
-      testNoResult(set);
-      testNoResult(set1);
       testBuilder()
         .unOrdered()
+        .disableSessionOption(ENABLE_V2_JSON_READER_KEY)
+        .enableSessionOption(JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG)
+        .enableSessionOption(JSON_READER_SKIP_INVALID_RECORDS_FLAG)
         .sqlQuery(query)
         .sqlBaselineQuery(query)
         .go();
     }
     finally {
-      String set = "alter session set `"
-        + ExecConstants.JSON_READER_SKIP_INVALID_RECORDS_FLAG + "` = false";
-      testNoResult(set);
+      resetSessionOption(ENABLE_V2_JSON_READER_KEY);
+      resetSessionOption(JSON_READER_PRINT_INVALID_RECORDS_LINE_NOS_FLAG);
+      resetSessionOption(JSON_READER_SKIP_INVALID_RECORDS_FLAG);
     }
   }
 

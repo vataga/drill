@@ -222,12 +222,12 @@ public class TestBuilder {
   }
 
   public TestBuilder enableSessionOption(String option) {
-    testOptionSettingQueries = "ALTER SESSION SET `" + option + "` = true";
+    optionSettingQueriesForTestQuery("ALTER SESSION SET `" + option + "` = 'true'");
     return this;
   }
 
   public TestBuilder disableSessionOption(String option) {
-    testOptionSettingQueries = "ALTER SESSION SET `" + option + "` = false";
+    optionSettingQueriesForTestQuery("ALTER SESSION SET `" + option + "` = 'false'");
     return this;
   }
 
