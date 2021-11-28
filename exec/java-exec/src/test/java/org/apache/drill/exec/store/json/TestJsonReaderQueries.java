@@ -583,7 +583,6 @@ public class TestJsonReaderQueries extends BaseTestJsonReader {
         os.write("{\"col1\": \"val4\", \"col2\": null}");
       }
       String sql = "select t.col1, t.col2.col3 from dfs.tmp.drill_4032 t order by col1";
-//      String sql = "select t.col1, t.col2.col3 from dfs.tmp.drill_4032 t";
       RowSet results = runTest(sql);
       results.print();
 

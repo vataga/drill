@@ -117,7 +117,7 @@ public class TestDrillbitResilience extends ClusterTest {
    */
   private static final int NUM_RUNS = 3;
   private static final int PROBLEMATIC_TEST_NUM_RUNS = 3;
-  private static final int TIMEOUT = 10;
+  private static final int TIMEOUT = 12;
   private final static Level CURRENT_LOG_LEVEL = Level.DEBUG;
 
   /**

@@ -17,11 +17,22 @@
  */
 package org.apache.drill.exec.physical.impl.lateraljoin;
 
+import ch.qos.logback.classic.Level;
 import org.apache.drill.categories.OperatorTest;
+import org.apache.drill.common.concurrent.ExtendedLatch;
+import org.apache.drill.exec.client.DrillClient;
+import org.apache.drill.exec.physical.impl.aggregate.HashAggTemplate;
+import org.apache.drill.exec.physical.impl.unorderedreceiver.UnorderedReceiverBatch;
 import org.apache.drill.exec.planner.physical.PlannerSettings;
+import org.apache.drill.exec.server.TestDrillbitResilience;
+import org.apache.drill.exec.testing.ExecutionControlsInjector;
+import org.apache.drill.exec.work.WorkManager;
+import org.apache.drill.exec.work.foreman.Foreman;
+import org.apache.drill.exec.work.foreman.QueryStateProcessor;
 import org.apache.drill.test.ClusterFixture;
 import org.apache.drill.test.ClusterFixtureBuilder;
 import org.apache.drill.test.ClusterTest;
+import org.apache.drill.test.LogFixture;
 import org.apache.drill.test.TestBuilder;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -33,6 +44,8 @@ import static junit.framework.TestCase.fail;
 
 @Category(OperatorTest.class)
 public class TestE2EUnnestAndLateral extends ClusterTest {
+  private static LogFixture logFixture;
+  private final static Level CURRENT_LOG_LEVEL = Level.DEBUG;
 
   private static final String regularTestFile_1 = "cust_order_10_1.json";
   private static final String regularTestFile_2 = "cust_order_10_2.json";
@@ -48,6 +61,19 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
         .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
         .maxParallelization(1);
     startCluster(builder);
+    logFixture = LogFixture.builder()
+      .toConsole()
+      .logger(TestDrillbitResilience.class, CURRENT_LOG_LEVEL)
+      .logger(DrillClient.class, CURRENT_LOG_LEVEL)
+      .logger(QueryStateProcessor.class, CURRENT_LOG_LEVEL)
+      .logger(WorkManager.class, CURRENT_LOG_LEVEL)
+      .logger(UnorderedReceiverBatch.class, CURRENT_LOG_LEVEL)
+      .logger(ExtendedLatch.class, CURRENT_LOG_LEVEL)
+      .logger(Foreman.class, CURRENT_LOG_LEVEL)
+      .logger(QueryStateProcessor.class, CURRENT_LOG_LEVEL)
+      .logger(ExecutionControlsInjector.class, CURRENT_LOG_LEVEL)
+      .logger(HashAggTemplate.class, CURRENT_LOG_LEVEL)
+      .build();
   }
 
   /***********************************************************************************************
@@ -499,7 +525,7 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
    *****************************************************************************************/
 
   @Test
-  public void testMultipleBatchesLateral_WithLimitInParent() throws Exception {
+  public void testMultipleBatchesLateral_WithLimitInParent() {
     String sql = "SELECT customer.c_name, customer.c_address, orders.o_orderkey, orders.o_totalprice " +
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_orderkey as o_orderkey, t.ord.o_totalprice  as o_totalprice FROM UNNEST(customer.c_orders) t(ord) WHERE t.ord.o_totalprice > 100000 LIMIT 2) " +
@@ -508,7 +534,7 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
   }
 
   @Test
-  public void testMultipleBatchesLateral_WithFilterInParent() throws Exception {
+  public void testMultipleBatchesLateral_WithFilterInParent() {
     String sql = "SELECT customer.c_name, customer.c_address, orders.o_orderkey, orders.o_totalprice " +
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_orderkey as o_orderkey, t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord) WHERE t.ord.o_totalprice > 100000 LIMIT 2) " +
@@ -517,16 +543,16 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
   }
 
   @Test
-  public void testMultipleBatchesLateral_WithGroupByInParent() throws Exception {
+  public void testMultipleBatchesLateral_WithGroupByInParent() {
     String sql = "SELECT customer.c_name, avg(orders.o_totalprice) AS avgPrice " +
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord) WHERE t.ord.o_totalprice > 100000 LIMIT 2) " +
       "orders GROUP BY customer.c_name";
-    runAndLog(sql);
+    runAndPrint(sql);
   }
 
   @Test
-  public void testMultipleBatchesLateral_WithOrderByInParent() throws Exception {
+  public void testMultipleBatchesLateral_WithOrderByInParent() {
     String sql = "SELECT customer.c_name, customer.c_address, orders.o_orderkey, orders.o_totalprice " +
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_orderkey as o_orderkey, t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord)) orders " +
