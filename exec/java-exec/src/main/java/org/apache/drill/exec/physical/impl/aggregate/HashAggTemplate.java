@@ -88,9 +88,9 @@ public abstract class HashAggTemplate implements HashAggregator {
   private static final int VARIABLE_MAX_WIDTH_VALUE_SIZE = 50;
   private static final int VARIABLE_MIN_WIDTH_VALUE_SIZE = 8;
 
-  private static final boolean EXTRA_DEBUG_1 = false;
-  private static final boolean EXTRA_DEBUG_2 = false;
-  private static final boolean EXTRA_DEBUG_SPILL = false;
+  private static final boolean EXTRA_DEBUG_1 = true;
+  private static final boolean EXTRA_DEBUG_2 = true;
+  private static final boolean EXTRA_DEBUG_SPILL = true;
 
   // Fields needed for partitioning (the groups into partitions)
   private int nextPartitionToReturn; // which partition to return the next batch from
@@ -651,16 +651,17 @@ public abstract class HashAggTemplate implements HashAggregator {
       }
       // Handle various results from getting the next batch
       switch (outcome) {
+        case OK_NEW_SCHEMA:
         case NOT_YET:
           return AggOutcome.RETURN_OUTCOME;
 
-        case OK_NEW_SCHEMA:
-          if (EXTRA_DEBUG_1) {
-            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
-          }
-          cleanup();
-          // TODO: new schema case needs to be handled appropriately
-          return AggOutcome.UPDATE_AGGREGATOR;
+//        case OK_NEW_SCHEMA:
+//          if (EXTRA_DEBUG_1) {
+//            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
+//          }
+//          cleanup();
+//          // TODO: new schema case needs to be handled appropriately
+//          return AggOutcome.UPDATE_AGGREGATOR;
 
         case EMIT:
           handleEmit = true;
@@ -1185,9 +1186,8 @@ public abstract class HashAggTemplate implements HashAggregator {
     outcome = IterOutcome.OK;
 
     if (EXTRA_DEBUG_SPILL && phase.is2nd()) {
-      logger.debug("So far returned {} + SpilledReturned {}  total {} (spilled {})",rowsNotSpilled,rowsSpilledReturned,
-        rowsNotSpilled+rowsSpilledReturned,
-        rowsSpilled);
+      logger.debug("So far returned {} + SpilledReturned {}  total {} (spilled {})", rowsNotSpilled, rowsSpilledReturned,
+        rowsNotSpilled + rowsSpilledReturned, rowsSpilled);
     }
 
     lastBatchOutputCount = numOutputRecords;

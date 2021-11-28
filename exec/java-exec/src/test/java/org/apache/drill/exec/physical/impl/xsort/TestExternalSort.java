@@ -24,7 +24,6 @@ import org.apache.drill.categories.OperatorTest;
 import org.apache.drill.categories.SlowTest;
 import org.apache.drill.common.types.TypeProtos;
 import org.apache.drill.common.types.Types;
-import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.physical.rowSet.RowSet;
 import org.apache.drill.exec.physical.rowSet.RowSetBuilder;
 import org.apache.drill.exec.record.metadata.SchemaBuilder;
@@ -35,6 +34,9 @@ import org.apache.drill.test.rowSet.file.JsonFileBuilder;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
+
+import static org.apache.drill.exec.ExecConstants.ENABLE_UNION_TYPE_KEY;
+import static org.apache.drill.exec.ExecConstants.ENABLE_V2_JSON_READER_KEY;
 
 @Category({SlowTest.class, OperatorTest.class})
 public class TestExternalSort extends BaseTestQuery {
@@ -201,8 +203,8 @@ public class TestExternalSort extends BaseTestQuery {
       TestBuilder builder = testBuilder()
           .sqlQuery("select a, b, c from dfs.`%s` order by a desc", tableDirName)
           .ordered()
-          .optionSettingQueriesForTestQuery("alter session set `exec.enable_union_type` = true")
-          .optionSettingQueriesForTestQuery("alter session set `store.json.enable_v2_reader` = false")
+          .enableSessionOption(ENABLE_UNION_TYPE_KEY)
+          .disableSessionOption(ENABLE_V2_JSON_READER_KEY)
           .baselineColumns("a", "b", "c");
       for (int i = record_count; i >= 0;) {
         builder.baselineValues((long) i, (long) i--, null);
@@ -211,13 +213,13 @@ public class TestExternalSort extends BaseTestQuery {
         }
       }
       builder.go();
-    } finally {
-      resetSessionOption(ExecConstants.ENABLE_UNION_TYPE_KEY);
-      resetSessionOption(ExecConstants.ENABLE_V2_JSON_READER_KEY);
-    }
 
-    // TODO: Useless test: just dumps to console
-    test("select * from dfs.`%s` order by a desc", tableDirName);
+      // TODO: Useless test: just dumps to console
+      test("select * from dfs.`%s` order by a desc", tableDirName);
+    } finally {
+      resetSessionOption(ENABLE_UNION_TYPE_KEY);
+      resetSessionOption(ENABLE_V2_JSON_READER_KEY);
+    }
   }
 
   private File createTableFile(final String tableDirName, final String fileName) {
