@@ -35,6 +35,7 @@ import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableMap;
 import org.apache.drill.test.ClusterFixtureBuilder;
 import org.apache.drill.test.ClusterTest;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -169,7 +170,7 @@ public class TestRestJson extends ClusterTest {
 
   @SuppressWarnings("unused")
   @Test
-  //@Ignore("Manual test")
+  @Ignore("Manual test")
   public void testLargeQuery() throws Exception {
     String tableName = writeBigFile();
     if (false) {
@@ -181,7 +182,7 @@ public class TestRestJson extends ClusterTest {
       System.out.println(
           client.queryBuilder().sql(sql).singletonLong());
       long end = System.currentTimeMillis();
-      System.out.println(String.format("COUNT(*) - Elapsed: %d ms", end - start));
+      System.out.printf("COUNT(*) - Elapsed: %d ms%n", end - start);
     }
 
     // Run the query and dump to a file to do a rough check

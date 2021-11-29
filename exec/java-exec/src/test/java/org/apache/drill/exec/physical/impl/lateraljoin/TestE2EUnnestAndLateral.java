@@ -50,9 +50,9 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
   public static void setupTestFiles() throws Exception {
     dirTestWatcher.copyResourceToRoot(Paths.get("lateraljoin", "multipleFiles", regularTestFile_1));
     dirTestWatcher.copyResourceToRoot(Paths.get("lateraljoin", "multipleFiles", regularTestFile_2));
-    ClusterFixtureBuilder builder = ClusterFixture.builder(dirTestWatcher);
-//        .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
-//        .maxParallelization(1);
+    ClusterFixtureBuilder builder = ClusterFixture.builder(dirTestWatcher)
+        .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
+        .maxParallelization(1);
     startCluster(builder);
     logFixture = LogFixture.builder()
       .toConsole()
