@@ -19,16 +19,9 @@ package org.apache.drill.exec.physical.impl.lateraljoin;
 
 import ch.qos.logback.classic.Level;
 import org.apache.drill.categories.OperatorTest;
-import org.apache.drill.common.concurrent.ExtendedLatch;
 import org.apache.drill.exec.client.DrillClient;
 import org.apache.drill.exec.physical.impl.aggregate.HashAggTemplate;
-import org.apache.drill.exec.physical.impl.unorderedreceiver.UnorderedReceiverBatch;
 import org.apache.drill.exec.planner.physical.PlannerSettings;
-import org.apache.drill.exec.server.TestDrillbitResilience;
-import org.apache.drill.exec.testing.ExecutionControlsInjector;
-import org.apache.drill.exec.work.WorkManager;
-import org.apache.drill.exec.work.foreman.Foreman;
-import org.apache.drill.exec.work.foreman.QueryStateProcessor;
 import org.apache.drill.test.ClusterFixture;
 import org.apache.drill.test.ClusterFixtureBuilder;
 import org.apache.drill.test.ClusterTest;
@@ -57,21 +50,13 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
   public static void setupTestFiles() throws Exception {
     dirTestWatcher.copyResourceToRoot(Paths.get("lateraljoin", "multipleFiles", regularTestFile_1));
     dirTestWatcher.copyResourceToRoot(Paths.get("lateraljoin", "multipleFiles", regularTestFile_2));
-    ClusterFixtureBuilder builder = ClusterFixture.builder(dirTestWatcher)
-        .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
-        .maxParallelization(1);
+    ClusterFixtureBuilder builder = ClusterFixture.builder(dirTestWatcher);
+//        .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
+//        .maxParallelization(1);
     startCluster(builder);
     logFixture = LogFixture.builder()
       .toConsole()
-      .logger(TestDrillbitResilience.class, CURRENT_LOG_LEVEL)
       .logger(DrillClient.class, CURRENT_LOG_LEVEL)
-      .logger(QueryStateProcessor.class, CURRENT_LOG_LEVEL)
-      .logger(WorkManager.class, CURRENT_LOG_LEVEL)
-      .logger(UnorderedReceiverBatch.class, CURRENT_LOG_LEVEL)
-      .logger(ExtendedLatch.class, CURRENT_LOG_LEVEL)
-      .logger(Foreman.class, CURRENT_LOG_LEVEL)
-      .logger(QueryStateProcessor.class, CURRENT_LOG_LEVEL)
-      .logger(ExecutionControlsInjector.class, CURRENT_LOG_LEVEL)
       .logger(HashAggTemplate.class, CURRENT_LOG_LEVEL)
       .build();
   }
@@ -548,7 +533,7 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord) WHERE t.ord.o_totalprice > 100000 LIMIT 2) " +
       "orders GROUP BY customer.c_name";
-    runAndPrint(sql);
+    runAndLog(sql);
   }
 
   @Test

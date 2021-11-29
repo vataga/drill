@@ -88,9 +88,9 @@ public abstract class HashAggTemplate implements HashAggregator {
   private static final int VARIABLE_MAX_WIDTH_VALUE_SIZE = 50;
   private static final int VARIABLE_MIN_WIDTH_VALUE_SIZE = 8;
 
-  private static final boolean EXTRA_DEBUG_1 = true;
-  private static final boolean EXTRA_DEBUG_2 = true;
-  private static final boolean EXTRA_DEBUG_SPILL = true;
+  private static final boolean EXTRA_DEBUG_1 = false;
+  private static final boolean EXTRA_DEBUG_2 = false;
+  private static final boolean EXTRA_DEBUG_SPILL = false;
 
   // Fields needed for partitioning (the groups into partitions)
   private int nextPartitionToReturn; // which partition to return the next batch from
@@ -652,6 +652,7 @@ public abstract class HashAggTemplate implements HashAggregator {
       // Handle various results from getting the next batch
       switch (outcome) {
         case OK_NEW_SCHEMA:
+          logger.warn("Hash aggregate does not support schema change. Try to process without schemachange awareness");
         case NOT_YET:
           return AggOutcome.RETURN_OUTCOME;
 
