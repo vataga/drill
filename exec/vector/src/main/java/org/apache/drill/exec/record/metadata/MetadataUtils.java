@@ -201,8 +201,12 @@ public class MetadataUtils {
   }
 
   public static PrimitiveColumnMetadata newScalar(String name, MinorType type, DataMode mode) {
+    return newScalar(name, type, mode, false);
+  }
+
+  public static PrimitiveColumnMetadata newScalar(String name, MinorType type, DataMode mode, boolean schemaForUnknown) {
     assert isScalar(type);
-    return new PrimitiveColumnMetadata(name, type, mode);
+    return new PrimitiveColumnMetadata(name, type, mode, schemaForUnknown);
   }
 
   public static PrimitiveColumnMetadata newScalar(String name, MajorType type) {

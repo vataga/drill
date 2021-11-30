@@ -27,6 +27,7 @@ import org.apache.drill.exec.physical.resultSet.project.RequestedTuple;
 import org.apache.drill.exec.record.MaterializedField;
 import org.apache.drill.exec.record.metadata.ColumnMetadata;
 import org.apache.drill.exec.record.metadata.MetadataUtils;
+import org.apache.drill.exec.record.metadata.PrimitiveColumnMetadata;
 import org.apache.drill.exec.record.metadata.TupleMetadata;
 import org.apache.drill.exec.vector.complex.DictVector;
 import org.slf4j.Logger;
@@ -125,8 +126,19 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
       int sourceIndex) {
 
     // If the actual column isn't a map, try to change column datatype
-    if (! column.isMap()) {
-      column = MetadataUtils.newMap(column.name());
+    if (!column.isMap()) {
+      if(column.isScalar() && ((PrimitiveColumnMetadata) column).getIsSchemaForUnknown()) {
+        column = MetadataUtils.newMap(column.name());
+      } else {
+        throw UserException
+          .validationError()
+          .message("Project list implies a map column, but actual column is not a map")
+          .addContext("Projected column:", requestedCol.fullName())
+          .addContext("Table column:", column.name())
+          .addContext("Type:", column.type().name())
+          .addContext(scanProj.context())
+          .build(logger);
+      }
     }
 
     // The requested column is implied to be a map because it lists
@@ -164,7 +176,18 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
 
     // If the actual column isn't a dict, try to change column datatype
     if (!column.isDict()) {
-      column = MetadataUtils.newDict(column.name());
+      if(column.isScalar() && ((PrimitiveColumnMetadata) column).getIsSchemaForUnknown()) {
+        column = MetadataUtils.newDict(column.name());
+      } else {
+        throw UserException
+          .validationError()
+          .message("Project list implies a dict column, but actual column is not a dict")
+          .addContext("Projected column:", requestedCol.fullName())
+          .addContext("Table column:", column.name())
+          .addContext("Type:", column.type().name())
+          .addContext(scanProj.context())
+          .build(logger);
+      }
     }
 
     ResolvedDictColumn dictColumn = new ResolvedDictColumn(outputTuple, column.schema(), sourceIndex);

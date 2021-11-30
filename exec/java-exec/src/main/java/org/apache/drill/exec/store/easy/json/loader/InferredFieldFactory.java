@@ -110,8 +110,8 @@ public class InferredFieldFactory extends BaseFieldFactory {
 
   private ColumnMetadata schemaForUnknown(FieldDefn fieldDefn, boolean isArray) {
     return loader.options().unknownsAsJson
-      ? fieldDefn.schemaFor(MinorType.VARCHAR, isArray)
-      : fieldDefn.schemaFor(loader.options().nullType, isArray);
+      ? fieldDefn.schemaFor(MinorType.VARCHAR, isArray, true)
+      : fieldDefn.schemaFor(loader.options().nullType, isArray, true);
   }
 
   private ValueParser unknownParserFor(ScalarWriter writer) {
