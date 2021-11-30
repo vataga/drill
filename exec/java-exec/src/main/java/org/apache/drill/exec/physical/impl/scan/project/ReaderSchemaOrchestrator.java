@@ -259,14 +259,12 @@ public class ReaderSchemaOrchestrator implements VectorSource {
    */
   private void doWildcardProjection(TupleMetadata tableSchema) {
     rootTuple = newRootTuple();
-    new WildcardProjection(scanOrchestrator.scanProj,
-        tableSchema, rootTuple, scanOrchestrator.options.schemaResolvers);
+    new WildcardProjection(scanOrchestrator.scanProj, tableSchema, rootTuple, scanOrchestrator.options.schemaResolvers);
   }
 
   private void doStrictWildcardProjection(TupleMetadata tableSchema) {
     rootTuple = newRootTuple();
-    new WildcardSchemaProjection(scanOrchestrator.scanProj,
-        tableSchema, rootTuple, scanOrchestrator.options.schemaResolvers);
+    new WildcardSchemaProjection(scanOrchestrator.scanProj, tableSchema, rootTuple, scanOrchestrator.options.schemaResolvers);
   }
 
   private ResolvedRow newRootTuple() {

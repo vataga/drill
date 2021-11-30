@@ -82,8 +82,8 @@ public interface ProjectionFilter {
     }
   }
 
-  static ProjectionFilter providedSchemaFilter(RequestedTuple tupleProj,
-      TupleMetadata providedSchema, CustomErrorContext errorContext) {
+  static ProjectionFilter providedSchemaFilter(RequestedTuple tupleProj, TupleMetadata providedSchema,
+                                               CustomErrorContext errorContext) {
     if (tupleProj.type() == TupleProjectionType.NONE) {
       return PROJECT_NONE;
     }
@@ -245,10 +245,10 @@ public interface ProjectionFilter {
       if (providedCol == null) {
         return PROJECTED;
       } else {
-        validateColumn(providedCol, col);
+        //validateColumn(providedCol, col);
         if (providedCol.isMap()) {
-          return new ProjResult(true, providedCol,
-              new TypeProjectionFilter(providedCol.tupleSchema(), errorContext));
+          return new ProjResult(true, providedCol, new TypeProjectionFilter(providedCol.tupleSchema(),
+            errorContext));
         } else {
           return new ProjResult(true, providedCol);
         }
@@ -277,10 +277,10 @@ public interface ProjectionFilter {
       if (providedCol == null) {
         return NOT_PROJECTED;
       } else {
-        validateColumn(providedCol, col);
+        //validateColumn(providedCol, col);
         if (providedCol.isMap()) {
-          return new ProjResult(true, providedCol,
-              new SchemaProjectionFilter(providedCol.tupleSchema(), errorContext));
+          return new ProjResult(true, providedCol, new SchemaProjectionFilter(providedCol.tupleSchema(),
+            errorContext));
         } else {
           return new ProjResult(true, providedCol);
         }

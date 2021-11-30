@@ -161,12 +161,12 @@ public class TestImplicitFileColumns extends BaseTestQuery {
     }
   }
 
-  @Test // todo: add dir0 vector. Check V1 version
+  @Test
   public void testStarColumnJson() throws Exception {
     SchemaBuilder schemaBuilder = new SchemaBuilder()
-        .addNullable("dir0", TypeProtos.MinorType.VARCHAR)
         .addNullable("id", TypeProtos.MinorType.BIGINT)
-        .addNullable("name", TypeProtos.MinorType.VARCHAR);
+        .addNullable("name", TypeProtos.MinorType.VARCHAR)
+        .addNullable("dir0", TypeProtos.MinorType.VARCHAR);
     final BatchSchema expectedSchema = new BatchSchemaBuilder()
         .withSchemaBuilder(schemaBuilder)
         .build();

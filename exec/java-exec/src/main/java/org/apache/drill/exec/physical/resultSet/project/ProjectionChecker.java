@@ -22,6 +22,7 @@ import org.apache.drill.common.exceptions.UserException;
 import org.apache.drill.common.types.TypeProtos.MinorType;
 import org.apache.drill.common.types.Types;
 import org.apache.drill.exec.record.metadata.ColumnMetadata;
+import org.apache.drill.exec.record.metadata.PrimitiveColumnMetadata;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,6 +94,11 @@ public class ProjectionChecker {
   public static boolean isConsistent(RequestedColumn colReq, ColumnMetadata readCol) {
     if (colReq == null || readCol == null) {
       return true;
+    }
+    if (colReq.isTuple() && !(readCol.isMap() || readCol.isDict() || readCol.isVariant())) {
+      if(!(readCol.isScalar() && ((PrimitiveColumnMetadata) readCol).getIsSchemaForUnknown())) { // allow unknown schema
+        return false;
+      }
     }
     if (colReq.isArray()) {
       if (colReq.arrayDims() == 1) {
