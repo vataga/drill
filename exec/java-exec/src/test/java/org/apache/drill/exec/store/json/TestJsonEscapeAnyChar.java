@@ -15,12 +15,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.exec.vector.complex.writer;
+package org.apache.drill.exec.store.json;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.drill.common.exceptions.UserRemoteException;
 import org.apache.drill.exec.ExecConstants;
-import org.apache.drill.exec.vector.complex.writer.TestJsonReader.TestWrapper;
+import org.apache.drill.exec.store.json.TestJsonReader.TestWrapper;
 import org.apache.drill.test.ClusterFixture;
 import org.apache.drill.test.ClusterTest;
 import org.junit.After;

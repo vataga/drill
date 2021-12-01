@@ -64,6 +64,7 @@ public class JsonBatchReader implements ManagedReader<FileSchemaNegotiator> {
     jsonLoader = new JsonLoaderBuilder()
         .resultSetLoader(negotiator.build())
         .standardOptions(negotiator.queryOptions())
+        .providedSchema(negotiator.providedSchema())
         .errorContext(errorContext)
         .fromStream(stream)
         .build();

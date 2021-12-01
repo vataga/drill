@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.exec.vector.complex.writer;
+package org.apache.drill.exec.store.json;
 
 import static org.apache.drill.test.TestBuilder.listOf;
 import static org.apache.drill.test.TestBuilder.mapOf;
@@ -53,7 +53,6 @@ import org.slf4j.LoggerFactory;
  * <li><tt>TestJsonReaderQuery</tt></li>
  * </ul>
  */
-//TODO: Move to JSON reader package after code review
 @Category(RowSetTest.class)
 public class TestJsonReader extends BaseTestQuery {
   private static final Logger logger = LoggerFactory.getLogger(TestJsonReader.class);
@@ -98,7 +97,7 @@ public class TestJsonReader extends BaseTestQuery {
 
   @Test
   public void testSplitAndTransferFailure() throws Exception {
-    runBoth(() -> doTestSplitAndTransferFailure());
+    runBoth(this::doTestSplitAndTransferFailure);
   }
 
   private void doTestSplitAndTransferFailure() throws Exception {

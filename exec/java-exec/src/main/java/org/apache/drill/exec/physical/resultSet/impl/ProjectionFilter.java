@@ -245,7 +245,7 @@ public interface ProjectionFilter {
       if (providedCol == null) {
         return PROJECTED;
       } else {
-        //validateColumn(providedCol, col);
+        validateColumn(providedCol, col);
         if (providedCol.isMap()) {
           return new ProjResult(true, providedCol, new TypeProjectionFilter(providedCol.tupleSchema(),
             errorContext));
@@ -277,7 +277,7 @@ public interface ProjectionFilter {
       if (providedCol == null) {
         return NOT_PROJECTED;
       } else {
-        //validateColumn(providedCol, col);
+        validateColumn(providedCol, col);
         if (providedCol.isMap()) {
           return new ProjResult(true, providedCol, new SchemaProjectionFilter(providedCol.tupleSchema(),
             errorContext));

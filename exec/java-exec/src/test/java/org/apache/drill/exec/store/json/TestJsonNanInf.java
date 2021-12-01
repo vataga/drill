@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.apache.drill.exec.vector.complex.writer;
+package org.apache.drill.exec.store.json;
 
 import static org.apache.drill.test.TestBuilder.mapOf;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -36,12 +36,11 @@ import org.apache.drill.exec.record.RecordBatchLoader;
 import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.rpc.user.QueryDataBatch;
 import org.apache.drill.exec.vector.VarCharVector;
-import org.apache.drill.exec.vector.complex.writer.TestJsonReader.TestWrapper;
+import org.apache.drill.exec.store.json.TestJsonReader.TestWrapper;
 import org.apache.drill.test.BaseTestQuery;
 import org.junit.Ignore;
 import org.junit.Test;
 
-// TODO: Move to JSON reader package after code review
 // TODO: Split or rename: this tests mor than NanInf
 public class TestJsonNanInf extends BaseTestQuery {
 
