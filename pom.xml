@@ -4005,6 +4005,7 @@
     </profile>
     <profile>
       <id>hadoop-2</id>
+      <anchor>#hadoop-2</anchor>
       <activation>
         <property>
           <name>hadoop-2</name>

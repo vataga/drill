@@ -28,3 +28,18 @@ Some basic patterns of those names:
 - A `jar` module name ends with the name of that module.
 
 Please make sure the names are concise, unique and easy to read.
+
+## Maven profiles
+
+<h1><a></a>Heading</h1>
+<a></a>
+<p><a></a>This is a paragraph on line 3.</p>
+<a></a>
+<ul>
+  <li><a></a>List item on line 5</li>
+  <li><a></a>List item on line 6</li>
+</ul>
+
+* [Hadoop-2](../../pom.xml#L4006-L4584)
+* [Hadoop-2](../../pom.xml#hadoop-2)
+* [Hadoop-2](../../pom.xml#<id>hadoop-2</id>)
