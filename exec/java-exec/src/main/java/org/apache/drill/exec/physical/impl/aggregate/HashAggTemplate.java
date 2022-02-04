@@ -651,18 +651,18 @@ public abstract class HashAggTemplate implements HashAggregator {
       }
       // Handle various results from getting the next batch
       switch (outcome) {
-        case OK_NEW_SCHEMA:
-          logger.warn("Hash aggregate does not support schema change. Try to process without schemachange awareness");
+//        case OK_NEW_SCHEMA:
+//          logger.warn("Hash aggregate does not support schema change. Try to process without schemachange awareness");
         case NOT_YET:
           return AggOutcome.RETURN_OUTCOME;
 
-//        case OK_NEW_SCHEMA:
-//          if (EXTRA_DEBUG_1) {
-//            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
-//          }
-//          cleanup();
-//          // TODO: new schema case needs to be handled appropriately
-//          return AggOutcome.UPDATE_AGGREGATOR;
+        case OK_NEW_SCHEMA:
+          if (EXTRA_DEBUG_1) {
+            logger.debug("Received new schema.  Batch has {} records.", incoming.getRecordCount());
+          }
+          cleanup();
+          // TODO: new schema case needs to be handled appropriately
+          return AggOutcome.UPDATE_AGGREGATOR;
 
         case EMIT:
           handleEmit = true;
