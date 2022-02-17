@@ -50,7 +50,7 @@
   </appender>
 
   <root>
-    <level value="error"/>
+    <level value="trace"/>
     <!-- Uncomment the next line (and the lines above) to be able to use Lilith for viewing log events -->
     <!-- <appender-ref ref="SOCKET"/>-->
     <!-- <appender-ref ref="STDOUT"/> -->

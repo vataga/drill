@@ -179,10 +179,10 @@ public final class RecordBatchStats {
   public static void logRecordBatchStats(RecordBatchIOType ioType,
     RecordBatch recordBatch,
     RecordBatchStatsContext batchStatsContext) {
-
+//    System.out.println("here");
     if (!batchStatsContext.isEnableBatchSzLogging()) {
       return; // NOOP
-    }
+    } //
 
     logRecordBatchStats(ioType, null, new RecordBatchSizer(recordBatch), batchStatsContext);
   }

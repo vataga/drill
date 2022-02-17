@@ -253,8 +253,10 @@ public class ColumnBuilder {
       // have content that varies from batch to batch. Only the leaf
       // vectors can be cached.
       assert columnSchema.tupleSchema().isEmpty();
-      mapVector = new RepeatedMapVector(mapColSchema.schema(),
-          parent.loader().allocator(), null);
+      mapVector = new RepeatedMapVector(mapColSchema.schema(), parent.loader().allocator(), null);
+//      mapVector = (RepeatedMapVector) parent.vectorCache().vectorFor(mapColSchema.schema());
+//      System.out.println("cached v:" + mapVector);
+//      RepeatedMapVector mapVector2 = new RepeatedMapVector(mapColSchema.schema(), parent.loader().allocator(), null);
       offsetVector = mapVector.getOffsetVector();
     } else {
       mapVector = null;

@@ -50,7 +50,7 @@ public abstract class BatchReader {
 
   protected void readAllFixedFields(long recordsToRead) throws Exception {
     Stopwatch timer = Stopwatch.createStarted();
-    if(readState.useAsyncColReader()){
+    if (readState.useAsyncColReader()) {
       readAllFixedFieldsParallel(recordsToRead);
     } else {
       readAllFixedFieldsSerial(recordsToRead);

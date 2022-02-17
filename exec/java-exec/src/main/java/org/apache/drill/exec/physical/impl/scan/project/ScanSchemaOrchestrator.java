@@ -165,8 +165,8 @@ public class ScanSchemaOrchestrator {
     private int scanBatchByteLimit = DEFAULT_BATCH_BYTE_COUNT;
     private final List<ScanProjectionParser> parsers = new ArrayList<>();
     private final List<ReaderProjectionResolver> schemaResolvers = new ArrayList<>();
-    private boolean useSchemaSmoothing;
-    private boolean allowRequiredNullColumns;
+    private boolean useSchemaSmoothing = true;
+    private boolean allowRequiredNullColumns = true;
     private List<SchemaPath> projection;
     private TupleMetadata providedSchema;
 
@@ -200,7 +200,7 @@ public class ScanSchemaOrchestrator {
      * disable this option only if we cannot find or fix empty-batch
      * bugs.
      */
-    public boolean disableEmptyResults;
+    public boolean disableEmptyResults = true;
 
     /**
      * Context for error messages.
@@ -262,7 +262,7 @@ public class ScanSchemaOrchestrator {
      */
     public void enableSchemaSmoothing(boolean flag) {
       useSchemaSmoothing = flag;
-   }
+    }
 
     public void allowRequiredNullColumns(boolean flag) {
       allowRequiredNullColumns = flag;
@@ -437,11 +437,9 @@ public class ScanSchemaOrchestrator {
         .providedSchema(options.providedSchema())
         .errorContext(builder.errorContext())
         .build();
-    if (scanProj.projectAll() && options.useSchemaSmoothing) {
-      schemaSmoother = new SchemaSmoother(scanProj, options.schemaResolvers);
-    } else {
-      schemaSmoother = null;
-    }
+    schemaSmoother = scanProj.projectAll() && options.useSchemaSmoothing
+      ? new SchemaSmoother(scanProj, options.schemaResolvers)
+      : null;
 
     // Build the output container.
     outputContainer = new VectorContainer(allocator);

@@ -87,7 +87,11 @@ public class VectorContainerAccessor implements BatchAccessor {
   }
 
   @Override
-  public int schemaVersion() { return schemaTracker.schemaVersion(); }
+  public int schemaVersion() {
+    int i = schemaTracker.schemaVersion();
+    System.out.println("schemaVersion: " + i);
+    return i;
+  }
 
   @Override
   public int rowCount() {
