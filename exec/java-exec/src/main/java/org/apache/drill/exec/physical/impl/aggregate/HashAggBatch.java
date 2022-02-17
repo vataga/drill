@@ -25,6 +25,7 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.drill.common.types.TypeProtos;
 import org.apache.drill.common.types.Types;
+import org.apache.drill.exec.exception.SchemaChangeException;
 import org.apache.drill.exec.expr.DrillFuncHolderExpr;
 import org.apache.drill.exec.planner.physical.AggPrelBase;
 import org.apache.drill.exec.record.VectorContainer;
@@ -45,7 +46,6 @@ import org.apache.drill.common.map.CaseInsensitiveMap;
 import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.compile.sig.GeneratorMapping;
 import org.apache.drill.exec.compile.sig.MappingSet;
-import org.apache.drill.exec.exception.SchemaChangeException;
 import org.apache.drill.exec.expr.ClassGenerator;
 import org.apache.drill.exec.expr.CodeGenerator;
 import org.apache.drill.exec.expr.ExpressionTreeMaterializer;
@@ -238,6 +238,7 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
     if (state == BatchState.DONE) {
       return 0;
     }
+//    System.out.println("aggregator.getOutputCount() + " + aggregator.getOutputCount());
     return aggregator.getOutputCount();
   }
 

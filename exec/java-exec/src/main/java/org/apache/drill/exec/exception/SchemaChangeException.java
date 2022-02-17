@@ -20,8 +20,10 @@ package org.apache.drill.exec.exception;
 import org.apache.drill.common.exceptions.DrillException;
 import org.apache.drill.exec.record.BatchSchema;
 
-public class SchemaChangeException extends DrillException{
-  static final org.slf4j.Logger logger = org.slf4j.LoggerFactory.getLogger(SchemaChangeException.class);
+/**
+ * Batch schema is changed and can't be handled by current operator
+ */
+public class SchemaChangeException extends DrillException {
 
   public SchemaChangeException() {
     super();
@@ -52,15 +54,11 @@ public class SchemaChangeException extends DrillException{
   }
 
   public static SchemaChangeException schemaChanged(String message, BatchSchema priorSchema, BatchSchema newSchema) {
-    final String errorMsg = new StringBuilder()
-        .append(message)
-        .append("\n")
-        .append("Prior schema : \n")
-        .append(priorSchema.toString())
-        .append("\n")
-        .append("New schema : \n")
-        .append(newSchema.toString())
-        .toString();
+    final String errorMsg = message + "\n" +
+      "Prior schema : \n" +
+      priorSchema.toString() + "\n" +
+      "New schema : \n" +
+      newSchema.toString();
     return new SchemaChangeException(errorMsg);
   }
 }

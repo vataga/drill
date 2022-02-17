@@ -24,6 +24,8 @@ import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.vector.ValueVector;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Tracks changes to schemas via "snapshots" over time. That is, given
@@ -59,19 +61,26 @@ import org.apache.drill.exec.vector.ValueVector;
 // TODO: Does not handle SV4 situations
 
 public class SchemaTracker {
+  private static final Logger logger = LoggerFactory.getLogger(SchemaTracker.class);
 
   private int schemaVersion;
   private BatchSchema currentSchema;
   private List<ValueVector> currentVectors = new ArrayList<>();
 
   public void trackSchema(VectorContainer newBatch) {
-    if (schemaVersion == 0 || ! isSameSchema(newBatch)) {
-      schemaVersion++;
-      captureSchema(newBatch);
+    if (schemaVersion == 0 || ! sameVectors(newBatch)) {
+      updateCurrentVectors(newBatch);
+      BatchSchema newSchema = newBatch.getSchema();
+
+//      if (newSchema != null && !newSchema.equals(currentSchema) ) {
+        schemaVersion++;
+        currentSchema = newSchema;
+//      }
+//      currentSchema = newSchema;
     }
   }
 
-  private boolean isSameSchema(VectorContainer newBatch) {
+  private boolean sameVectors(VectorContainer newBatch) {
     if (currentVectors.size() != newBatch.getNumberOfColumns()) {
       return false;
     }
@@ -87,12 +96,11 @@ public class SchemaTracker {
     return true;
   }
 
-  private void captureSchema(VectorContainer newBatch) {
+  private void updateCurrentVectors(VectorContainer newBatch) {
     currentVectors.clear();
     for (VectorWrapper<?> vw : newBatch) {
       currentVectors.add(vw.getValueVector());
     }
-    currentSchema = newBatch.getSchema();
   }
 
   public int schemaVersion() { return schemaVersion; }

@@ -67,6 +67,6 @@ public class UtcTimestampValueListener extends ScalarListener {
       default:
         throw tokenizer.invalidValue(token);
     }
-    writer.setLong(instant.toEpochMilli() + LOCAL_ZONE_ID.getRules().getOffset(instant).getTotalSeconds() * 1000);
+    writer.setLong(instant.toEpochMilli() + LOCAL_ZONE_ID.getRules().getOffset(instant).getTotalSeconds() * 1000L);
   }
 }

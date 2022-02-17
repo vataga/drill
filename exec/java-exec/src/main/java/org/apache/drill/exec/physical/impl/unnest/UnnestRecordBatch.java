@@ -184,7 +184,7 @@ public class UnnestRecordBatch extends AbstractTableFunctionRecordBatch<UnnestPO
       try {
         stats.startSetup();
         logger.debug("First batch received");
-        schemaChanged(); // checks if schema has changed (redundant in this case becaause it has) AND saves the
+        schemaChanged(); // checks if schema has changed (redundant in this case because it has) AND saves the
                          // current field metadata for check in subsequent iterations
         setupNewSchema();
         stats.batchReceived(0, incoming.getRecordCount(), true);
@@ -285,7 +285,7 @@ public class UnnestRecordBatch extends AbstractTableFunctionRecordBatch<UnnestPO
     memoryManager.updateOutgoingStats(outputRecords);
     // If the current incoming record has spilled into two batches, we return
     // IterOutcome.OK so that the Lateral Join can keep calling next() until the
-    // entire incoming recods has been unnested. If the entire records has been
+    // entire incoming records has been unnested. If the entire records has been
     // unnested, we return EMIT and any blocking operators in the pipeline will
     // unblock.
     RecordBatchStats.logRecordBatchStats(RecordBatchIOType.OUTPUT, this, getRecordBatchStatsContext());

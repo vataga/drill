@@ -206,7 +206,7 @@ public abstract class AbstractMapVector extends AbstractContainerVector {
   /**
    * Returns a sequence of underlying child vectors.
    */
-  protected Collection<ValueVector> getChildren() {
+  public Collection<ValueVector> getChildren() {
     return vectors.values();
   }
 

@@ -19,8 +19,6 @@ package org.apache.drill.exec.physical.impl.lateraljoin;
 
 import ch.qos.logback.classic.Level;
 import org.apache.drill.categories.OperatorTest;
-import org.apache.drill.exec.client.DrillClient;
-import org.apache.drill.exec.physical.impl.aggregate.HashAggTemplate;
 import org.apache.drill.exec.planner.physical.PlannerSettings;
 import org.apache.drill.test.ClusterFixture;
 import org.apache.drill.test.ClusterFixtureBuilder;
@@ -54,11 +52,11 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
         .sessionOption(PlannerSettings.ENABLE_UNNEST_LATERAL_KEY, true)
         .maxParallelization(1);
     startCluster(builder);
-    logFixture = LogFixture.builder()
-      .toConsole()
-      .logger(DrillClient.class, CURRENT_LOG_LEVEL)
-      .logger(HashAggTemplate.class, CURRENT_LOG_LEVEL)
-      .build();
+//    logFixture = LogFixture.builder()
+//      .toConsole()
+////      .logger(DrillClient.class, CURRENT_LOG_LEVEL)
+////      .logger(HashAggTemplate.class, CURRENT_LOG_LEVEL)
+//      .build();
   }
 
   /***********************************************************************************************
@@ -381,7 +379,7 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_orderkey as o_orderkey, t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord)" +
       " ORDER BY o_totalprice DESC) orders WHERE customer.c_custkey = '7180' LIMIT 1";
-
+    // todo: check output of query and the number of rows, if the count is right, possibly need to correctly update the old vector. If not - actual solution is bad
     testBuilder()
       .sqlQuery(sql)
       .ordered()
@@ -533,7 +531,11 @@ public class TestE2EUnnestAndLateral extends ClusterTest {
       "FROM dfs.`lateraljoin/multipleFiles` customer, LATERAL " +
       "(SELECT t.ord.o_totalprice as o_totalprice FROM UNNEST(customer.c_orders) t(ord) WHERE t.ord.o_totalprice > 100000 LIMIT 2) " +
       "orders GROUP BY customer.c_name";
-    runAndLog(sql);
+    String sql2 = "ALTER SESSION SET `store.parquet.reader.int96_as_timestamp`=true";
+//    runAndPrint(sql2);
+    String sql3 = "select * from dfs.`lateraljoin/multipleFiles`";
+//    runAndPrint(sql3);
+    runAndPrint(sql); // todo
   }
 
   @Test

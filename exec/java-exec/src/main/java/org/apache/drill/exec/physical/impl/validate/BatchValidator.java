@@ -19,6 +19,8 @@ package org.apache.drill.exec.physical.impl.validate;
 
 import org.apache.drill.common.types.TypeProtos.MinorType;
 import org.apache.drill.exec.physical.rowSet.RowSet;
+import org.apache.drill.exec.physical.rowSet.RowSetFormatter;
+import org.apache.drill.exec.physical.rowSet.RowSets;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.record.SimpleVectorWrapper;
 import org.apache.drill.exec.record.VectorAccessible;
@@ -179,8 +181,8 @@ public class BatchValidator {
   public static boolean validate(RecordBatch batch) {
     // This is a handy place to trace batches as they flow up
     // the DAG. Works best for single-threaded runs with a few records.
-//     System.out.println(batch.getClass().getSimpleName());
-//     RowSetFormatter.print(RowSets.wrap(batch));
+     System.out.println(batch.getClass().getSimpleName());
+     RowSetFormatter.print(RowSets.wrap(batch));
     ErrorReporter reporter = errorReporter(batch);
     int rowCount = batch.getRecordCount();
     int valueCount = rowCount;
@@ -194,6 +196,11 @@ public class BatchValidator {
       // Row count <= container count for the filter operator.
 
       int containerRowCount = container.getRecordCount();
+//      if (batch instanceof FilterRecordBatch || batch instanceof RuntimeFilterRecordBatch) {
+//        assert valueCount <= containerRowCount;
+//      } else {
+//        valueCount = containerRowCount;
+//      }
       valueCount = containerRowCount;
       switch (batch.getSchema().getSelectionVectorMode()) {
       case FOUR_BYTE:
@@ -206,6 +213,7 @@ public class BatchValidator {
         }
         // TODO: Don't know how to check SV4 batches
         return true;
+//        break;
       case TWO_BYTE:
         int sv2Count = batch.getSelectionVector2().getCount();
         if (sv2Count != rowCount) {
@@ -281,6 +289,9 @@ public class BatchValidator {
   private void validateVector(String name, int expectedCount, ValueVector vector) {
     int valueCount = vector.getAccessor().getValueCount();
     if (valueCount != expectedCount) {
+      // schema change -> 1 -> 1
+//      logger.info("validateVector");
+//      System.out.println("validateVector sout");
       error(name, vector,
           String.format("Row count = %d, but value count = %d",
               expectedCount, valueCount));

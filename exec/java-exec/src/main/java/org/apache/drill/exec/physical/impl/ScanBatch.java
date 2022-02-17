@@ -262,7 +262,7 @@ public class ScanBatch implements CloseableRecordBatch {
       }
 
       if (isNewSchema) {
-        // Even when recordCount = 0, we should return return OK_NEW_SCHEMA if current reader presents a new schema.
+        // Even when recordCount = 0, we should return OK_NEW_SCHEMA if current reader presents a new schema.
         // This could happen when data sources have a non-trivial schema with 0 row.
         container.buildSchema(SelectionVectorMode.NONE);
         schema = container.getSchema();
@@ -512,12 +512,7 @@ public class ScanBatch implements CloseableRecordBatch {
     private <T extends ValueVector> T addField(MaterializedField field,
         Class<T> clazz, boolean isImplicitField) throws SchemaChangeException {
       Map<String, ValueVector> fieldVectorMap;
-
-      if (isImplicitField) {
-        fieldVectorMap = implicitFieldVectorMap;
-      } else {
-        fieldVectorMap = regularFieldVectorMap;
-      }
+      fieldVectorMap = isImplicitField ? implicitFieldVectorMap : regularFieldVectorMap;
 
       if (!isImplicitField && implicitFieldVectorMap.containsKey(field.getName()) ||
           isImplicitField && regularFieldVectorMap.containsKey(field.getName())) {

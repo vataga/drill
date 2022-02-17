@@ -204,7 +204,7 @@ public class OperatorDriver {
     }
     int newVersion = batchAccessor.schemaVersion();
     boolean schemaChanged = newVersion != schemaVersion;
-
+//    schemaChanged = false;
     // Set the container schema changed based on whether the
     // current schema differs from that the last time through
     // this method. That is, we take "schema changed" to be
