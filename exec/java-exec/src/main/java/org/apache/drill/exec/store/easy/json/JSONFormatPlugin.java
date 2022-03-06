@@ -91,7 +91,7 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
       .defaultName(PLUGIN_NAME)
       .readerOperatorType(READER_OPERATOR_TYPE)
       .writerOperatorType(WRITER_OPERATOR_TYPE)
-      .useEnhancedScan(false)
+      .scanVersion(ScanFrameworkVersion.EVF_V1)
       .supportsLimitPushdown(true)
       .supportsStatistics(true)
       .build();
@@ -185,15 +185,6 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
         stream.close();
       }
     }
-  }
-
-  @Override
-  protected boolean useEnhancedScan(OptionSet options) {
-    // Create the "legacy", "V1" reader or the new "V2" version based on
-    // the result set loader. The V2 version is a bit more robust, and
-    // supports the row set framework. However, V1 supports unions.
-    // This code should be temporary.
-    return options.getBoolean(ExecConstants.ENABLE_V2_JSON_READER_KEY);
   }
 
   @Override
