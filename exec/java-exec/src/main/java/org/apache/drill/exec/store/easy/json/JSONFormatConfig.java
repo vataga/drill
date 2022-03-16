@@ -28,12 +28,11 @@ import org.apache.drill.shaded.guava.com.google.common.collect.ImmutableList;
 import java.util.List;
 import java.util.Objects;
 
-import static org.apache.drill.exec.store.easy.json.JSONFormatPlugin.DEFAULT_EXTN;
 import static org.apache.drill.exec.store.easy.json.JSONFormatPlugin.PLUGIN_NAME;
 
 @JsonTypeName(PLUGIN_NAME)
 public class JSONFormatConfig implements FormatPluginConfig {
-  private static final List<String> DEFAULT_EXTS = ImmutableList.of(DEFAULT_EXTN);
+  private static final List<String> DEFAULT_EXTS = ImmutableList.of("json");
 
   private final List<String> extensions;
   private final Boolean allTextMode;
@@ -44,14 +43,13 @@ public class JSONFormatConfig implements FormatPluginConfig {
 
   @JsonCreator
   public JSONFormatConfig(
-    @JsonProperty("extensions") List<String> extensions,
-    @JsonProperty("allTextMode") Boolean allTextMode,
-    @JsonProperty("readNumbersAsDouble") Boolean readNumbersAsDouble,
-    @JsonProperty("skipMalformedJSONRecords") Boolean skipMalformedJSONRecords,
-    @JsonProperty("escapeAnyChar") Boolean escapeAnyChar,
-    @JsonProperty("nanInf") Boolean nanInf) {
-    this.extensions = extensions == null ?
-      DEFAULT_EXTS : ImmutableList.copyOf(extensions);
+      @JsonProperty("extensions") List<String> extensions,
+      @JsonProperty("allTextMode") Boolean allTextMode,
+      @JsonProperty("readNumbersAsDouble") Boolean readNumbersAsDouble,
+      @JsonProperty("skipMalformedJSONRecords") Boolean skipMalformedJSONRecords,
+      @JsonProperty("escapeAnyChar") Boolean escapeAnyChar,
+      @JsonProperty("nanInf") Boolean nanInf) {
+    this.extensions = extensions == null ? DEFAULT_EXTS : ImmutableList.copyOf(extensions);
     this.allTextMode = allTextMode;
     this.readNumbersAsDouble = readNumbersAsDouble;
     this.skipMalformedJSONRecords = skipMalformedJSONRecords;

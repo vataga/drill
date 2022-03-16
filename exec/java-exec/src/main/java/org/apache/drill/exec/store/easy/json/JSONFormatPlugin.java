@@ -62,7 +62,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
   private static final Logger logger = LoggerFactory.getLogger(JSONFormatPlugin.class);
   public static final String PLUGIN_NAME = "json";
-  public static final String DEFAULT_EXTN = "json";
   private static final boolean IS_COMPRESSIBLE = true;
 
   public static final String READER_OPERATOR_TYPE = "JSON_SUB_SCAN";
@@ -189,6 +188,17 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
         stream.close();
       }
     }
+  }
+
+  @Override
+  protected ScanFrameworkVersion scanVersion(OptionSet options) {
+    // Create the "legacy", "V1" reader or the new "V2" version based on
+    // the result set loader. The V2 version is a bit more robust, and
+    // supports the row set framework. However, V1 supports unions.
+    // This code should be temporary.
+    return options.getBoolean(ExecConstants.ENABLE_V2_JSON_READER_KEY)
+      ? ScanFrameworkVersion.EVF_V1
+      : ScanFrameworkVersion.CLASSIC;
   }
 
   @Override
