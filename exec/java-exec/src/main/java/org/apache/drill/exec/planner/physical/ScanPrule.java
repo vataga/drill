@@ -34,7 +34,7 @@ public class ScanPrule extends Prule {
 
   @Override
   public void onMatch(RelOptRuleCall call) {
-    final DrillScanRel scan = (DrillScanRel) call.rel(0);
+    final DrillScanRel scan = call.rel(0);
 
     GroupScan groupScan = scan.getGroupScan();
 

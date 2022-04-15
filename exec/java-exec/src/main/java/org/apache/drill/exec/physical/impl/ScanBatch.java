@@ -99,15 +99,13 @@ public class ScanBatch implements CloseableRecordBatch {
   private boolean isRepeatableScan;      // needed for repeatable scanners
 
   /**
-   *
    * @param context
    * @param oContext
    * @param readerList
    * @param implicitColumnList : either an empty list when all the readers do not have implicit
    *                        columns, or there is a one-to-one mapping between reader and implicitColumns.
    */
-  public ScanBatch(FragmentContext context,
-                   OperatorContext oContext, List<? extends RecordReader> readerList,
+  public ScanBatch(FragmentContext context, OperatorContext oContext, List<? extends RecordReader> readerList,
                    List<Map<String, String>> implicitColumnList) {
     this.context = context;
     this.readers = readerList.iterator();

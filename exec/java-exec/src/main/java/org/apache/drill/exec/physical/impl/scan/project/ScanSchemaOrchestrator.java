@@ -316,7 +316,7 @@ public class ScanSchemaOrchestrator {
     }
 
     public OperatorRecordBatch buildScanOperator(FragmentContext fragContext, PhysicalOperator pop) {
-      return new OperatorRecordBatch(fragContext, pop, buildScan(), enableSchemaBatch);
+      return new OperatorRecordBatch(fragContext, pop, buildScan(), true); //
     }
 
     public abstract ScanOperatorEvents buildEvents();

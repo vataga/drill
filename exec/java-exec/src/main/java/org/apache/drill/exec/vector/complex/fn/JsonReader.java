@@ -42,9 +42,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import io.netty.buffer.DrillBuf;
 
+/**
+ * This is used by old-style {@link org.apache.drill.exec.store.easy.json.JSONRecordReader}.
+ * Please use new {@link org.apache.drill.exec.store.easy.json.loader.JsonLoaderImpl} along with
+ * {@link org.apache.drill.exec.store.easy.json.JsonBatchReader} instead of this reader
+ */
+@Deprecated
 public class JsonReader extends BaseJsonReader {
-  private static final Logger logger =
-      LoggerFactory.getLogger(JsonReader.class);
+  private static final Logger logger = LoggerFactory.getLogger(JsonReader.class);
   public final static int MAX_RECORD_SIZE = 128 * 1024;
 
   private final WorkingBuffer workingBuffer;

@@ -78,8 +78,7 @@ public class OperatorRecordBatch implements CloseableRecordBatch {
       throw UserException.executionError(t)
         .addContext("Exception thrown from", opExec.getClass().getSimpleName() + ".bind()")
         .build(logger);
-    }
-    finally {
+    } finally {
       opContext.getStats().stopProcessing();
     }
   }

@@ -72,6 +72,7 @@ public class TestJsonModes extends ClusterTest {
       .addNullable("float", MinorType.VARCHAR)
       .build();
 
+
     expected = new RowSetBuilder(client.allocator(), expectedSchema)
       .addRow("2010", "17.4")
       .addRow("-2002", "-1.2")

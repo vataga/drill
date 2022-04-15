@@ -19,8 +19,6 @@ package org.apache.drill.exec.physical.impl.validate;
 
 import org.apache.drill.common.types.TypeProtos.MinorType;
 import org.apache.drill.exec.physical.rowSet.RowSet;
-import org.apache.drill.exec.physical.rowSet.RowSetFormatter;
-import org.apache.drill.exec.physical.rowSet.RowSets;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.record.SimpleVectorWrapper;
 import org.apache.drill.exec.record.VectorAccessible;
@@ -182,7 +180,7 @@ public class BatchValidator {
     // This is a handy place to trace batches as they flow up
     // the DAG. Works best for single-threaded runs with a few records.
 //     System.out.println(batch.getClass().getSimpleName());
-//     RowSetFormatter.print(RowSets.wrap(batch));
+///     RowSetFormatter.print(RowSets.wrap(batch));
     ErrorReporter reporter = errorReporter(batch);
     int rowCount = batch.getRecordCount();
     int valueCount = rowCount;

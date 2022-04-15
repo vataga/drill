@@ -115,7 +115,7 @@ public class SingleSchemaInference {
       return inferUnionSchema((UnionVector) dataVector);
     }
     final VariantSchema schema = new VariantSchema();
-    if (! vector.isEmptyType()) {
+    if (!vector.isEmptyType()) {
       schema.addType(inferVector(dataVector));
     }
     return schema;
