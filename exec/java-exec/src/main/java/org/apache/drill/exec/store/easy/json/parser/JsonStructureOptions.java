@@ -17,6 +17,7 @@
  */
 package org.apache.drill.exec.store.easy.json.parser;
 
+import org.apache.drill.shaded.guava.com.google.common.annotations.VisibleForTesting;
 import org.apache.drill.exec.ExecConstants;
 import org.apache.drill.exec.server.options.OptionSet;
 
@@ -56,6 +57,8 @@ public class JsonStructureOptions {
 
   public boolean enableEscapeAnyChar;
 
+  @Deprecated // for production
+  @VisibleForTesting
   public JsonStructureOptions() { }
 
   public JsonStructureOptions(OptionSet options) {

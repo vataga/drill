@@ -134,12 +134,10 @@ public class JSONFormatPlugin extends EasyFormatPlugin<JSONFormatConfig> {
 
   private Map<String, String> setupOptions(FragmentContext context, EasyWriter writer, boolean statsOptions) {
     Map<String, String> options = new HashMap<>();
-    options.put("location", writer.getLocation());
-
     OptionSet optionMgr = context.getOptions();
     FragmentHandle handle = context.getHandle();
-    String fragmentId = String.format("%d_%d", handle.getMajorFragmentId(), handle.getMinorFragmentId());
-    options.put("prefix", fragmentId);
+    options.put("location", writer.getLocation());
+    options.put("prefix", handle.getMajorFragmentId() + "_" + handle.getMinorFragmentId());
     options.put("separator", " ");
     options.put("extension", "json");
     options.put("extended", Boolean.toString(optionMgr.getBoolean(ExecConstants.JSON_EXTENDED_TYPES_KEY)));

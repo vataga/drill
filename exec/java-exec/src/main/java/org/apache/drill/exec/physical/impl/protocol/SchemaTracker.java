@@ -24,6 +24,8 @@ import org.apache.drill.exec.record.BatchSchema;
 import org.apache.drill.exec.record.VectorContainer;
 import org.apache.drill.exec.record.VectorWrapper;
 import org.apache.drill.exec.vector.ValueVector;
+import org.apache.drill.exec.vector.complex.AbstractMapVector;
+import org.apache.drill.exec.vector.complex.VectorWithOrdinal;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,19 +70,13 @@ public class SchemaTracker {
   private List<ValueVector> currentVectors = new ArrayList<>();
 
   public void trackSchema(VectorContainer newBatch) {
-    if (schemaVersion == 0 || ! sameVectors(newBatch)) {
-      updateCurrentVectors(newBatch);
-      BatchSchema newSchema = newBatch.getSchema();
-
-//      if (newSchema != null && !newSchema.equals(currentSchema) ) {
-        schemaVersion++;
-        currentSchema = newSchema;
-//      }
-//      currentSchema = newSchema;
+    if (schemaVersion == 0 || ! isSameSchema(newBatch)) {
+      schemaVersion++;
+      captureSchema(newBatch);
     }
   }
 
-  private boolean sameVectors(VectorContainer newBatch) {
+  private boolean isSameSchema(VectorContainer newBatch) {
     if (currentVectors.size() != newBatch.getNumberOfColumns()) {
       return false;
     }
@@ -89,18 +85,54 @@ public class SchemaTracker {
     // must be same instance.
 
     for (int i = 0; i < currentVectors.size(); i++) {
-      if (currentVectors.get(i) != newBatch.getValueVector(i).getValueVector()) {
+      ValueVector currentVector = currentVectors.get(i);
+      ValueVector newVector = newBatch.getValueVector(i).getValueVector();
+      if (currentVector != newVector) {
+        if (currentVector instanceof AbstractMapVector && newVector instanceof AbstractMapVector) {
+          if (!sameMapVectors((AbstractMapVector) currentVector, (AbstractMapVector) newVector)) {
+            logger.debug("MapVectors are different");
+            return false;
+          }
+          logger.debug("MapVectors are the same");
+        } else {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+  private boolean sameMapVectors(AbstractMapVector currentVector, AbstractMapVector newVector) {
+    if (currentVector.getValueCapacity() != newVector.getValueCapacity()) {
+      return false;
+    } else if (currentVector.size() != newVector.size()) {
+      return false;
+    }
+    for (int i = 0; i < currentVector.size(); i++) {
+      ValueVector childCurrent = currentVector.getChildByOrdinal(i);
+      String fieldName = childCurrent.getField().getName();
+      VectorWithOrdinal childNew = newVector.getChildVectorWithOrdinal(fieldName);
+      if (childNew == null) {
+        return false;
+      } else if (childNew.ordinal != i) {
+        return false;
+      } else if (childCurrent instanceof AbstractMapVector && childNew.vector instanceof AbstractMapVector) {
+        if (!sameMapVectors((AbstractMapVector) childCurrent, (AbstractMapVector) childNew.vector)) {
+          return false;
+        }
+      } else if (!childCurrent.equals(childNew.vector)) {
         return false;
       }
     }
     return true;
   }
 
-  private void updateCurrentVectors(VectorContainer newBatch) {
+  private void captureSchema(VectorContainer newBatch) {
     currentVectors.clear();
     for (VectorWrapper<?> vw : newBatch) {
       currentVectors.add(vw.getValueVector());
     }
+    currentSchema = newBatch.getSchema();
   }
 
   public int schemaVersion() { return schemaVersion; }

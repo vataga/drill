@@ -78,6 +78,10 @@ import com.sun.codemodel.JVar;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import static org.apache.drill.exec.record.RecordBatch.IterOutcome.EMIT;
+import static org.apache.drill.exec.record.RecordBatch.IterOutcome.OK;
+import static org.apache.drill.exec.record.RecordBatch.IterOutcome.OK_NEW_SCHEMA;
+
 public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
   static final Logger logger = LoggerFactory.getLogger(HashAggBatch.class);
 
@@ -90,6 +94,7 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
   private BatchSchema incomingSchema;
   private boolean wasKilled;
   private List<BaseWriter.ComplexWriter> complexWriters;
+  private IterOutcome lastKnownOutcome = OK; // keep track of the outcome from the previous call to incoming.next
 
   private int numGroupByExprs;
   private int numAggrExprs;
@@ -314,8 +319,8 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
       case RETURN_OUTCOME:
         // rebuilds the schema in the case of complex writer expressions,
         // since vectors would be added to batch run-time
-        IterOutcome outcome = aggregator.getOutcome();
-        switch (outcome) {
+        lastKnownOutcome = aggregator.getOutcome();
+        switch (lastKnownOutcome) {
           case OK:
           case OK_NEW_SCHEMA:
             if (firstBatch) {
@@ -326,22 +331,52 @@ public class HashAggBatch extends AbstractRecordBatch<HashAggregate> {
                 // two hash aggs are stacked, we get an error if the
                 // upstream one returns OK_NEW_SCHEMA first. Not sure the
                 // details, only know several tests fail.
-                outcome = IterOutcome.OK_NEW_SCHEMA;
+                lastKnownOutcome = IterOutcome.OK_NEW_SCHEMA;
               }
               firstBatch = false;
             }
             break;
           default:
         }
-        return outcome;
+        return lastKnownOutcome;
 
       case UPDATE_AGGREGATOR:
-        throw UserException.unsupportedError()
-            .message(SchemaChangeException.schemaChanged(
-                "Hash aggregate does not support schema change",
-                incomingSchema,
-                incoming.getSchema()).getMessage())
-            .build(logger);
+//        throw UserException.unsupportedError()
+//            .message(SchemaChangeException.schemaChanged(
+//                "Hash aggregate does not support schema change",
+//                incomingSchema,
+//                incoming.getSchema()).getMessage())
+//            .build(logger);
+
+        // We could get this either between data sets or within a data set.
+        // If the former, we can handle the change and so need to update the aggregator and
+        // continue. If the latter, we cannot (currently) handle the schema change, so throw
+        // and exception
+        // This case is not tested since there are no unit tests for this and there is no support
+        // from the sort operator for this case
+//        if (aggregator.getOutcome() == OK) {
+//        if (firstBatch) {
+//          if (CollectionUtils.isNotEmpty(complexWriters)) {
+//            container.buildSchema(SelectionVectorMode.NONE);
+//            // You'd be forgiven for thinking we should always return
+//            // OK_NEW_SCHEMA for the first batch. It turns out, when
+//            // two hash aggs are stacked, we get an error if the
+//            // upstream one returns OK_NEW_SCHEMA first. Not sure the
+//            // details, only know several tests fail.
+//            lastKnownOutcome = IterOutcome.OK_NEW_SCHEMA;
+//          }
+//          firstBatch = false;
+//          return OK_NEW_SCHEMA;
+//        }
+        createAggregator();
+        lastKnownOutcome = EMIT;
+        return OK_NEW_SCHEMA;
+//        } else {
+//          throw UserException.schemaChangeError(SchemaChangeException.schemaChanged(
+//              "Streaming aggregate does not support schema changes", incomingSchema,
+//              incoming.getSchema()))
+//            .build(logger);
+//        }
       default:
         throw new IllegalStateException(String.format("Unknown state %s.", out));
     }

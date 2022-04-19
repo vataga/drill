@@ -174,7 +174,7 @@ public class MongoRecordReader extends AbstractRecordReader {
     if (isBsonRecordReader) {
       this.bsonReader = new BsonRecordReader(fragmentContext.getManagedBuffer(), Lists.newArrayList(getColumns()),
           readNumbersAsDouble);
-      logger.debug("Initialized BsonRecordReader. ");
+      logger.debug("Initialized BsonRecordReader");
     } else {
       this.jsonReader = new JsonReader.Builder(fragmentContext.getManagedBuffer())
           .schemaPathColumns(Lists.newArrayList(getColumns()))
@@ -182,7 +182,7 @@ public class MongoRecordReader extends AbstractRecordReader {
           .readNumbersAsDouble(readNumbersAsDouble)
           .enableNanInf(enableNanInf)
           .build();
-      logger.debug(" Intialized JsonRecordReader. ");
+      logger.debug("Intialized JsonRecordReader");
     }
   }
 

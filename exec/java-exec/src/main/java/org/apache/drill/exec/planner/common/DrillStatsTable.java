@@ -50,6 +50,7 @@ import org.apache.drill.exec.store.StoragePlugin;
 import org.apache.drill.exec.store.dfs.FileSystemPlugin;
 import org.apache.drill.exec.store.dfs.FormatPlugin;
 import org.apache.drill.exec.store.dfs.FormatSelection;
+import org.apache.drill.exec.store.easy.json.JSONFormatPlugin;
 import org.apache.drill.exec.store.parquet.ParquetFormatConfig;
 import org.apache.drill.exec.util.ImpersonationUtil;
 import org.apache.drill.metastore.statistics.Histogram;
@@ -70,6 +71,7 @@ public class DrillStatsTable {
   public enum STATS_VERSION {V0, V1}
   // The current version
   public static final STATS_VERSION CURRENT_VERSION = STATS_VERSION.V1;
+  public static final String DEFAULT_TABLE_FORMAT = JSONFormatPlugin.PLUGIN_NAME;
   // 10 histogram buckets (TODO: can make this configurable later)
   public static final int NUM_HISTOGRAM_BUCKETS = 10;
 

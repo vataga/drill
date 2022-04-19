@@ -75,18 +75,18 @@ public class VariantSchema implements VariantMetadata {
     checkType(col.type());
     Preconditions.checkArgument(col.name().equals(Types.typeKey(col.type())));
     switch (col.type()) {
-    case UNION:
-      throw new IllegalArgumentException("Cannot add a union to a union");
-    case LIST:
-      if (col.mode() == DataMode.REQUIRED) {
-        throw new IllegalArgumentException("List type column must be OPTIONAL or REPEATED");
-      }
-      break;
-    default:
-      if (col.mode() != DataMode.OPTIONAL) {
-        throw new IllegalArgumentException("Type column must be OPTIONAL");
-      }
-      break;
+      case UNION:
+        throw new IllegalArgumentException("Cannot add a union to a union");
+      case LIST:
+        if (col.mode() == DataMode.REQUIRED) {
+          throw new IllegalArgumentException("List type column must be OPTIONAL or REPEATED");
+        }
+        break;
+      default:
+        if (col.mode() != DataMode.OPTIONAL) {
+          throw new IllegalArgumentException("Type column must be OPTIONAL");
+        }
+        break;
     }
     types.put(col.type(), col);
   }

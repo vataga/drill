@@ -19,6 +19,7 @@ package org.apache.drill.exec.store.dfs;
 
 import static java.util.Collections.unmodifiableList;
 import static org.apache.drill.exec.dotdrill.DotDrillType.STATS;
+import static org.apache.drill.exec.planner.common.DrillStatsTable.DEFAULT_TABLE_FORMAT;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -67,7 +68,6 @@ import org.apache.drill.exec.record.metadata.schema.FsMetastoreSchemaProvider;
 import org.apache.drill.exec.store.AbstractSchema;
 import org.apache.drill.exec.store.PartitionNotFoundException;
 import org.apache.drill.exec.store.SchemaConfig;
-import org.apache.drill.exec.store.easy.json.JSONFormatPlugin;
 import org.apache.drill.exec.store.table.function.TableParamDef;
 import org.apache.drill.exec.store.table.function.TableSignature;
 import org.apache.drill.exec.store.table.function.WithOptionsTableMacro;
@@ -516,7 +516,7 @@ public class WorkspaceSchemaFactory {
       try {
         Path stFPath = null;
         if (dpsFs.isDirectory(tablePath)) {
-          stFPath = new Path(tablePath, STATS.getEnding()+ Path.SEPARATOR + "0_0.json");
+          stFPath = new Path(tablePath, STATS.getEnding() + Path.SEPARATOR + "0_0.json");
           if (dpsFs.isFile(stFPath)) {
             return stFPath;
           }
@@ -554,7 +554,7 @@ public class WorkspaceSchemaFactory {
     public CreateTableEntry createStatsTable(String tableName) {
       ensureNotStatsTable(tableName);
       final String statsTableName = getStatsTableName(tableName);
-      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.PLUGIN_NAME);
+      FormatPlugin formatPlugin = plugin.getFormatPlugin(DEFAULT_TABLE_FORMAT);
       return createOrAppendToTable(statsTableName, formatPlugin, Collections.emptyList(),
           StorageStrategy.DEFAULT);
     }
@@ -563,7 +563,7 @@ public class WorkspaceSchemaFactory {
     public CreateTableEntry appendToStatsTable(String tableName) {
       ensureNotStatsTable(tableName);
       final String statsTableName = getStatsTableName(tableName);
-      FormatPlugin formatPlugin = plugin.getFormatPlugin(JSONFormatPlugin.PLUGIN_NAME);
+      FormatPlugin formatPlugin = plugin.getFormatPlugin(DEFAULT_TABLE_FORMAT);
       return createOrAppendToTable(statsTableName, formatPlugin, Collections.emptyList(),
           StorageStrategy.DEFAULT);
     }
