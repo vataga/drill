@@ -49,7 +49,6 @@ import org.apache.drill.exec.record.CloseableRecordBatch;
 import org.apache.drill.exec.record.RecordBatch;
 import org.apache.drill.exec.server.DrillbitContext;
 import org.apache.drill.exec.server.options.OptionSet;
-import org.apache.drill.exec.store.ColumnExplorer;
 import org.apache.drill.exec.store.RecordReader;
 import org.apache.drill.exec.store.RecordWriter;
 import org.apache.drill.exec.store.StatisticsRecordWriter;
@@ -130,7 +129,7 @@ public abstract class EasyFormatPlugin<T extends FormatPluginConfig> implements 
     /**
      *  Choose whether to use the "traditional" or "enhanced" reader
      *  structure. Can also be selected at runtime by overriding
-     *  {@link #useEnhancedScan()}.
+     *  {@link #scanVersion()}.
      */
     private final ScanFrameworkVersion scanVersion;
 
