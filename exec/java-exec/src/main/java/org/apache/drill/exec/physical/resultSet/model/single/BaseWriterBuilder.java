@@ -135,8 +135,7 @@ public abstract class BaseWriterBuilder {
       final VectorDescrip memberDescrip = new VectorDescrip(mdProvider, i++, memberVector.getField());
       variants[type.ordinal()] = buildVectorWriter(memberVector, memberDescrip);
     }
-    return new VariantObjectWriter(
-        new UnionWriterImpl(descrip.metadata, vector, variants));
+    return new VariantObjectWriter(new UnionWriterImpl(descrip.metadata, vector, variants));
   }
 
   private AbstractObjectWriter buildList(ValueVector vector,

@@ -31,13 +31,15 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import static org.apache.drill.exec.ExecConstants.ENABLE_UNION_TYPE_KEY;
 import static org.apache.drill.test.TestBuilder.listOf;
 import static org.apache.drill.test.TestBuilder.mapOf;
 
 public class TestComplexTypeReader extends BaseTestQuery {
   @BeforeClass
   public static void init() throws Exception {
-    testNoResult("alter session set `exec.enable_union_type` = true");
+    setSessionOption(ENABLE_UNION_TYPE_KEY, true);
+//    setSessionOption(ENABLE_V2_JSON_READER_KEY, false);
   }
 
   @Test
@@ -230,7 +232,8 @@ public class TestComplexTypeReader extends BaseTestQuery {
   @Test
   // Test SplitUpComplexExpressions rule which splits complex expression into multiple projects
   public void testComplexAndSimpleColumnSelection() throws Exception {
-    test("select t.a.b, kvgen(t.a.c) from cp.`jsoninput/input4.json` t");
+//    test("select t.a.b, kvgen(t.a.c) from cp.`jsoninput/input4.json` t");
+    test("select t.a.b from cp.`jsoninput/input4.json` t");
   }
 
   @Test

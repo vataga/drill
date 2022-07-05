@@ -128,8 +128,7 @@ public class UnionWriterImpl implements VariantWriter, WriterEvents {
     this.schema = schema;
   }
 
-  public UnionWriterImpl(ColumnMetadata schema, UnionVector vector,
-      AbstractObjectWriter variants[]) {
+  public UnionWriterImpl(ColumnMetadata schema, UnionVector vector, AbstractObjectWriter variants[]) {
     this(schema);
     bindShim(new UnionVectorShim(vector, variants));
   }

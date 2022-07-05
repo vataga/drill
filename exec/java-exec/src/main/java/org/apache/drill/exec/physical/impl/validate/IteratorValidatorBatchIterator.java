@@ -335,11 +335,11 @@ public class IteratorValidatorBatchIterator implements CloseableRecordBatch {
 
   private void validateBatch() {
     if (validateBatches || VALIDATE_VECTORS) {
-      if (!BatchValidator.validate(incoming)) {
-        throw new IllegalStateException(
-            "Batch validation failed. Source operator: " +
-            incoming.getClass().getSimpleName());
-      }
+//      if (!BatchValidator.validate(incoming)) {
+//        throw new IllegalStateException(
+//            "Batch validation failed. Source operator: " +
+//            incoming.getClass().getSimpleName());
+//      }
       // The following validation currently calculates, and discards
       // a hash code. Since it requires manual checking, it is
       // disabled by default.

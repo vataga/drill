@@ -71,7 +71,7 @@ public class UnionVector implements ValueVector {
 
   static {
     for (MinorType minorType : MinorType.values()) {
-      TYPES[minorType.ordinal()] = Types.optional(minorType);
+      TYPES[minorType.getNumber()] = Types.optional(minorType);
     }
   }
 

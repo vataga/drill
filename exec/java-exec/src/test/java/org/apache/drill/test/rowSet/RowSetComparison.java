@@ -392,8 +392,7 @@ public class RowSetComparison {
     }
   }
 
-  private void verifyVariant(String label, VariantReader ev,
-      VariantReader av) {
+  private void verifyVariant(String label, VariantReader ev, VariantReader av) {
     assertEquals(label + " null", ev.isNull(), av.isNull());
     if (ev.isNull()) {
       return;

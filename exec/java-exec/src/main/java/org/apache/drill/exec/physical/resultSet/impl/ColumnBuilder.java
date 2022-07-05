@@ -327,8 +327,7 @@ public class ColumnBuilder {
     final UnionVectorState vectorState = new UnionVectorState(vector, unionWriter);
 
     // Create the manager for the columns within the union.
-    final UnionState unionState = new UnionState(parent.loader(),
-        parent.vectorCache().childCache(columnSchema.name()));
+    final UnionState unionState = new UnionState(parent.loader(), parent.vectorCache().childCache(columnSchema.name()));
 
     // Bind the union state to the union writer to handle column additions.
     unionWriter.bindListener(unionState);
@@ -375,8 +374,7 @@ public class ColumnBuilder {
     assert columnSchema.variantSchema().isSimple();
 
     // Create the manager for the one and only column within the list.
-    final ListState listState = new ListState(parent.loader(),
-        parent.vectorCache().childCache(columnSchema.name()));
+    final ListState listState = new ListState(parent.loader(), parent.vectorCache().childCache(columnSchema.name()));
 
     // Create the child vector, writer and state.
     final ColumnMetadata memberSchema = columnSchema.variantSchema().listSubtype();
@@ -389,8 +387,7 @@ public class ColumnBuilder {
     listVector.setChildVector(memberState.vector());
 
     // Create the list writer: an array of the one type.
-    final ListWriterImpl listWriter = new ListWriterImpl(columnSchema,
-        listVector, memberState.writer());
+    final ListWriterImpl listWriter = new ListWriterImpl(columnSchema, listVector, memberState.writer());
     final AbstractObjectWriter listObjWriter = new ArrayObjectWriter(listWriter);
 
     // Create the list vector state that tracks the list vector lifecycle.

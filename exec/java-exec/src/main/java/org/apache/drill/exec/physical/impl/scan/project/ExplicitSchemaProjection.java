@@ -29,6 +29,7 @@ import org.apache.drill.exec.record.metadata.ColumnMetadata;
 import org.apache.drill.exec.record.metadata.MetadataUtils;
 import org.apache.drill.exec.record.metadata.PrimitiveColumnMetadata;
 import org.apache.drill.exec.record.metadata.TupleMetadata;
+import org.apache.drill.exec.record.metadata.VariantSchema;
 import org.apache.drill.exec.vector.complex.DictVector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -127,8 +128,11 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
 
     // If the actual column isn't a map, try to change column datatype
     if (!column.isMap()) {
-      if(column.isScalar() && ((PrimitiveColumnMetadata) column).isSchemaForUnknown()) {
+      if (column.isScalar() && ((PrimitiveColumnMetadata) column).isSchemaForUnknown()) {
         column = MetadataUtils.newMap(column.name());
+      } else if (column.isVariant()) {
+//        column = MetadataUtils.newVariant(column.name(), TypeProtos.DataMode.OPTIONAL);
+        column = MetadataUtils.newVariant(column.schema(), (VariantSchema) column.variantSchema());
       } else {
         throw UserException
           .validationError()
@@ -145,7 +149,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     // members to project. Project these.
 
     ResolvedMapColumn mapCol = new ResolvedMapColumn(outputTuple, column.schema(), sourceIndex);
-    resolveTuple(mapCol.members(), requestedCol.tuple(), column.tupleSchema());
+    resolveTuple(mapCol.members(), requestedCol.tuple(), column.isVariant() ? column.variantSchema().listSubtype().tupleSchema() : column.tupleSchema());
 
     // If the projection is simple, then just project the map column
     // as is. A projection is simple if all map columns from the table
@@ -216,14 +220,11 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
     }
   }
 
-  private void resolveArray(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol, ColumnMetadata column,
+  private void resolveArray(ResolvedTuple outputTuple, RequestedColumn requestedCol, ColumnMetadata column,
       int sourceIndex) {
 
-    // If the actual column isn't a array or list,
-    // then the request is invalid.
-
-    if (column.type() != MinorType.LIST && ! column.isArray()) {
+    // If the actual column isn't an array or list, then the request is invalid.
+    if (column.type() != MinorType.LIST && !column.isArray()) {
       throw UserException
         .validationError()
         .message("Project list implies an array, but actual column is not an array")
@@ -235,9 +236,7 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
         .build(logger);
     }
 
-    // The project operator will do the actual array element
-    // projection.
-
+    // The project operator will do the actual array element projection.
     projectTableColumn(outputTuple, requestedCol, column, sourceIndex);
   }
 
@@ -259,13 +258,10 @@ public class ExplicitSchemaProjection extends ReaderLevelProjection {
    *          of the table vector to be projected)
    */
 
-  private void projectTableColumn(ResolvedTuple outputTuple,
-      RequestedColumn requestedCol,
-      ColumnMetadata column, int sourceIndex) {
+  private void projectTableColumn(ResolvedTuple outputTuple, RequestedColumn requestedCol, ColumnMetadata column,
+        int sourceIndex) {
      outputTuple.add(
-        new ResolvedTableColumn(requestedCol.name(),
-            MaterializedField.create(requestedCol.name(),
-                column.majorType()),
+        new ResolvedTableColumn(requestedCol.name(), MaterializedField.create(requestedCol.name(), column.majorType()),
             outputTuple, sourceIndex));
   }
 

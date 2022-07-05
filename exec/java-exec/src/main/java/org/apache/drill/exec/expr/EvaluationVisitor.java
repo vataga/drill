@@ -599,6 +599,7 @@ public class EvaluationVisitor {
       final boolean complex = Types.isComplex(type);
 
       if (!hasReadPath && !complex) {
+//      if (!complex) {
         return createHolderForVector(generator, recordIndex, vv1, type);
       } else {
         return createReaderForVector(e, generator, recordIndex, vv1, type);

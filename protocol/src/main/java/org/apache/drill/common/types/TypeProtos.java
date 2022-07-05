@@ -57,288 +57,285 @@ public final class TypeProtos {
      *  single byte signed integer
      * </pre>
      *
-     * <code>TINYINT = 3;</code>
+     * <code>TINYINT = 2;</code>
      */
-    TINYINT(3),
+    TINYINT(2),
     /**
      * <pre>
      *  two byte signed integer
      * </pre>
      *
-     * <code>SMALLINT = 4;</code>
+     * <code>SMALLINT = 3;</code>
      */
-    SMALLINT(4),
+    SMALLINT(3),
     /**
      * <pre>
      *  four byte signed integer
      * </pre>
      *
-     * <code>INT = 5;</code>
+     * <code>INT = 4;</code>
      */
-    INT(5),
+    INT(4),
     /**
      * <pre>
      *  eight byte signed integer
      * </pre>
      *
-     * <code>BIGINT = 6;</code>
+     * <code>BIGINT = 5;</code>
      */
-    BIGINT(6),
+    BIGINT(5),
     /**
      * <pre>
      *  a decimal supporting precision between 1 and 9
      * </pre>
      *
-     * <code>DECIMAL9 = 7;</code>
+     * <code>DECIMAL9 = 6;</code>
      */
-    DECIMAL9(7),
+    DECIMAL9(6),
     /**
      * <pre>
      *  a decimal supporting precision between 10 and 18
      * </pre>
      *
-     * <code>DECIMAL18 = 8;</code>
+     * <code>DECIMAL18 = 7;</code>
      */
-    DECIMAL18(8),
+    DECIMAL18(7),
     /**
      * <pre>
      *  a decimal supporting precision between 19 and 28
      * </pre>
      *
-     * <code>DECIMAL28SPARSE = 9;</code>
+     * <code>DECIMAL28SPARSE = 8;</code>
      */
-    DECIMAL28SPARSE(9),
+    DECIMAL28SPARSE(8),
     /**
      * <pre>
      *  a decimal supporting precision between 29 and 38
      * </pre>
      *
-     * <code>DECIMAL38SPARSE = 10;</code>
+     * <code>DECIMAL38SPARSE = 9;</code>
      */
-    DECIMAL38SPARSE(10),
+    DECIMAL38SPARSE(9),
     /**
      * <pre>
      *  signed decimal with two digit precision
      * </pre>
      *
-     * <code>MONEY = 11;</code>
+     * <code>MONEY = 10;</code>
      */
-    MONEY(11),
+    MONEY(10),
     /**
      * <pre>
      *  days since 4713bc
      * </pre>
      *
-     * <code>DATE = 12;</code>
+     * <code>DATE = 11;</code>
      */
-    DATE(12),
+    DATE(11),
     /**
      * <pre>
      *  time in micros before or after 2000/1/1
      * </pre>
      *
-     * <code>TIME = 13;</code>
+     * <code>TIME = 12;</code>
      */
-    TIME(13),
+    TIME(12),
     /**
      * <pre>
      *  time in micros before or after 2000/1/1 with timezone
      * </pre>
      *
-     * <code>TIMETZ = 14;</code>
+     * <code>TIMETZ = 13;</code>
      */
-    TIMETZ(14),
+    TIMETZ(13),
     /**
      * <pre>
      *  unix epoch time in millis
      * </pre>
      *
-     * <code>TIMESTAMPTZ = 15;</code>
+     * <code>TIMESTAMPTZ = 14;</code>
      */
-    TIMESTAMPTZ(15),
+    TIMESTAMPTZ(14),
     /**
      * <pre>
      *  TBD
      * </pre>
      *
-     * <code>TIMESTAMP = 16;</code>
+     * <code>TIMESTAMP = 15;</code>
      */
-    TIMESTAMP(16),
+    TIMESTAMP(15),
     /**
      * <pre>
      *  TBD
      * </pre>
      *
-     * <code>INTERVAL = 17;</code>
+     * <code>INTERVAL = 16;</code>
      */
-    INTERVAL(17),
+    INTERVAL(16),
     /**
      * <pre>
      *  4 byte ieee 754
      * </pre>
      *
-     * <code>FLOAT4 = 18;</code>
+     * <code>FLOAT4 = 17;</code>
      */
-    FLOAT4(18),
+    FLOAT4(17),
     /**
      * <pre>
      *  8 byte ieee 754
      * </pre>
      *
-     * <code>FLOAT8 = 19;</code>
+     * <code>FLOAT8 = 18;</code>
      */
-    FLOAT8(19),
+    FLOAT8(18),
     /**
      * <pre>
      *  single bit value (boolean)
      * </pre>
      *
-     * <code>BIT = 20;</code>
+     * <code>BIT = 19;</code>
      */
-    BIT(20),
+    BIT(19),
     /**
      * <pre>
      *  utf8 fixed length string, padded with spaces
      * </pre>
      *
-     * <code>FIXEDCHAR = 21;</code>
+     * <code>FIXEDCHAR = 20;</code>
      */
-    FIXEDCHAR(21),
+    FIXEDCHAR(20),
     /**
-     * <code>FIXED16CHAR = 22;</code>
+     * <code>FIXED16CHAR = 21;</code>
      */
-    FIXED16CHAR(22),
+    FIXED16CHAR(21),
     /**
      * <pre>
      *  fixed length binary, padded with 0 bytes
      * </pre>
      *
-     * <code>FIXEDBINARY = 23;</code>
+     * <code>FIXEDBINARY = 22;</code>
      */
-    FIXEDBINARY(23),
+    FIXEDBINARY(22),
     /**
      * <pre>
      *  utf8 variable length string
      * </pre>
      *
-     * <code>VARCHAR = 24;</code>
+     * <code>VARCHAR = 23;</code>
      */
-    VARCHAR(24),
+    VARCHAR(23),
     /**
      * <pre>
      * utf16 variable length string
      * </pre>
      *
-     * <code>VAR16CHAR = 25;</code>
+     * <code>VAR16CHAR = 24;</code>
      */
-    VAR16CHAR(25),
+    VAR16CHAR(24),
     /**
      * <pre>
      *  variable length binary
      * </pre>
      *
-     * <code>VARBINARY = 26;</code>
+     * <code>VARBINARY = 25;</code>
      */
-    VARBINARY(26),
+    VARBINARY(25),
     /**
      * <pre>
      *  unsigned 1 byte integer
      * </pre>
      *
-     * <code>UINT1 = 29;</code>
+     * <code>UINT1 = 26;</code>
      */
-    UINT1(29),
+    UINT1(26),
     /**
      * <pre>
      *  unsigned 2 byte integer
      * </pre>
      *
-     * <code>UINT2 = 30;</code>
+     * <code>UINT2 = 27;</code>
      */
-    UINT2(30),
+    UINT2(27),
     /**
      * <pre>
      *  unsigned 4 byte integer
      * </pre>
      *
-     * <code>UINT4 = 31;</code>
+     * <code>UINT4 = 28;</code>
      */
-    UINT4(31),
+    UINT4(28),
     /**
      * <pre>
      *  unsigned 8 byte integer
      * </pre>
      *
-     * <code>UINT8 = 32;</code>
+     * <code>UINT8 = 29;</code>
      */
-    UINT8(32),
+    UINT8(29),
     /**
      * <pre>
      * dense decimal representation, supporting precision between 19 and 28
      * </pre>
      *
-     * <code>DECIMAL28DENSE = 33;</code>
+     * <code>DECIMAL28DENSE = 30;</code>
      */
-    DECIMAL28DENSE(33),
+    DECIMAL28DENSE(30),
     /**
      * <pre>
      * dense decimal representation, supporting precision between 28 and 38
      * </pre>
      *
-     * <code>DECIMAL38DENSE = 34;</code>
+     * <code>DECIMAL38DENSE = 31;</code>
      */
-    DECIMAL38DENSE(34),
+    DECIMAL38DENSE(31),
     /**
      * <pre>
-     *    PROTO2 = 33;   //  protobuf encoded complex type. (up to 2^16 in length)
-     *    PROTO4 = 34;   //  protobuf encoded complex type. (up to 2^32 in length)
-     *    MSGPACK2 = 35;   //  msgpack encoded complex type. (up to 2^16 in length)
-     *    MSGPACK4 = 36;   //  msgpack encoded complex type. (up to 2^32 in length)
+     * a value of unknown type (e.g. a missing reference).
      * </pre>
      *
-     * <code>NULL = 37;</code>
+     * <code>NULL = 32;</code>
      */
-    NULL(37),
+    NULL(32),
     /**
      * <pre>
      * Interval type specifying YEAR to MONTH
      * </pre>
      *
-     * <code>INTERVALYEAR = 38;</code>
+     * <code>INTERVALYEAR = 33;</code>
      */
-    INTERVALYEAR(38),
+    INTERVALYEAR(33),
     /**
      * <pre>
      * Interval type specifying DAY to SECONDS
      * </pre>
      *
-     * <code>INTERVALDAY = 39;</code>
+     * <code>INTERVALDAY = 34;</code>
      */
-    INTERVALDAY(39),
+    INTERVALDAY(34),
     /**
-     * <code>LIST = 40;</code>
+     * <code>LIST = 35;</code>
      */
-    LIST(40),
+    LIST(35),
     /**
-     * <code>GENERIC_OBJECT = 41;</code>
+     * <code>GENERIC_OBJECT = 36;</code>
      */
-    GENERIC_OBJECT(41),
+    GENERIC_OBJECT(36),
     /**
-     * <code>UNION = 42;</code>
+     * <code>UNION = 37;</code>
      */
-    UNION(42),
+    UNION(37),
     /**
      * <pre>
      * variable width decimal (arbitrary precision)
      * </pre>
      *
-     * <code>VARDECIMAL = 43;</code>
+     * <code>VARDECIMAL = 38;</code>
      */
-    VARDECIMAL(43),
+    VARDECIMAL(38),
     /**
-     * <code>DICT = 44;</code>
+     * <code>DICT = 39;</code>
      */
-    DICT(44),
+    DICT(39),
     ;
 
     /**
@@ -362,288 +359,285 @@ public final class TypeProtos {
      *  single byte signed integer
      * </pre>
      *
-     * <code>TINYINT = 3;</code>
+     * <code>TINYINT = 2;</code>
      */
-    public static final int TINYINT_VALUE = 3;
+    public static final int TINYINT_VALUE = 2;
     /**
      * <pre>
      *  two byte signed integer
      * </pre>
      *
-     * <code>SMALLINT = 4;</code>
+     * <code>SMALLINT = 3;</code>
      */
-    public static final int SMALLINT_VALUE = 4;
+    public static final int SMALLINT_VALUE = 3;
     /**
      * <pre>
      *  four byte signed integer
      * </pre>
      *
-     * <code>INT = 5;</code>
+     * <code>INT = 4;</code>
      */
-    public static final int INT_VALUE = 5;
+    public static final int INT_VALUE = 4;
     /**
      * <pre>
      *  eight byte signed integer
      * </pre>
      *
-     * <code>BIGINT = 6;</code>
+     * <code>BIGINT = 5;</code>
      */
-    public static final int BIGINT_VALUE = 6;
+    public static final int BIGINT_VALUE = 5;
     /**
      * <pre>
      *  a decimal supporting precision between 1 and 9
      * </pre>
      *
-     * <code>DECIMAL9 = 7;</code>
+     * <code>DECIMAL9 = 6;</code>
      */
-    public static final int DECIMAL9_VALUE = 7;
+    public static final int DECIMAL9_VALUE = 6;
     /**
      * <pre>
      *  a decimal supporting precision between 10 and 18
      * </pre>
      *
-     * <code>DECIMAL18 = 8;</code>
+     * <code>DECIMAL18 = 7;</code>
      */
-    public static final int DECIMAL18_VALUE = 8;
+    public static final int DECIMAL18_VALUE = 7;
     /**
      * <pre>
      *  a decimal supporting precision between 19 and 28
      * </pre>
      *
-     * <code>DECIMAL28SPARSE = 9;</code>
+     * <code>DECIMAL28SPARSE = 8;</code>
      */
-    public static final int DECIMAL28SPARSE_VALUE = 9;
+    public static final int DECIMAL28SPARSE_VALUE = 8;
     /**
      * <pre>
      *  a decimal supporting precision between 29 and 38
      * </pre>
      *
-     * <code>DECIMAL38SPARSE = 10;</code>
+     * <code>DECIMAL38SPARSE = 9;</code>
      */
-    public static final int DECIMAL38SPARSE_VALUE = 10;
+    public static final int DECIMAL38SPARSE_VALUE = 9;
     /**
      * <pre>
      *  signed decimal with two digit precision
      * </pre>
      *
-     * <code>MONEY = 11;</code>
+     * <code>MONEY = 10;</code>
      */
-    public static final int MONEY_VALUE = 11;
+    public static final int MONEY_VALUE = 10;
     /**
      * <pre>
      *  days since 4713bc
      * </pre>
      *
-     * <code>DATE = 12;</code>
+     * <code>DATE = 11;</code>
      */
-    public static final int DATE_VALUE = 12;
+    public static final int DATE_VALUE = 11;
     /**
      * <pre>
      *  time in micros before or after 2000/1/1
      * </pre>
      *
-     * <code>TIME = 13;</code>
+     * <code>TIME = 12;</code>
      */
-    public static final int TIME_VALUE = 13;
+    public static final int TIME_VALUE = 12;
     /**
      * <pre>
      *  time in micros before or after 2000/1/1 with timezone
      * </pre>
      *
-     * <code>TIMETZ = 14;</code>
+     * <code>TIMETZ = 13;</code>
      */
-    public static final int TIMETZ_VALUE = 14;
+    public static final int TIMETZ_VALUE = 13;
     /**
      * <pre>
      *  unix epoch time in millis
      * </pre>
      *
-     * <code>TIMESTAMPTZ = 15;</code>
+     * <code>TIMESTAMPTZ = 14;</code>
      */
-    public static final int TIMESTAMPTZ_VALUE = 15;
+    public static final int TIMESTAMPTZ_VALUE = 14;
     /**
      * <pre>
      *  TBD
      * </pre>
      *
-     * <code>TIMESTAMP = 16;</code>
+     * <code>TIMESTAMP = 15;</code>
      */
-    public static final int TIMESTAMP_VALUE = 16;
+    public static final int TIMESTAMP_VALUE = 15;
     /**
      * <pre>
      *  TBD
      * </pre>
      *
-     * <code>INTERVAL = 17;</code>
+     * <code>INTERVAL = 16;</code>
      */
-    public static final int INTERVAL_VALUE = 17;
+    public static final int INTERVAL_VALUE = 16;
     /**
      * <pre>
      *  4 byte ieee 754
      * </pre>
      *
-     * <code>FLOAT4 = 18;</code>
+     * <code>FLOAT4 = 17;</code>
      */
-    public static final int FLOAT4_VALUE = 18;
+    public static final int FLOAT4_VALUE = 17;
     /**
      * <pre>
      *  8 byte ieee 754
      * </pre>
      *
-     * <code>FLOAT8 = 19;</code>
+     * <code>FLOAT8 = 18;</code>
      */
-    public static final int FLOAT8_VALUE = 19;
+    public static final int FLOAT8_VALUE = 18;
     /**
      * <pre>
      *  single bit value (boolean)
      * </pre>
      *
-     * <code>BIT = 20;</code>
+     * <code>BIT = 19;</code>
      */
-    public static final int BIT_VALUE = 20;
+    public static final int BIT_VALUE = 19;
     /**
      * <pre>
      *  utf8 fixed length string, padded with spaces
      * </pre>
      *
-     * <code>FIXEDCHAR = 21;</code>
+     * <code>FIXEDCHAR = 20;</code>
      */
-    public static final int FIXEDCHAR_VALUE = 21;
+    public static final int FIXEDCHAR_VALUE = 20;
     /**
-     * <code>FIXED16CHAR = 22;</code>
+     * <code>FIXED16CHAR = 21;</code>
      */
-    public static final int FIXED16CHAR_VALUE = 22;
+    public static final int FIXED16CHAR_VALUE = 21;
     /**
      * <pre>
      *  fixed length binary, padded with 0 bytes
      * </pre>
      *
-     * <code>FIXEDBINARY = 23;</code>
+     * <code>FIXEDBINARY = 22;</code>
      */
-    public static final int FIXEDBINARY_VALUE = 23;
+    public static final int FIXEDBINARY_VALUE = 22;
     /**
      * <pre>
      *  utf8 variable length string
      * </pre>
      *
-     * <code>VARCHAR = 24;</code>
+     * <code>VARCHAR = 23;</code>
      */
-    public static final int VARCHAR_VALUE = 24;
+    public static final int VARCHAR_VALUE = 23;
     /**
      * <pre>
      * utf16 variable length string
      * </pre>
      *
-     * <code>VAR16CHAR = 25;</code>
+     * <code>VAR16CHAR = 24;</code>
      */
-    public static final int VAR16CHAR_VALUE = 25;
+    public static final int VAR16CHAR_VALUE = 24;
     /**
      * <pre>
      *  variable length binary
      * </pre>
      *
-     * <code>VARBINARY = 26;</code>
+     * <code>VARBINARY = 25;</code>
      */
-    public static final int VARBINARY_VALUE = 26;
+    public static final int VARBINARY_VALUE = 25;
     /**
      * <pre>
      *  unsigned 1 byte integer
      * </pre>
      *
-     * <code>UINT1 = 29;</code>
+     * <code>UINT1 = 26;</code>
      */
-    public static final int UINT1_VALUE = 29;
+    public static final int UINT1_VALUE = 26;
     /**
      * <pre>
      *  unsigned 2 byte integer
      * </pre>
      *
-     * <code>UINT2 = 30;</code>
+     * <code>UINT2 = 27;</code>
      */
-    public static final int UINT2_VALUE = 30;
+    public static final int UINT2_VALUE = 27;
     /**
      * <pre>
      *  unsigned 4 byte integer
      * </pre>
      *
-     * <code>UINT4 = 31;</code>
+     * <code>UINT4 = 28;</code>
      */
-    public static final int UINT4_VALUE = 31;
+    public static final int UINT4_VALUE = 28;
     /**
      * <pre>
      *  unsigned 8 byte integer
      * </pre>
      *
-     * <code>UINT8 = 32;</code>
+     * <code>UINT8 = 29;</code>
      */
-    public static final int UINT8_VALUE = 32;
+    public static final int UINT8_VALUE = 29;
     /**
      * <pre>
      * dense decimal representation, supporting precision between 19 and 28
      * </pre>
      *
-     * <code>DECIMAL28DENSE = 33;</code>
+     * <code>DECIMAL28DENSE = 30;</code>
      */
-    public static final int DECIMAL28DENSE_VALUE = 33;
+    public static final int DECIMAL28DENSE_VALUE = 30;
     /**
      * <pre>
      * dense decimal representation, supporting precision between 28 and 38
      * </pre>
      *
-     * <code>DECIMAL38DENSE = 34;</code>
+     * <code>DECIMAL38DENSE = 31;</code>
      */
-    public static final int DECIMAL38DENSE_VALUE = 34;
+    public static final int DECIMAL38DENSE_VALUE = 31;
     /**
      * <pre>
-     *    PROTO2 = 33;   //  protobuf encoded complex type. (up to 2^16 in length)
-     *    PROTO4 = 34;   //  protobuf encoded complex type. (up to 2^32 in length)
-     *    MSGPACK2 = 35;   //  msgpack encoded complex type. (up to 2^16 in length)
-     *    MSGPACK4 = 36;   //  msgpack encoded complex type. (up to 2^32 in length)
+     * a value of unknown type (e.g. a missing reference).
      * </pre>
      *
-     * <code>NULL = 37;</code>
+     * <code>NULL = 32;</code>
      */
-    public static final int NULL_VALUE = 37;
+    public static final int NULL_VALUE = 32;
     /**
      * <pre>
      * Interval type specifying YEAR to MONTH
      * </pre>
      *
-     * <code>INTERVALYEAR = 38;</code>
+     * <code>INTERVALYEAR = 33;</code>
      */
-    public static final int INTERVALYEAR_VALUE = 38;
+    public static final int INTERVALYEAR_VALUE = 33;
     /**
      * <pre>
      * Interval type specifying DAY to SECONDS
      * </pre>
      *
-     * <code>INTERVALDAY = 39;</code>
+     * <code>INTERVALDAY = 34;</code>
      */
-    public static final int INTERVALDAY_VALUE = 39;
+    public static final int INTERVALDAY_VALUE = 34;
     /**
-     * <code>LIST = 40;</code>
+     * <code>LIST = 35;</code>
      */
-    public static final int LIST_VALUE = 40;
+    public static final int LIST_VALUE = 35;
     /**
-     * <code>GENERIC_OBJECT = 41;</code>
+     * <code>GENERIC_OBJECT = 36;</code>
      */
-    public static final int GENERIC_OBJECT_VALUE = 41;
+    public static final int GENERIC_OBJECT_VALUE = 36;
     /**
-     * <code>UNION = 42;</code>
+     * <code>UNION = 37;</code>
      */
-    public static final int UNION_VALUE = 42;
+    public static final int UNION_VALUE = 37;
     /**
      * <pre>
      * variable width decimal (arbitrary precision)
      * </pre>
      *
-     * <code>VARDECIMAL = 43;</code>
+     * <code>VARDECIMAL = 38;</code>
      */
-    public static final int VARDECIMAL_VALUE = 43;
+    public static final int VARDECIMAL_VALUE = 38;
     /**
-     * <code>DICT = 44;</code>
+     * <code>DICT = 39;</code>
      */
-    public static final int DICT_VALUE = 44;
+    public static final int DICT_VALUE = 39;
 
 
     public final int getNumber() {
@@ -668,44 +662,44 @@ public final class TypeProtos {
       switch (value) {
         case 0: return LATE;
         case 1: return MAP;
-        case 3: return TINYINT;
-        case 4: return SMALLINT;
-        case 5: return INT;
-        case 6: return BIGINT;
-        case 7: return DECIMAL9;
-        case 8: return DECIMAL18;
-        case 9: return DECIMAL28SPARSE;
-        case 10: return DECIMAL38SPARSE;
-        case 11: return MONEY;
-        case 12: return DATE;
-        case 13: return TIME;
-        case 14: return TIMETZ;
-        case 15: return TIMESTAMPTZ;
-        case 16: return TIMESTAMP;
-        case 17: return INTERVAL;
-        case 18: return FLOAT4;
-        case 19: return FLOAT8;
-        case 20: return BIT;
-        case 21: return FIXEDCHAR;
-        case 22: return FIXED16CHAR;
-        case 23: return FIXEDBINARY;
-        case 24: return VARCHAR;
-        case 25: return VAR16CHAR;
-        case 26: return VARBINARY;
-        case 29: return UINT1;
-        case 30: return UINT2;
-        case 31: return UINT4;
-        case 32: return UINT8;
-        case 33: return DECIMAL28DENSE;
-        case 34: return DECIMAL38DENSE;
-        case 37: return NULL;
-        case 38: return INTERVALYEAR;
-        case 39: return INTERVALDAY;
-        case 40: return LIST;
-        case 41: return GENERIC_OBJECT;
-        case 42: return UNION;
-        case 43: return VARDECIMAL;
-        case 44: return DICT;
+        case 2: return TINYINT;
+        case 3: return SMALLINT;
+        case 4: return INT;
+        case 5: return BIGINT;
+        case 6: return DECIMAL9;
+        case 7: return DECIMAL18;
+        case 8: return DECIMAL28SPARSE;
+        case 9: return DECIMAL38SPARSE;
+        case 10: return MONEY;
+        case 11: return DATE;
+        case 12: return TIME;
+        case 13: return TIMETZ;
+        case 14: return TIMESTAMPTZ;
+        case 15: return TIMESTAMP;
+        case 16: return INTERVAL;
+        case 17: return FLOAT4;
+        case 18: return FLOAT8;
+        case 19: return BIT;
+        case 20: return FIXEDCHAR;
+        case 21: return FIXED16CHAR;
+        case 22: return FIXEDBINARY;
+        case 23: return VARCHAR;
+        case 24: return VAR16CHAR;
+        case 25: return VARBINARY;
+        case 26: return UINT1;
+        case 27: return UINT2;
+        case 28: return UINT4;
+        case 29: return UINT8;
+        case 30: return DECIMAL28DENSE;
+        case 31: return DECIMAL38DENSE;
+        case 32: return NULL;
+        case 33: return INTERVALYEAR;
+        case 34: return INTERVALDAY;
+        case 35: return LIST;
+        case 36: return GENERIC_OBJECT;
+        case 37: return UNION;
+        case 38: return VARDECIMAL;
+        case 39: return DICT;
         default: return null;
       }
     }
@@ -1146,6 +1140,8 @@ public final class TypeProtos {
         }
       } catch (com.google.protobuf.InvalidProtocolBufferException e) {
         throw e.setUnfinishedMessage(this);
+      } catch (com.google.protobuf.UninitializedMessageException e) {
+        throw e.asInvalidProtocolBufferException().setUnfinishedMessage(this);
       } catch (java.io.IOException e) {
         throw new com.google.protobuf.InvalidProtocolBufferException(
             e).setUnfinishedMessage(this);
@@ -2307,20 +2303,20 @@ public final class TypeProtos {
       "\005\022\021\n\tprecision\030\004 \001(\005\022\r\n\005scale\030\005 \001(\005\022\020\n\010t" +
       "imeZone\030\006 \001(\005\022#\n\010sub_type\030\007 \003(\0162\021.common" +
       ".MinorType*\257\004\n\tMinorType\022\010\n\004LATE\020\000\022\007\n\003MA" +
-      "P\020\001\022\013\n\007TINYINT\020\003\022\014\n\010SMALLINT\020\004\022\007\n\003INT\020\005\022" +
-      "\n\n\006BIGINT\020\006\022\014\n\010DECIMAL9\020\007\022\r\n\tDECIMAL18\020\010" +
-      "\022\023\n\017DECIMAL28SPARSE\020\t\022\023\n\017DECIMAL38SPARSE" +
-      "\020\n\022\t\n\005MONEY\020\013\022\010\n\004DATE\020\014\022\010\n\004TIME\020\r\022\n\n\006TIM" +
-      "ETZ\020\016\022\017\n\013TIMESTAMPTZ\020\017\022\r\n\tTIMESTAMP\020\020\022\014\n" +
-      "\010INTERVAL\020\021\022\n\n\006FLOAT4\020\022\022\n\n\006FLOAT8\020\023\022\007\n\003B" +
-      "IT\020\024\022\r\n\tFIXEDCHAR\020\025\022\017\n\013FIXED16CHAR\020\026\022\017\n\013" +
-      "FIXEDBINARY\020\027\022\013\n\007VARCHAR\020\030\022\r\n\tVAR16CHAR\020" +
-      "\031\022\r\n\tVARBINARY\020\032\022\t\n\005UINT1\020\035\022\t\n\005UINT2\020\036\022\t" +
-      "\n\005UINT4\020\037\022\t\n\005UINT8\020 \022\022\n\016DECIMAL28DENSE\020!" +
-      "\022\022\n\016DECIMAL38DENSE\020\"\022\010\n\004NULL\020%\022\020\n\014INTERV" +
-      "ALYEAR\020&\022\017\n\013INTERVALDAY\020\'\022\010\n\004LIST\020(\022\022\n\016G" +
-      "ENERIC_OBJECT\020)\022\t\n\005UNION\020*\022\016\n\nVARDECIMAL" +
-      "\020+\022\010\n\004DICT\020,*4\n\010DataMode\022\014\n\010OPTIONAL\020\000\022\014" +
+      "P\020\001\022\013\n\007TINYINT\020\002\022\014\n\010SMALLINT\020\003\022\007\n\003INT\020\004\022" +
+      "\n\n\006BIGINT\020\005\022\014\n\010DECIMAL9\020\006\022\r\n\tDECIMAL18\020\007" +
+      "\022\023\n\017DECIMAL28SPARSE\020\010\022\023\n\017DECIMAL38SPARSE" +
+      "\020\t\022\t\n\005MONEY\020\n\022\010\n\004DATE\020\013\022\010\n\004TIME\020\014\022\n\n\006TIM" +
+      "ETZ\020\r\022\017\n\013TIMESTAMPTZ\020\016\022\r\n\tTIMESTAMP\020\017\022\014\n" +
+      "\010INTERVAL\020\020\022\n\n\006FLOAT4\020\021\022\n\n\006FLOAT8\020\022\022\007\n\003B" +
+      "IT\020\023\022\r\n\tFIXEDCHAR\020\024\022\017\n\013FIXED16CHAR\020\025\022\017\n\013" +
+      "FIXEDBINARY\020\026\022\013\n\007VARCHAR\020\027\022\r\n\tVAR16CHAR\020" +
+      "\030\022\r\n\tVARBINARY\020\031\022\t\n\005UINT1\020\032\022\t\n\005UINT2\020\033\022\t" +
+      "\n\005UINT4\020\034\022\t\n\005UINT8\020\035\022\022\n\016DECIMAL28DENSE\020\036" +
+      "\022\022\n\016DECIMAL38DENSE\020\037\022\010\n\004NULL\020 \022\020\n\014INTERV" +
+      "ALYEAR\020!\022\017\n\013INTERVALDAY\020\"\022\010\n\004LIST\020#\022\022\n\016G" +
+      "ENERIC_OBJECT\020$\022\t\n\005UNION\020%\022\016\n\nVARDECIMAL" +
+      "\020&\022\010\n\004DICT\020\'*4\n\010DataMode\022\014\n\010OPTIONAL\020\000\022\014" +
       "\n\010REQUIRED\020\001\022\014\n\010REPEATED\020\002B-\n\035org.apache" +
       ".drill.common.typesB\nTypeProtosH\001"
     };

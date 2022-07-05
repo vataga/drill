@@ -364,9 +364,8 @@ public class VectorContainer implements VectorAccessible {
 
   @Override
   public BatchSchema getSchema() {
-    Preconditions
-        .checkNotNull(schema,
-            "Schema is currently null.  You must call buildSchema(SelectionVectorMode) before this container can return a schema.");
+    Preconditions.checkNotNull(schema, "Schema is currently null. You must call " +
+      "buildSchema(SelectionVectorMode) before this container can return a schema.");
     return schema;
   }
 

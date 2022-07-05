@@ -492,8 +492,7 @@ public class TestResultSetLoaderUnions extends SubOperatorTest {
     variant.addMember(MinorType.VARCHAR);
     assertTrue(variant.hasType(MinorType.VARCHAR));
 
-    // Sanity check: sniff inside to ensure that the list contains a single
-    // type.
+    // Sanity check: sniff inside to ensure that the list contains a single type.
     assertTrue(((UnionWriterImpl) variant).shim() instanceof SimpleListShim);
     assertTrue(((ListWriterImpl) arrWriter).vector().getDataVector() instanceof NullableVarCharVector);
 

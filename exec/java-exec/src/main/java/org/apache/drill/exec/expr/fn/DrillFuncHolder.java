@@ -245,11 +245,9 @@ public abstract class DrillFuncHolder extends AbstractFuncHolder {
   }
 
   /**
-   * Generate the function block itself, without surrounding comments, and
-   * whether or not the method is empty.
+   * Generate the function block itself, without surrounding comments, and whether or not the method is empty.
    */
-  protected void addProtectedBlock(ClassGenerator<?> g, JBlock sub, String body,
-      HoldingContainer[] inputVariables,
+  protected void addProtectedBlock(ClassGenerator<?> g, JBlock sub, String body, HoldingContainer[] inputVariables,
       JVar[] workspaceJVars, boolean workspaceOnly) {
 
     // Create the binding between simulated function fields and their values,
@@ -339,11 +337,9 @@ public abstract class DrillFuncHolder extends AbstractFuncHolder {
   }
 
   /**
-   * Convert an input variable (in the generated code) to a reader as declared
-   * on the input parameter.
+   * Convert an input variable (in the generated code) to a reader as declared on the input parameter.
    */
-  private void convertHolderToReader(JCodeModel model, JBlock jBlock,
-      HoldingContainer inputVariable, int currentIndex,
+  private void convertHolderToReader(JCodeModel model, JBlock jBlock, HoldingContainer inputVariable, int currentIndex,
       ValueReference parameter) {
     JVar inputHolder = inputVariable.getHolder();
     MajorType inputSqlType = inputVariable.getMajorType();
@@ -369,7 +365,7 @@ public abstract class DrillFuncHolder extends AbstractFuncHolder {
       // as a UnionHolder, especially that for handling varying types.
       // ExpressionTreeMaterializer.rewriteUnionFunction(), for example
       // relies heavily on UnionHolder. As a result, we cannot simply
-      // change the "holder" for the UNION to be a reader, as is done
+      // change the "  " for the UNION to be a reader, as is done
       // for complex types.
       //
       // Run TestTopNSchemaChanges.testNumericTypes with saving of code
@@ -387,6 +383,8 @@ public abstract class DrillFuncHolder extends AbstractFuncHolder {
       // this information when defining the holder. We retrieve it here
       // and insert the vector --> reader conversion.
       VectorVariableHolder vvHolder = (VectorVariableHolder) inputVariable;
+//      HoldingContainer hc = (HoldingContainer) inputVariable;
+//      VectorVariableHolder vvHolder = new VectorVariableHolder(vvHolder, , jBlock);
       JVar readerVar = vvHolder.generateUnionReader();
       declare(jBlock, parameter, paramClass, readerVar, currentIndex);
 

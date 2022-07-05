@@ -83,8 +83,7 @@ public class UnionVectorShim implements UnionShim {
     variants = new AbstractObjectWriter[MinorType.values().length];
   }
 
-  public UnionVectorShim(UnionVector vector,
-      AbstractObjectWriter variants[]) {
+  public UnionVectorShim(UnionVector vector, AbstractObjectWriter variants[]) {
     this.vector = vector;
     typeWriter = ColumnWriterFactory.newWriter(vector.getTypeVector());
     if (variants == null) {
@@ -146,8 +145,8 @@ public class UnionVectorShim implements UnionShim {
 
   @Override
   public void setType(MinorType type) {
-//    typeWriter.setInt(type.getNumber());
-    typeWriter.setInt(type.ordinal());
+    typeWriter.setInt(type.getNumber());
+//    typeWriter.setInt(type.ordinal()); // TestResultSetLoaderUnions testVariantListDynamic not working with this
   }
 
   @Override

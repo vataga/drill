@@ -28,6 +28,7 @@ import org.apache.drill.exec.store.easy.json.values.VarCharListener;
 import org.apache.drill.exec.store.easy.json.parser.ValueParser;
 import org.apache.drill.exec.vector.accessor.ObjectWriter;
 import org.apache.drill.exec.vector.accessor.ScalarWriter;
+import org.apache.drill.exec.vector.accessor.writer.UnionWriterImpl;
 import org.apache.drill.shaded.guava.com.google.common.base.Preconditions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,29 +127,40 @@ public class InferredFieldFactory extends BaseFieldFactory {
     Preconditions.checkArgument(!valueDef.type().isUnknown());
     if (!valueDef.isArray()) {
 //      if (valueDef.type().isObject() || valueDef.type().equals(JsonType.FLOAT)) {
+//      if (loader.options().unionEnabled) {
+////        ColumnMetadata colSchema = fieldDefn.schemaFor(MinorType.UNION, false).cloneEmpty();
+//        ColumnMetadata colSchema = fieldDefn.schemaForUnion().cloneEmpty();
+//        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(colSchema);
+//        return variantParserFor(fieldWriter.variant());
+//      }
       if (loader.options().unionEnabled) {
-//        ColumnMetadata colSchema = fieldDefn.schemaFor(MinorType.UNION, false).cloneEmpty();
-        ColumnMetadata colSchema = fieldDefn.schemaForUnion().cloneEmpty();
-        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(colSchema);
+//        final UnionVector vector = new UnionVector(fieldDefn.schemaForUnion(), allocator(), null);
+        UnionWriterImpl unionWriter = new UnionWriterImpl(fieldDefn.schemaFor(scalarTypeFor(fieldDefn), true));
+//        unionWriter.bindShim(new EmptyListShim());
+//        unionWriter.bindShim(new SimpleListShim());
+        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(fieldDefn.schemaForUnion());
         return variantParserFor(fieldWriter.variant());
       }
       if (valueDef.type().isObject()) {
         return objectParserFor(fieldDefn);
       } else {
-        return scalarParserFor(fieldDefn, false);
+        return scalarParserFor(fieldDefn, valueDef.isArray());
       }
     } else if (valueDef.dimensions() == 1) {
       if (loader.options().unionEnabled) {
 //        ColumnMetadata colSchema = fieldDefn.schemaFor(MinorType.UNION, true).cloneEmpty();
-        ColumnMetadata colSchema = fieldDefn.schemaForUnion().cloneEmpty();
-//        ColumnMetadata colSchema = fieldDefn.fromField();
-        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(colSchema);
+//        ColumnMetadata colSchema = fieldDefn.schemaForUnion().cloneEmpty();
+////        ColumnMetadata colSchema = fieldDefn.fromField();
+//        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(colSchema);
+//        return variantParserFor(fieldWriter.variant());
+        ObjectWriter fieldWriter = fieldDefn.fieldWriterFor(fieldDefn.schemaForUnion());
         return variantParserFor(fieldWriter.variant());
+//        return variantParserFor(new UnionWriterImpl(fieldDefn.schemaFor(scalarTypeFor(fieldDefn), valueDef.isArray())));
       }
       if (valueDef.type().isObject()) {
         return objectArrayParserFor(fieldDefn);
       } else {
-        return scalarArrayParserFor(scalarParserFor(fieldDefn, true));
+        return scalarArrayParserFor(scalarParserFor(fieldDefn, valueDef.isArray()));
       }
     } else { // 2+ dimensions
       if (valueDef.type().isObject()) {
@@ -163,6 +175,8 @@ public class InferredFieldFactory extends BaseFieldFactory {
     if (loader.options().allTextMode) {
       return parserFactory().textValueParser(
         new VarCharListener(loader, fieldDefn.scalarWriterFor(MinorType.VARCHAR, isArray)));
+//    } else if(loader.options().unionEnabled) {
+//      return variantParserFor(new UnionWriterImpl(fieldDefn.schemaFor(scalarTypeFor(fieldDefn), isArray)));
     } else {
       return scalarParserFor(fieldDefn, fieldDefn.schemaFor(scalarTypeFor(fieldDefn), isArray));
     }
@@ -228,9 +242,9 @@ public class InferredFieldFactory extends BaseFieldFactory {
   }
 
   public MinorType drillTypeFor(JsonType type) {
-    if (loader().options().unionEnabled) {
-      return MinorType.UNION;
-    }
+//    if (loader().options().unionEnabled) {
+//      return MinorType.UNION;
+//    }
     if (loader().options().allTextMode) {
       return MinorType.VARCHAR;
     }

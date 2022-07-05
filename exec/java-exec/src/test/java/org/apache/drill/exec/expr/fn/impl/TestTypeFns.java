@@ -361,10 +361,10 @@ public class TestTypeFns extends ClusterTest {
         .baselineColumns("t",       "m",        "dt")
 //        .baselineValues( "VARCHAR", "NULLABLE", "UNION")
 //        .baselineValues( "BIGINT",  "NULLABLE", "UNION")
-        .baselineValues( "FLOAT8",  "NULLABLE", "UNION")
+//        .baselineValues( "FLOAT8",  "NULLABLE", "UNION")
         // The following should probably provide the type of the list,
         // and report cardinality as ARRAY.
-//        .baselineValues( "LIST",    "NULLABLE", "UNION")
+        .baselineValues( "LIST",    "NULLABLE", "UNION")
 //        .baselineValues( "NULL",    "NULLABLE", "UNION")
         .go();
     } finally {
